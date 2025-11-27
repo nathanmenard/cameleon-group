@@ -1184,7 +1184,7 @@
         }
 
         .author-photo {
-            width: 90px;
+            width: 110px;
             align-self: stretch;
             border-radius: 0;
             object-fit: cover;
@@ -1214,17 +1214,19 @@
 
         .author-contact {
             font-size: 0.8rem;
-            color: var(--gris-500);
-            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
         }
 
         .author-contact a {
-            color: inherit;
+            color: var(--rouge);
             text-decoration: none;
+            font-weight: 500;
         }
 
         .author-contact a:hover {
-            color: var(--rouge);
+            text-decoration: underline;
         }
 
         .author-note {
@@ -2581,7 +2583,7 @@
                             <div class="author-name">Teddy Thierry</div>
                             <div class="author-role">Responsable commercial</div>
                             <div class="author-contact">
-                                <a href="mailto:teddy.thierry@drakkar.io">teddy.thierry@drakkar.io</a><br>
+                                <a href="mailto:teddy.thierry@drakkar.io">teddy.thierry@drakkar.io</a>
                                 <a href="tel:+33756288261">+33 7 56 28 82 61</a>
                             </div>
                         </div>
@@ -2592,7 +2594,7 @@
                             <div class="author-name">Nathan Menard</div>
                             <div class="author-role">CEO & co-fondateur</div>
                             <div class="author-contact">
-                                <a href="mailto:nathan.menard@drakkar.io">nathan.menard@drakkar.io</a><br>
+                                <a href="mailto:nathan.menard@drakkar.io">nathan.menard@drakkar.io</a>
                                 <a href="tel:+33651201858">+33 6 51 20 18 58</a>
                                 <a href="sms:+33651201858" class="author-note">merci d'envoyer un SMS si pas de réponse</a>
                             </div>
