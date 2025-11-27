@@ -79,6 +79,8 @@
             display: flex;
             align-items: center;
             height: 100%;
+            cursor: pointer;
+            text-decoration: none;
         }
 
         .nav-logo img {
@@ -1410,11 +1412,11 @@
 </head>
 <body>
     <nav>
-        <div class="nav-logo">
+        <a href="#" class="nav-logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
             <img src="logo_drakkar_blanc.png" alt="Drakkar">
             <span class="nav-collab">×</span>
             <img src="logo_cameleon_group.webp" alt="Cameleon Group" class="logo-cameleon">
-        </div>
+        </a>
         <span class="nav-date">27 novembre 2025</span>
     </nav>
 
