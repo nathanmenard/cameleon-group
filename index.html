@@ -568,6 +568,7 @@
         .table-wrap {
             margin: 1.5rem 0;
             overflow-x: auto;
+            position: relative;
         }
 
         table {
@@ -785,6 +786,31 @@
             margin: 2rem 0;
             border-radius: 8px;
             overflow-x: auto;
+            position: relative;
+        }
+
+        .arch-diagram::after,
+        .table-wrap::after {
+            content: '→';
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gris-100);
+            color: var(--gris-400);
+            padding: 0.5rem;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            pointer-events: none;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .arch-diagram::after,
+            .table-wrap::after {
+                display: block;
+            }
         }
 
         .arch-header {
