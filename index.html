@@ -1273,19 +1273,6 @@
             .author-contact {
                 align-items: center;
             }
-            .nav-date {
-                display: none;
-            }
-            .nav-logo img {
-                height: 20px;
-            }
-            .nav-logo .logo-cameleon {
-                height: 30px !important;
-            }
-            .nav-collab {
-                font-size: 0.85rem;
-                margin: 0 0.4rem;
-            }
         }
 
         /* Responsive */
@@ -1302,8 +1289,24 @@
         /* Responsive - mobile */
         @media (max-width: 768px) {
             html { font-size: 16px; }
-            nav { padding: 0 1.25rem; }
-            main { padding: 100px 1.25rem 2.5rem; }
+            nav { padding: 0 1rem; height: 56px; }
+            main { padding: 80px 1.25rem 80px; }
+
+            /* Nav simplifiée */
+            .nav-date { display: none; }
+            .nav-logo img { height: 18px; }
+            .nav-logo .logo-cameleon { height: 26px !important; }
+            .nav-collab { font-size: 0.75rem; margin: 0 0.35rem; }
+
+            /* TOC nav en bas */
+            .toc-nav {
+                top: auto;
+                bottom: 0;
+                transform: translateY(100%);
+            }
+            .toc-nav.visible {
+                transform: translateY(0);
+            }
 
             .doc-title { font-size: 1.75rem; }
             .doc-subtitle { font-size: 1rem; }
