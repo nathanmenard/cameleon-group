@@ -11,17 +11,31 @@
         :root {
             --noir: #0a0a0a;
             --blanc: #ffffff;
-            --gris-50: #fafafa;
-            --gris-100: #f5f5f5;
-            --gris-200: #e5e5e5;
-            --gris-300: #d4d4d4;
-            --gris-400: #a3a3a3;
-            --gris-500: #737373;
-            --gris-600: #525252;
-            --gris-700: #404040;
-            --gris-800: #262626;
-            --rouge: #e63127;
-            --rouge-sombre: #c41e16;
+            --gris-50: #f8f8f8;
+            --gris-100: #f0f0f0;
+            --gris-200: #e0e0e0;
+            --gris-300: #d0d0d0;
+            --gris-400: #a0a0a0;
+            --gris-500: #707070;
+            --gris-600: #505050;
+            --gris-700: #333333;
+            --gris-800: #1a1a1a;
+            /* Couleurs Drakkar officielles */
+            --rouge: #B22222;
+            --rouge-vif: #FF4A48;
+            --rouge-sombre: #992C2B;
+        }
+
+        /* Animation gradient Drakkar */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .drakkar-gradient {
+            background: linear-gradient(90deg, var(--rouge), var(--rouge-vif), var(--rouge-sombre));
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease-in-out infinite;
         }
 
         * {
@@ -83,7 +97,7 @@
             top: 64px;
             left: 0;
             height: 2px;
-            background: var(--rouge);
+            background: linear-gradient(90deg, var(--rouge), var(--rouge-vif), var(--rouge-sombre));
             width: 0%;
             z-index: 999;
             transition: width 0.1s ease-out;
@@ -127,11 +141,11 @@
 
         .toc-nav a {
             font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            color: var(--gris-400);
+            color: var(--gris-300);
             text-decoration: none;
-            padding: 0.5rem 0.75rem;
+            padding: 0.5rem 0.875rem;
             border-radius: 4px;
             white-space: nowrap;
             transition: all 0.15s ease;
@@ -147,11 +161,18 @@
 
         .toc-nav a.active {
             color: var(--blanc);
-            background: var(--rouge);
+            background: linear-gradient(90deg, var(--rouge), var(--rouge-vif), var(--rouge-sombre));
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease-in-out infinite;
         }
 
         .toc-nav .nav-num {
-            opacity: 0.6;
+            color: var(--rouge-vif);
+            font-weight: 600;
+        }
+
+        .toc-nav a.active .nav-num {
+            color: var(--blanc);
         }
 
         /* Main layout */
@@ -170,11 +191,11 @@
 
         .doc-type {
             font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            color: var(--rouge);
+            color: var(--rouge-sombre);
             margin-bottom: 1.25rem;
         }
 
@@ -209,7 +230,9 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--rouge) 0%, var(--rouge-sombre) 100%);
+            background: linear-gradient(90deg, var(--rouge), var(--rouge-vif), var(--rouge-sombre));
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease-in-out infinite;
         }
 
         .toc-header {
@@ -221,56 +244,56 @@
 
         .toc-title {
             font-family: 'Inter', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.15em;
-            color: var(--gris-400);
+            color: var(--blanc);
         }
 
         .toc-count {
             font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            color: var(--gris-500);
+            font-size: 0.8rem;
+            color: var(--gris-300);
         }
 
         .toc-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem 1.5rem;
+            gap: 0.75rem 1.5rem;
         }
 
         .toc-item {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.625rem 0.875rem;
+            gap: 0.875rem;
+            padding: 0.875rem 1rem;
             background: var(--gris-800);
             border-radius: 6px;
             text-decoration: none;
             transition: all 0.15s ease;
-            border: 1px solid transparent;
+            border: 1px solid var(--gris-700);
         }
 
         .toc-item:hover {
             background: var(--gris-700);
-            border-color: var(--gris-600);
+            border-color: var(--gris-500);
         }
 
         .toc-item-num {
             font-family: 'Inter', sans-serif;
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             font-weight: 700;
-            color: var(--rouge);
-            min-width: 1.25rem;
+            color: var(--rouge-vif);
+            min-width: 1.5rem;
         }
 
         .toc-item-text {
             font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.875rem;
             font-weight: 500;
-            color: var(--gris-300);
-            line-height: 1.3;
+            color: var(--blanc);
+            line-height: 1.4;
         }
 
         .toc-item:hover .toc-item-text {
@@ -285,11 +308,11 @@
 
         .section-num {
             font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--gris-400);
+            color: var(--gris-500);
             margin-bottom: 0.5rem;
         }
 
@@ -361,7 +384,9 @@
         }
 
         .highlight.rouge {
-            background: var(--rouge);
+            background: linear-gradient(135deg, var(--rouge), var(--rouge-vif), var(--rouge-sombre));
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease-in-out infinite;
         }
 
         .highlight.rouge p,
@@ -381,64 +406,106 @@
             color: var(--noir);
         }
 
-        /* Encadré lecture */
+        /* Encadré lecture Drakkar - épuré */
         .lecture {
-            border-left: 3px solid var(--rouge);
-            padding: 1rem 0 1rem 1.5rem;
+            border-left: 3px solid var(--rouge-vif);
+            padding: 0 0 0 1.25rem;
             margin: 1.5rem 0;
-            background: transparent;
         }
 
         .lecture-label {
             font-family: 'Inter', sans-serif;
             font-size: 0.7rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--rouge);
+            letter-spacing: 0.1em;
+            color: var(--rouge-sombre);
             margin-bottom: 0.5rem;
         }
 
         .lecture p {
             margin: 0;
             font-style: italic;
+            color: var(--gris-600);
+            line-height: 1.6;
         }
 
-        /* Analyse causale */
-        .cause-tree {
-            background: var(--gris-50);
-            padding: 1.75rem 2rem;
-            margin: 1.5rem 0;
+        /* Bloc Pourquoi - design éditorial épuré */
+        .pourquoi-block {
+            margin: 3rem 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gris-200);
+        }
+
+        .pourquoi-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pourquoi-num {
+            font-family: 'Inter', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--rouge-vif);
+            line-height: 1;
+        }
+
+        .pourquoi-title {
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--noir);
+            margin: 0;
+        }
+
+        .pourquoi-content {
+            padding-left: 3.5rem;
+        }
+
+        /* Symptôme - simple et clair */
+        .cause-symptom {
+            margin-bottom: 1.5rem;
+        }
+
+        .cause-symptom-text {
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--noir);
+            line-height: 1.5;
+        }
+
+        /* Chaîne de causes */
+        .cause-chain {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--gris-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .cause-chain div {
+            padding: 0.35rem 0;
+        }
+
+        .cause-chain .indent-1 { padding-left: 1.5rem; }
+        .cause-chain .indent-2 { padding-left: 3rem; }
+        .cause-chain .indent-3 { padding-left: 4.5rem; }
+        .cause-chain .indent-4 { padding-left: 6rem; }
+
+        /* Cause racine - bloc noir */
+        .cause-root {
+            padding: 1.25rem 1.5rem;
+            background: var(--noir);
+            color: var(--gris-300);
             border-radius: 6px;
             font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            line-height: 1.9;
-        }
-
-        .cause-symptom {
-            font-weight: 600;
-            color: var(--rouge);
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .cause-chain {
-            color: var(--gris-600);
-            padding-left: 0;
-        }
-
-        .cause-chain .indent-1 { padding-left: 1rem; }
-        .cause-chain .indent-2 { padding-left: 2rem; }
-        .cause-chain .indent-3 { padding-left: 3rem; }
-        .cause-chain .indent-4 { padding-left: 4rem; }
-
-        .cause-root {
-            margin-top: 1rem;
-            padding: 1rem 1.25rem;
-            background: var(--noir);
-            color: var(--blanc);
-            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 500;
+            line-height: 1.6;
         }
 
         /* Tableaux */
@@ -483,11 +550,14 @@
 
         .tag-critique {
             font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.03em;
-            color: var(--rouge);
+            color: var(--blanc);
+            background: var(--rouge-sombre);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
         }
 
         /* Deux colonnes */
@@ -500,8 +570,9 @@
 
         .col-card {
             padding: 1.5rem;
-            background: var(--gris-50);
+            background: var(--gris-100);
             border-radius: 6px;
+            border: 1px solid var(--gris-200);
         }
 
         .col-card h4 {
@@ -563,9 +634,9 @@
             margin-bottom: 0.5rem;
         }
 
-        .rouge-zone .zone-label { color: var(--rouge); }
-        .orange-zone .zone-label { color: #d97706; }
-        .vert-zone .zone-label { color: #16a34a; }
+        .rouge-zone .zone-label { color: var(--rouge-sombre); }
+        .orange-zone .zone-label { color: #92400e; }
+        .vert-zone .zone-label { color: #166534; }
 
         .zone-desc {
             font-family: 'Inter', sans-serif;
@@ -581,74 +652,125 @@
             font-style: italic;
         }
 
-        /* Architecture */
+        /* Architecture - Schéma professionnel */
         .archi-diagram {
-            background: var(--noir);
+            background: var(--blanc);
+            border: 1px solid var(--gris-200);
             padding: 2.5rem 2rem;
             margin: 2rem 0;
-            border-radius: 6px;
-            text-align: center;
+            border-radius: 8px;
         }
 
         .archi-top {
-            background: linear-gradient(135deg, var(--rouge) 0%, var(--rouge-sombre) 100%);
-            padding: 1.5rem 2rem;
-            border-radius: 6px;
-            margin-bottom: 1.5rem;
+            background: var(--noir);
+            padding: 1.75rem 2rem;
+            border-radius: 8px;
+            margin-bottom: 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .archi-top::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rouge), var(--rouge-vif), var(--rouge-sombre));
+            border-radius: 8px 8px 0 0;
         }
 
         .archi-top h4 {
             font-family: 'Inter', sans-serif;
             color: var(--blanc);
-            margin: 0 0 0.25rem;
-            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
         }
 
         .archi-top p {
             font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
-            color: rgba(255,255,255,0.8);
+            color: var(--gris-400);
             margin: 0;
         }
 
-        .archi-lines {
+        .archi-connector {
             display: flex;
             justify-content: center;
-            gap: 3rem;
-            margin-bottom: 1rem;
+            padding: 1rem 0;
         }
 
-        .archi-line {
-            width: 1px;
-            height: 24px;
-            background: var(--gris-600);
+        .archi-connector-line {
+            width: 2px;
+            height: 40px;
+            background: var(--gris-300);
+            position: relative;
+        }
+
+        .archi-connector-line::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid var(--gris-300);
         }
 
         .archi-modules {
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 0.75rem;
-            flex-wrap: wrap;
         }
 
         .archi-mod {
-            background: var(--gris-800);
-            padding: 0.875rem 1.25rem;
+            background: var(--gris-100);
+            border: 1px solid var(--gris-200);
+            padding: 1rem;
             border-radius: 6px;
             font-family: 'Inter', sans-serif;
-            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .archi-mod-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--noir);
+            margin-bottom: 0.25rem;
+        }
+
+        .archi-mod-status {
+            font-size: 0.7rem;
+            color: var(--gris-500);
+        }
+
+        .archi-mod.refonte {
+            background: var(--noir);
+            border-color: var(--rouge-vif);
+        }
+
+        .archi-mod.refonte .archi-mod-name {
             color: var(--blanc);
         }
 
-        .archi-mod span {
-            display: block;
-            font-size: 0.65rem;
-            color: var(--gris-500);
-            margin-top: 0.25rem;
+        .archi-mod.refonte .archi-mod-status {
+            color: var(--rouge-vif);
         }
 
-        .archi-mod.refonte span {
-            color: var(--rouge);
+        .archi-mod.nerveux {
+            background: linear-gradient(135deg, var(--rouge), var(--rouge-vif));
+            border: none;
+        }
+
+        .archi-mod.nerveux .archi-mod-name,
+        .archi-mod.nerveux .archi-mod-status {
+            color: var(--blanc);
         }
 
         /* Options */
@@ -657,8 +779,10 @@
             grid-template-columns: auto 1fr auto;
             gap: 1.25rem;
             align-items: start;
-            padding: 1.25rem 0;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid var(--gris-200);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
         }
 
         .option:last-child {
@@ -667,21 +791,42 @@
 
         .option-letter {
             font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            width: 32px;
-            height: 32px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: var(--gris-100);
-            border-radius: 6px;
+            border-radius: 8px;
             color: var(--gris-600);
         }
 
+        /* Option recommandée - distinction visuelle forte */
+        .option.reco {
+            background: var(--noir);
+            border: 2px solid var(--rouge-vif);
+            padding: 1.5rem;
+        }
+
         .option.reco .option-letter {
-            background: var(--rouge);
+            background: linear-gradient(135deg, var(--rouge), var(--rouge-vif), var(--rouge-sombre));
+            background-size: 200% 200%;
+            animation: gradientShift 6s ease-in-out infinite;
             color: var(--blanc);
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+        }
+
+        .option.reco .option-content h4 {
+            color: var(--blanc);
+            font-size: 1.05rem;
+        }
+
+        .option.reco .option-content p {
+            color: var(--gris-300);
         }
 
         .option-content h4 {
@@ -696,11 +841,11 @@
 
         .option-verdict {
             font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.03em;
-            padding: 0.375rem 0.75rem;
+            padding: 0.5rem 1rem;
             border-radius: 100px;
             white-space: nowrap;
         }
@@ -712,12 +857,13 @@
 
         .verdict-partiel {
             background: #fef3c7;
-            color: #b45309;
+            color: #92400e;
         }
 
         .verdict-oui {
-            background: #fee2e2;
-            color: var(--rouge);
+            background: var(--rouge-vif);
+            color: var(--blanc);
+            font-weight: 700;
         }
 
         /* Timeline process */
@@ -731,9 +877,10 @@
         .process-step {
             text-align: center;
             padding: 1.25rem 0.75rem;
-            background: var(--gris-50);
+            background: var(--gris-100);
             border-radius: 6px;
             position: relative;
+            border: 1px solid var(--gris-200);
         }
 
         .process-step::after {
@@ -780,11 +927,11 @@
 
         .volet-label {
             font-family: 'Inter', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            color: var(--rouge);
+            color: var(--rouge-vif);
             margin-bottom: 0.25rem;
         }
 
@@ -814,10 +961,11 @@
 
         /* Checklist */
         .checklist {
-            background: var(--gris-50);
+            background: var(--gris-100);
             padding: 1.5rem 2rem;
             margin: 1.5rem 0;
             border-radius: 6px;
+            border: 1px solid var(--gris-200);
         }
 
         .checklist ul {
@@ -1112,17 +1260,23 @@
 
             <p>Pour chaque symptôme que vous nous avez décrit, on a remonté le fil. Pas pour le plaisir de l'analyse — pour savoir où agir.</p>
 
-            <h4>Pourquoi #1 — La croissance externe est bloquée</h4>
-
-            <div class="cause-tree">
-                <span class="cause-symptom">Symptôme : Chaque acquisition = projet SI de plusieurs mois</span>
-                <div class="cause-chain">
-                    <div>→ Parce qu'il faut refaire toute la plomberie à chaque fois</div>
-                    <div class="indent-1">→ Parce qu'il n'existe pas de tronc commun où brancher une nouvelle entité</div>
-                    <div class="indent-2">→ Parce que chaque entité a développé ses propres outils isolément</div>
-                    <div class="indent-3">→ Parce que le SI ne dit jamais non depuis 15 ans</div>
+            <div class="pourquoi-block">
+                <div class="pourquoi-header">
+                    <span class="pourquoi-num">#1</span>
+                    <h4 class="pourquoi-title">La croissance externe est bloquée</h4>
                 </div>
-                <div class="cause-root">Cause racine : L'entreprise a priorisé la réactivité opérationnelle sur la cohérence architecturale. Le système s'est adapté au personnel, jamais l'inverse.</div>
+                <div class="pourquoi-content">
+                    <div class="cause-symptom">
+                        <span class="cause-symptom-text">Chaque acquisition = projet SI de plusieurs mois</span>
+                    </div>
+                    <div class="cause-chain">
+                        <div>→ Parce qu'il faut refaire toute la plomberie à chaque fois</div>
+                        <div class="indent-1">→ Parce qu'il n'existe pas de tronc commun où brancher une nouvelle entité</div>
+                        <div class="indent-2">→ Parce que chaque entité a développé ses propres outils isolément</div>
+                        <div class="indent-3">→ Parce que le SI ne dit jamais non depuis 15 ans</div>
+                    </div>
+                    <div class="cause-root">L'entreprise a priorisé la réactivité opérationnelle sur la cohérence architecturale. Le système s'est adapté au personnel, jamais l'inverse.</div>
+                </div>
             </div>
 
             <div class="lecture">
@@ -1130,16 +1284,22 @@
                 <p>Le succès historique de Cameleon repose sur une culture du "on va s'arranger". Cette culture, vertueuse commercialement, a généré une dette technique et organisationnelle qui atteint aujourd'hui son point de rupture. Ce qui vous a fait passer de 0 à 50M€ vous empêche de passer de 50 à 500M€.</p>
             </div>
 
-            <h4>Pourquoi #2 — Le pilotage manque de visibilité</h4>
-
-            <div class="cause-tree">
-                <span class="cause-symptom">Symptôme : Consolidation laborieuse, pas de vision temps réel</span>
-                <div class="cause-chain">
-                    <div>→ Parce qu'il faut aller chercher dans plusieurs systèmes et tout retraiter</div>
-                    <div class="indent-1">→ Parce qu'il n'y a pas de référentiel unique (client, produit, projet)</div>
-                    <div class="indent-2">→ Parce que chaque BU a sa propre définition de ces concepts</div>
+            <div class="pourquoi-block">
+                <div class="pourquoi-header">
+                    <span class="pourquoi-num">#2</span>
+                    <h4 class="pourquoi-title">Le pilotage manque de visibilité</h4>
                 </div>
-                <div class="cause-root">Cause racine : Absence de gouvernance de la donnée. Le groupe fonctionne comme 3 PME juxtaposées, pas comme une ETI intégrée.</div>
+                <div class="pourquoi-content">
+                    <div class="cause-symptom">
+                        <span class="cause-symptom-text">Consolidation laborieuse, pas de vision temps réel</span>
+                    </div>
+                    <div class="cause-chain">
+                        <div>→ Parce qu'il faut aller chercher dans plusieurs systèmes et tout retraiter</div>
+                        <div class="indent-1">→ Parce qu'il n'y a pas de référentiel unique (client, produit, projet)</div>
+                        <div class="indent-2">→ Parce que chaque BU a sa propre définition de ces concepts</div>
+                    </div>
+                    <div class="cause-root">Absence de gouvernance de la donnée. Le groupe fonctionne comme 3 PME juxtaposées, pas comme une ETI intégrée.</div>
+                </div>
             </div>
 
             <div class="lecture">
@@ -1147,17 +1307,23 @@
                 <p>Le problème n'est pas technique. C'est un problème de définition partagée des concepts métier. Qu'est-ce qu'un "client" ? Un "projet" ? Une "affaire" ? Tant que ces définitions varient d'une entité à l'autre, aucun outil ne résoudra le problème.</p>
             </div>
 
-            <h4>Pourquoi #3 — Deux projets Odoo ont échoué</h4>
-
-            <div class="cause-tree">
-                <span class="cause-symptom">Symptôme : Deux tentatives, deux échecs. Méfiance généralisée.</span>
-                <div class="cause-chain">
-                    <div>→ Parce que les utilisateurs n'ont pas adopté l'outil</div>
-                    <div class="indent-1">→ Parce qu'ils n'ont pas été consultés ni impliqués</div>
-                    <div class="indent-2">→ Parce qu'on a voulu tout faire d'un coup (Big Bang)</div>
-                    <div class="indent-3">→ Parce qu'on pensait que le problème était l'outil, pas l'organisation</div>
+            <div class="pourquoi-block">
+                <div class="pourquoi-header">
+                    <span class="pourquoi-num">#3</span>
+                    <h4 class="pourquoi-title">Deux projets Odoo ont échoué</h4>
                 </div>
-                <div class="cause-root">Cause racine : Confusion entre "implémenter un ERP" et "transformer l'organisation". L'outil a été vu comme solution, pas comme levier.</div>
+                <div class="pourquoi-content">
+                    <div class="cause-symptom">
+                        <span class="cause-symptom-text">Deux tentatives, deux échecs. Méfiance généralisée.</span>
+                    </div>
+                    <div class="cause-chain">
+                        <div>→ Parce que les utilisateurs n'ont pas adopté l'outil</div>
+                        <div class="indent-1">→ Parce qu'ils n'ont pas été consultés ni impliqués</div>
+                        <div class="indent-2">→ Parce qu'on a voulu tout faire d'un coup (Big Bang)</div>
+                        <div class="indent-3">→ Parce qu'on pensait que le problème était l'outil, pas l'organisation</div>
+                    </div>
+                    <div class="cause-root">Confusion entre "implémenter un ERP" et "transformer l'organisation". L'outil a été vu comme solution, pas comme levier.</div>
+                </div>
             </div>
 
             <div class="lecture">
@@ -1165,17 +1331,23 @@
                 <p>Les échecs Odoo ne sont pas des échecs d'Odoo. Ce sont des échecs de conduite du changement. Le système s'est adapté au personnel et non à l'inverse — et ce "choc" dont vous parliez n'a jamais été préparé.</p>
             </div>
 
-            <h4>Pourquoi #4 — Le dilemme standardisation/flexibilité semble insoluble</h4>
-
-            <div class="cause-tree">
-                <span class="cause-symptom">Symptôme : Les commerciaux font leur "tambouille", les stats sont faussées</span>
-                <div class="cause-chain">
-                    <div>→ Parce que chaque commercial organise ses devis comme il veut</div>
-                    <div class="indent-1">→ Parce que chaque client a des exigences de présentation différentes</div>
-                    <div class="indent-2">→ Parce que Cameleon travaille avec des grands comptes qui imposent leurs standards</div>
-                    <div class="indent-3">→ Parce que le positionnement commercial repose sur l'hyper-adaptation</div>
+            <div class="pourquoi-block">
+                <div class="pourquoi-header">
+                    <span class="pourquoi-num">#4</span>
+                    <h4 class="pourquoi-title">Le dilemme standardisation/flexibilité semble insoluble</h4>
                 </div>
-                <div class="cause-root">Cause racine : La flexibilité commerciale EST l'avantage concurrentiel. La supprimer = perdre des clients. La question n'est pas "faut-il standardiser ?" mais "où placer le curseur ?"</div>
+                <div class="pourquoi-content">
+                    <div class="cause-symptom">
+                        <span class="cause-symptom-text">Les commerciaux font leur "tambouille", les stats sont faussées</span>
+                    </div>
+                    <div class="cause-chain">
+                        <div>→ Parce que chaque commercial organise ses devis comme il veut</div>
+                        <div class="indent-1">→ Parce que chaque client a des exigences de présentation différentes</div>
+                        <div class="indent-2">→ Parce que Cameleon travaille avec des grands comptes qui imposent leurs standards</div>
+                        <div class="indent-3">→ Parce que le positionnement commercial repose sur l'hyper-adaptation</div>
+                    </div>
+                    <div class="cause-root">La flexibilité commerciale EST l'avantage concurrentiel. La supprimer = perdre des clients. La question n'est pas "faut-il standardiser ?" mais "où placer le curseur ?"</div>
+                </div>
             </div>
 
             <p><strong>Les exemples que vous nous avez donnés :</strong></p>
@@ -1191,17 +1363,23 @@
                 <p>Cette question — où placer le curseur — n'a jamais fait l'objet d'une décision explicite. Elle est tranchée différemment selon qui décide, quel jour, avec quel client. C'est ça le vrai problème.</p>
             </div>
 
-            <h4>Pourquoi #5 — La dette technique est critique</h4>
-
-            <div class="cause-tree">
-                <span class="cause-symptom">Symptôme : Symfony 2 en production gère 6M€ d'activité</span>
-                <div class="cause-chain">
-                    <div>→ Parce que personne n'a osé lancer la migration</div>
-                    <div class="indent-1">→ Parce qu'une tentative a été catastrophique</div>
-                    <div class="indent-2">→ Parce que le code est enchevêtré avec la logique métier non documentée</div>
-                    <div class="indent-3">→ Parce que le développement a été fait "en pompier" pendant des années</div>
+            <div class="pourquoi-block">
+                <div class="pourquoi-header">
+                    <span class="pourquoi-num">#5</span>
+                    <h4 class="pourquoi-title">La dette technique est critique</h4>
                 </div>
-                <div class="cause-root">Cause racine : Absence de vision technique long terme. Le développement a toujours été piloté par l'urgence opérationnelle, pas par une roadmap architecturale.</div>
+                <div class="pourquoi-content">
+                    <div class="cause-symptom">
+                        <span class="cause-symptom-text">Symfony 2 en production gère 6M€ d'activité</span>
+                    </div>
+                    <div class="cause-chain">
+                        <div>→ Parce que personne n'a osé lancer la migration</div>
+                        <div class="indent-1">→ Parce qu'une tentative a été catastrophique</div>
+                        <div class="indent-2">→ Parce que le code est enchevêtré avec la logique métier non documentée</div>
+                        <div class="indent-3">→ Parce que le développement a été fait "en pompier" pendant des années</div>
+                    </div>
+                    <div class="cause-root">Absence de vision technique long terme. Le développement a toujours été piloté par l'urgence opérationnelle, pas par une roadmap architecturale.</div>
+                </div>
             </div>
 
             <div class="lecture">
@@ -1372,19 +1550,30 @@
                     <h4>GROUP MANAGER</h4>
                     <p>Référentiel unique • Cycle commercial • Pilotage groupe</p>
                 </div>
-                <div class="archi-lines">
-                    <div class="archi-line"></div>
-                    <div class="archi-line"></div>
-                    <div class="archi-line"></div>
-                    <div class="archi-line"></div>
-                    <div class="archi-line"></div>
+                <div class="archi-connector">
+                    <div class="archi-connector-line"></div>
                 </div>
                 <div class="archi-modules">
-                    <div class="archi-mod">Think Manager <span>existant</span></div>
-                    <div class="archi-mod">Factory Manager <span>existant</span></div>
-                    <div class="archi-mod refonte">Field Manager <span>à refondre</span></div>
-                    <div class="archi-mod">Print & Metal <span>existant</span></div>
-                    <div class="archi-mod">Système Nerveux <span>consolide</span></div>
+                    <div class="archi-mod">
+                        <div class="archi-mod-name">Think Manager</div>
+                        <div class="archi-mod-status">existant</div>
+                    </div>
+                    <div class="archi-mod">
+                        <div class="archi-mod-name">Factory Manager</div>
+                        <div class="archi-mod-status">existant</div>
+                    </div>
+                    <div class="archi-mod refonte">
+                        <div class="archi-mod-name">Field Manager</div>
+                        <div class="archi-mod-status">à refondre</div>
+                    </div>
+                    <div class="archi-mod">
+                        <div class="archi-mod-name">Print & Metal</div>
+                        <div class="archi-mod-status">existant</div>
+                    </div>
+                    <div class="archi-mod nerveux">
+                        <div class="archi-mod-name">Système Nerveux</div>
+                        <div class="archi-mod-status">consolide</div>
+                    </div>
                 </div>
             </div>
 
