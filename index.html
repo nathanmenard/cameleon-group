@@ -1256,9 +1256,35 @@
         @media (max-width: 600px) {
             .authors {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .author {
+                flex-direction: column;
+                text-align: center;
             }
             .author-photo {
-                width: 80px;
+                width: 100%;
+                height: 180px;
+                object-position: center top;
+            }
+            .author-info {
+                padding: 1rem;
+            }
+            .author-contact {
+                align-items: center;
+            }
+            .nav-date {
+                display: none;
+            }
+            .nav-logo img {
+                height: 20px;
+            }
+            .nav-logo .logo-cameleon {
+                height: 30px !important;
+            }
+            .nav-collab {
+                font-size: 0.85rem;
+                margin: 0 0.4rem;
             }
         }
 
