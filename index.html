@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Note Stratégique Cameleon Group | Drakkar</title>
+    <link rel="icon" type="image/png" href="icon_drk.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -20,13 +21,13 @@
             --gris-600: #505050;
             --gris-700: #333333;
             --gris-800: #1a1a1a;
-            /* Couleurs Drakkar officielles */
+            /* Official Drakkar colors */
             --rouge: #B22222;
             --rouge-vif: #FF4A48;
             --rouge-sombre: #992C2B;
         }
 
-        /* Animation gradient Drakkar */
+        /* Drakkar gradient animation */
         @keyframes gradientShift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -57,7 +58,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Navigation principale - noire */
+        /* Main navigation - black */
         nav {
             position: fixed;
             top: 0;
@@ -103,7 +104,7 @@
             transition: width 0.1s ease-out;
         }
 
-        /* Sous-navigation TOC sticky */
+        /* Sticky TOC sub-navigation */
         .toc-nav {
             position: fixed;
             top: 64px;
@@ -115,6 +116,8 @@
             opacity: 0;
             transition: transform 0.3s ease, opacity 0.3s ease;
             border-bottom: 1px solid var(--gris-700);
+            display: flex;
+            align-items: center;
         }
 
         .toc-nav.visible {
@@ -122,10 +125,47 @@
             opacity: 1;
         }
 
+        .nav-arrow {
+            flex-shrink: 0;
+            width: 36px;
+            height: 48px;
+            background: var(--gris-800);
+            border: none;
+            color: var(--gris-300);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            z-index: 2;
+        }
+
+        .nav-arrow:hover {
+            color: var(--blanc);
+            background: var(--gris-700);
+        }
+
+        .nav-arrow-left {
+            border-right: 1px solid var(--gris-700);
+        }
+
+        .nav-arrow-right {
+            border-left: 1px solid var(--gris-700);
+        }
+
+        /* Hide arrows on mobile */
+        @media (max-width: 768px) {
+            .nav-arrow {
+                display: none;
+            }
+        }
+
         .toc-nav-inner {
+            flex: 1;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1rem;
             display: flex;
             align-items: center;
             height: 48px;
@@ -175,14 +215,14 @@
             color: var(--blanc);
         }
 
-        /* Main layout */
+        /* Main content layout */
         main {
             max-width: 720px;
             margin: 0 auto;
-            padding: 120px 2rem 100px;
+            padding: 120px 2rem 3rem;
         }
 
-        /* Header document */
+        /* Document header */
         .doc-header {
             margin-bottom: 3rem;
             padding-bottom: 2.5rem;
@@ -213,7 +253,7 @@
             font-style: italic;
         }
 
-        /* Table des matières inline */
+        /* Inline table of contents */
         .toc {
             background: var(--noir);
             padding: 2.5rem;
@@ -350,7 +390,7 @@
             color: var(--noir);
         }
 
-        /* Listes */
+        /* Lists */
         ul, ol {
             margin: 1.25rem 0 1.25rem 1.25rem;
             color: var(--gris-700);
@@ -365,7 +405,7 @@
             color: var(--gris-400);
         }
 
-        /* Citation mise en avant */
+        /* Highlighted quote */
         .highlight {
             background: var(--noir);
             color: var(--blanc);
@@ -394,8 +434,8 @@
             color: var(--blanc);
         }
 
-        /* Question clé */
-        .question-cle {
+        /* Key question */
+        .key-question {
             font-size: 1.5rem;
             font-style: italic;
             text-align: center;
@@ -406,14 +446,14 @@
             color: var(--noir);
         }
 
-        /* Encadré lecture Drakkar - épuré */
-        .lecture {
+        /* Drakkar insight block - clean */
+        .insight {
             border-left: 3px solid var(--rouge-vif);
             padding: 0 0 0 1.25rem;
             margin: 1.5rem 0;
         }
 
-        .lecture-label {
+        .insight-label {
             font-family: 'Inter', sans-serif;
             font-size: 0.7rem;
             font-weight: 700;
@@ -423,28 +463,28 @@
             margin-bottom: 0.5rem;
         }
 
-        .lecture p {
+        .insight p {
             margin: 0;
             font-style: italic;
             color: var(--gris-600);
             line-height: 1.6;
         }
 
-        /* Bloc Pourquoi - design éditorial épuré */
-        .pourquoi-block {
+        /* Why block - clean editorial design */
+        .why-block {
             margin: 3rem 0;
             padding-top: 2rem;
             border-top: 1px solid var(--gris-200);
         }
 
-        .pourquoi-header {
+        .why-header {
             display: flex;
             align-items: baseline;
             gap: 0.75rem;
             margin-bottom: 1.5rem;
         }
 
-        .pourquoi-num {
+        .why-num {
             font-family: 'Inter', sans-serif;
             font-size: 2rem;
             font-weight: 700;
@@ -452,7 +492,7 @@
             line-height: 1;
         }
 
-        .pourquoi-title {
+        .why-title {
             font-family: 'Newsreader', Georgia, serif;
             font-size: 1.35rem;
             font-weight: 500;
@@ -460,16 +500,16 @@
             margin: 0;
         }
 
-        .pourquoi-content {
+        .why-content {
             padding-left: 3.5rem;
         }
 
-        /* Symptôme - simple et clair */
-        .cause-symptom {
+        /* Symptom - simple and clear */
+        .symptom {
             margin-bottom: 1.5rem;
         }
 
-        .cause-symptom-text {
+        .symptom-text {
             font-family: 'Newsreader', Georgia, serif;
             font-size: 1.1rem;
             font-weight: 500;
@@ -478,7 +518,7 @@
             line-height: 1.5;
         }
 
-        /* Chaîne de causes */
+        /* Cause chain */
         .cause-chain {
             font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
@@ -496,8 +536,8 @@
         .cause-chain .indent-3 { padding-left: 4.5rem; }
         .cause-chain .indent-4 { padding-left: 6rem; }
 
-        /* Cause racine - bloc noir */
-        .cause-root {
+        /* Root cause - black block */
+        .root-cause {
             padding: 1.25rem 1.5rem;
             background: var(--noir);
             color: var(--gris-300);
@@ -508,7 +548,7 @@
             line-height: 1.6;
         }
 
-        /* Tableaux */
+        /* Tables */
         .table-wrap {
             margin: 1.5rem 0;
             overflow-x: auto;
@@ -548,7 +588,7 @@
             border-bottom: none;
         }
 
-        .tag-critique {
+        .tag-critical {
             font-family: 'Inter', sans-serif;
             font-size: 0.75rem;
             font-weight: 700;
@@ -560,8 +600,8 @@
             border-radius: 4px;
         }
 
-        /* Deux colonnes */
-        .deux-cols {
+        /* Two columns */
+        .two-cols {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
@@ -596,7 +636,76 @@
             color: var(--gris-300);
         }
 
-        /* Schéma zones */
+        /* System map diagram */
+        .system-map {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .system-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .system-block {
+            background: var(--gris-100);
+            border: 1px solid var(--gris-200);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .system-block.system-strategy {
+            background: var(--noir);
+            border-color: var(--noir);
+        }
+
+        .system-block.system-strategy .system-title {
+            color: var(--blanc);
+        }
+
+        .system-block.system-strategy ul {
+            color: var(--gris-300);
+        }
+
+        .system-block.system-org,
+        .system-block.system-client {
+            background: var(--gris-50);
+        }
+
+        .system-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--noir);
+            margin-bottom: 0.75rem;
+        }
+
+        .system-block ul {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: var(--gris-600);
+            margin: 0;
+            padding-left: 1rem;
+        }
+
+        .system-block li {
+            margin-bottom: 0.25rem;
+        }
+
+        .footnote {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--gris-500);
+            font-style: italic;
+        }
+
+        /* Zones diagram */
         .zones-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -610,7 +719,7 @@
             text-align: center;
         }
 
-        .zone.rouge-zone {
+        .zone.red-zone {
             background: #fef2f2;
             border: 2px solid var(--rouge);
         }
@@ -620,7 +729,7 @@
             border: 2px solid #f59e0b;
         }
 
-        .zone.vert-zone {
+        .zone.green-zone {
             background: #f0fdf4;
             border: 2px solid #22c55e;
         }
@@ -634,9 +743,9 @@
             margin-bottom: 0.5rem;
         }
 
-        .rouge-zone .zone-label { color: var(--rouge-sombre); }
+        .red-zone .zone-label { color: var(--rouge-sombre); }
         .orange-zone .zone-label { color: #92400e; }
-        .vert-zone .zone-label { color: #166534; }
+        .green-zone .zone-label { color: #166534; }
 
         .zone-desc {
             font-family: 'Inter', sans-serif;
@@ -652,8 +761,8 @@
             font-style: italic;
         }
 
-        /* Architecture - Schéma professionnel */
-        .archi-diagram {
+        /* Architecture - Professional diagram */
+        .arch-diagram {
             background: var(--blanc);
             border: 1px solid var(--gris-200);
             padding: 2.5rem 2rem;
@@ -661,7 +770,7 @@
             border-radius: 8px;
         }
 
-        .archi-top {
+        .arch-header {
             background: var(--noir);
             padding: 1.75rem 2rem;
             border-radius: 8px;
@@ -670,7 +779,7 @@
             text-align: center;
         }
 
-        .archi-top::before {
+        .arch-header::before {
             content: '';
             position: absolute;
             top: 0;
@@ -681,7 +790,7 @@
             border-radius: 8px 8px 0 0;
         }
 
-        .archi-top h4 {
+        .arch-header h4 {
             font-family: 'Inter', sans-serif;
             color: var(--blanc);
             margin: 0 0 0.5rem;
@@ -690,27 +799,27 @@
             letter-spacing: 0.05em;
         }
 
-        .archi-top p {
+        .arch-header p {
             font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
             color: var(--gris-400);
             margin: 0;
         }
 
-        .archi-connector {
+        .arch-connector {
             display: flex;
             justify-content: center;
             padding: 1rem 0;
         }
 
-        .archi-connector-line {
+        .arch-connector-line {
             width: 2px;
             height: 40px;
             background: var(--gris-300);
             position: relative;
         }
 
-        .archi-connector-line::after {
+        .arch-connector-line::after {
             content: '';
             position: absolute;
             bottom: -4px;
@@ -723,13 +832,13 @@
             border-top: 8px solid var(--gris-300);
         }
 
-        .archi-modules {
+        .arch-modules {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 0.75rem;
         }
 
-        .archi-mod {
+        .arch-module {
             background: var(--gris-100);
             border: 1px solid var(--gris-200);
             padding: 1rem;
@@ -738,38 +847,38 @@
             text-align: center;
         }
 
-        .archi-mod-name {
+        .arch-module-name {
             font-size: 0.8rem;
             font-weight: 600;
             color: var(--noir);
             margin-bottom: 0.25rem;
         }
 
-        .archi-mod-status {
+        .arch-module-status {
             font-size: 0.7rem;
             color: var(--gris-500);
         }
 
-        .archi-mod.refonte {
+        .arch-module.refonte {
             background: var(--noir);
             border-color: var(--rouge-vif);
         }
 
-        .archi-mod.refonte .archi-mod-name {
+        .arch-module.refonte .arch-module-name {
             color: var(--blanc);
         }
 
-        .archi-mod.refonte .archi-mod-status {
+        .arch-module.refonte .arch-module-status {
             color: var(--rouge-vif);
         }
 
-        .archi-mod.nerveux {
+        .arch-module.nervous {
             background: linear-gradient(135deg, var(--rouge), var(--rouge-vif));
             border: none;
         }
 
-        .archi-mod.nerveux .archi-mod-name,
-        .archi-mod.nerveux .archi-mod-status {
+        .arch-module.nervous .arch-module-name,
+        .arch-module.nervous .arch-module-status {
             color: var(--blanc);
         }
 
@@ -803,7 +912,7 @@
             color: var(--gris-600);
         }
 
-        /* Option recommandée - distinction visuelle forte */
+        /* Recommended option - strong visual distinction */
         .option.reco {
             background: var(--noir);
             border: 2px solid var(--rouge-vif);
@@ -850,23 +959,23 @@
             white-space: nowrap;
         }
 
-        .verdict-non {
+        .verdict-no {
             background: var(--gris-100);
             color: var(--gris-600);
         }
 
-        .verdict-partiel {
+        .verdict-partial {
             background: #fef3c7;
             color: #92400e;
         }
 
-        .verdict-oui {
+        .verdict-yes {
             background: var(--rouge-vif);
             color: var(--blanc);
             font-weight: 700;
         }
 
-        /* Timeline process */
+        /* Process timeline */
         .process-flow {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -911,21 +1020,21 @@
             color: var(--gris-500);
         }
 
-        /* Deux volets */
-        .volets {
+        /* Two tracks */
+        .tracks {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
             margin: 2rem 0;
         }
 
-        .volet {
+        .track {
             background: var(--noir);
             padding: 1.75rem;
             border-radius: 6px;
         }
 
-        .volet-label {
+        .track-label {
             font-family: 'Inter', sans-serif;
             font-size: 0.75rem;
             font-weight: 700;
@@ -935,27 +1044,27 @@
             margin-bottom: 0.25rem;
         }
 
-        .volet h4 {
+        .track h4 {
             color: var(--blanc);
             margin: 0 0 0.25rem;
             font-size: 0.95rem;
         }
 
-        .volet-team {
+        .track-team {
             font-family: 'Inter', sans-serif;
             font-size: 0.75rem;
             color: var(--gris-500);
             margin-bottom: 1rem;
         }
 
-        .volet ul {
+        .track ul {
             color: var(--gris-400);
             font-size: 0.9rem;
             margin: 0;
             padding-left: 1rem;
         }
 
-        .volet li {
+        .track li {
             margin-bottom: 0.35rem;
         }
 
@@ -995,20 +1104,20 @@
         }
 
         /* Engagements */
-        .engagements {
+        .commitments {
             background: var(--noir);
             padding: 2rem 2.5rem;
             margin: 2rem 0;
             border-radius: 6px;
         }
 
-        .engagements ul {
+        .commitments ul {
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        .engagements li {
+        .commitments li {
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
             padding: 0.75rem 0;
@@ -1016,11 +1125,11 @@
             color: var(--gris-300);
         }
 
-        .engagements li:last-child {
+        .commitments li:last-child {
             border-bottom: none;
         }
 
-        .engagements strong {
+        .commitments strong {
             color: var(--blanc);
         }
 
@@ -1063,32 +1172,87 @@
         }
 
         /* Responsive */
+        /* Responsive - tablet */
         @media (max-width: 900px) {
             .toc-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .arch-modules {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
+        /* Responsive - mobile */
         @media (max-width: 768px) {
             html { font-size: 16px; }
-            nav { padding: 0 1.5rem; }
-            main { padding: 100px 1.5rem 80px; }
-            .doc-title { font-size: 2rem; }
-            .toc { padding: 1.75rem; }
-            .toc-grid { grid-template-columns: 1fr; }
-            .deux-cols, .zones-grid, .volets { grid-template-columns: 1fr; }
-            .process-flow { grid-template-columns: 1fr 1fr; }
+            nav { padding: 0 1.25rem; }
+            main { padding: 100px 1.25rem 2.5rem; }
+
+            .doc-title { font-size: 1.75rem; }
+            .doc-subtitle { font-size: 1rem; }
+
+            .toc { padding: 1.5rem; }
+            .toc-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+            .toc-item { padding: 0.75rem; }
+
+            .two-cols, .zones-grid, .tracks, .system-row { grid-template-columns: 1fr; }
+
+            .arch-modules {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+            .arch-module { padding: 0.75rem; }
+            .arch-module-name { font-size: 0.7rem; }
+            .arch-module-status { font-size: 0.6rem; }
+
+            .process-flow { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
             .process-step::after { display: none; }
-            .option { grid-template-columns: 1fr; gap: 0.75rem; }
+
+            .option {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+            .option.reco { padding: 1.25rem; }
             .option-letter { width: 28px; height: 28px; font-size: 0.75rem; }
-            .archi-modules { flex-direction: column; align-items: center; }
+            .option.reco .option-letter { width: 32px; height: 32px; }
+
+            .why-block { margin: 2rem 0; padding-top: 1.5rem; }
+            .why-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .why-num { font-size: 1.5rem; }
+            .why-title { font-size: 1.15rem; }
+            .why-content { padding-left: 0; }
+
+            .highlight { padding: 1.5rem; margin: 1.5rem -0.5rem; }
+            .key-question { font-size: 1.25rem; padding: 1.5rem 1rem; }
+
             .toc-nav-inner { padding: 0 1rem; }
+
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.1rem; }
+
+            .table-wrap { margin: 1rem -0.5rem; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 0.75rem 0.5rem; }
         }
 
+        /* Responsive - small mobile */
+        @media (max-width: 480px) {
+            main { padding: 90px 1rem 2rem; }
+
+            .arch-modules { grid-template-columns: 1fr; }
+            .process-flow { grid-template-columns: 1fr; }
+
+            .toc-grid { gap: 0.4rem; }
+            .toc-item-text { font-size: 0.8rem; }
+        }
+
+        /* Print */
         @media print {
             nav, .progress-bar, .toc-nav { display: none; }
             main { padding: 0; max-width: 100%; }
-            section { scroll-margin-top: 0; }
+            section { scroll-margin-top: 0; page-break-inside: avoid; }
+            .why-block, .highlight, .arch-diagram { page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -1097,13 +1261,14 @@
         <a href="#" class="nav-logo">
             <img src="logo_drakkar_blanc.png" alt="Drakkar">
         </a>
-        <span class="nav-date">25 novembre 2025</span>
+        <span class="nav-date">27 novembre 2025</span>
     </nav>
 
     <div class="progress-bar" id="progress"></div>
 
     <!-- Sous-nav TOC sticky -->
     <div class="toc-nav" id="tocNav">
+        <button class="nav-arrow nav-arrow-left" aria-label="Scroll left">‹</button>
         <div class="toc-nav-inner">
             <a href="#ambition"><span class="nav-num">1.</span> Ambition</a>
             <a href="#forces"><span class="nav-num">2.</span> Forces</a>
@@ -1116,8 +1281,9 @@
             <a href="#proposition"><span class="nav-num">9.</span> Proposition</a>
             <a href="#apres"><span class="nav-num">10.</span> Mise en œuvre</a>
             <a href="#attentes"><span class="nav-num">11.</span> Attentes</a>
-            <a href="#next"><span class="nav-num">12.</span> Next</a>
+            <a href="#next"><span class="nav-num">12.</span> Cadrage</a>
         </div>
+        <button class="nav-arrow nav-arrow-right" aria-label="Scroll right">›</button>
     </div>
 
     <main>
@@ -1179,7 +1345,7 @@
                 </a>
                 <a href="#next" class="toc-item">
                     <span class="toc-item-num">12</span>
-                    <span class="toc-item-text">Prochaine étape</span>
+                    <span class="toc-item-text">Réunion de cadrage</span>
                 </a>
             </div>
         </div>
@@ -1191,7 +1357,7 @@
 
             <p>Après notre échange dans vos locaux, une chose est claire : vous ne cherchez pas à changer de logiciel. Vous cherchez à <strong>structurer un groupe capable de croître par acquisition, de se déployer à l'international, et de se transmettre dans les meilleures conditions</strong>.</p>
 
-            <p>Le digital n'est qu'un levier. Mais c'est un levier qui, aujourd'hui, vous bloque.</p>
+            <p>Le digital n'est qu'un levier. C'est un levier a fait votre force par le passé mais qui, aujourd'hui, vous bloque.</p>
 
             <h3>La réalité du marché</h3>
 
@@ -1203,7 +1369,7 @@
 
             <h3>Le blocage</h3>
 
-            <p>Sauf que chaque croissance externe devient un cauchemar d'intégration. En théorie, 1 + 1 devrait égaler 2, voire plus. Dans les faits, c'est dans la douleur. L'expérience CCI l'a démontré. Chaque intégration devient un projet SI de plusieurs mois. Au lieu de créer de la valeur rapidement, vous passez des mois à refaire la plomberie.</p>
+            <p>Sauf que chaque croissance externe devient un cauchemar d'intégration. En théorie, 1 + 1 devrait égaler 2, voire plus. Dans les faits, c'est dans la douleur. L'expérience CCI l'a démontré. Chaque intégration devient un projet SI de plusieurs mois / années. Au lieu de créer de la valeur rapidement, vous passez des mois à refaire la plomberie.</p>
 
             <div class="highlight">
                 <p><strong>Tant que vous n'avez pas un socle capable d'absorber rapidement une nouvelle entité, votre stratégie de croissance externe reste théorique.</strong></p>
@@ -1223,9 +1389,9 @@
 
             <p>Avant de parler de ce qui coince, il faut comprendre ce qui vous a amenés là où vous êtes — et qu'il ne faut surtout pas casser.</p>
 
-            <h3>Le positionnement 360, voire 365 avec le recyclage</h3>
+            <h3>Le positionnement 360 (voir 365° avec le recyclage)</h3>
 
-            <p>Vos clients — Chanel, LVMH, Ferrero, Samsung — ne vous choisissent pas pour le prix. Ils vous choisissent parce que vous êtes l'un des rares acteurs capables de prendre en charge l'intégralité de la chaîne : conseil en merchandising, conception, fabrication (carton, métal, plastique), installation terrain, et maintenant recyclage avec Second Life.</p>
+            <p>Vos clients internationaux, ne vous choisissent pas pour le prix. Ils vous choisissent parce que vous êtes l'un des rares acteurs capables de prendre en charge l'intégralité de la chaîne : conseil en merchandising, conception, fabrication (carton, métal, plastique), installation terrain, et maintenant recyclage avec Second Life.</p>
 
             <p>Ce positionnement est difficile à répliquer. Il suppose de maîtriser des métiers très différents — une agence de design, une imprimerie, une usine de métallerie, une force d'installation terrain — et de les faire travailler ensemble.</p>
 
@@ -1239,14 +1405,11 @@
 
             <h3>Les collections : le modèle à suivre</h3>
 
-            <p>Vous avez trouvé un équilibre subtil entre standard et sur-mesure. Vos collections — Pop, Modulo, et les autres — sont des bases standardisées qui peuvent être personnalisées pour chaque client. La structure est standard, mais le produit fini n'est quasiment jamais standard. C'est toujours personnalisé.</p>
+            <p>Vous avez trouvé un équilibre subtil entre standard et sur-mesure. Vos collections (Pop, Modulo, et les autres) sont des bases standardisées qui peuvent être personnalisées pour chaque client. La structure est standard, mais le produit fini n'est quasiment jamais standard. C'est toujours personnalisé.</p>
 
             <p>C'est ce qui vous permet d'être réactifs sans sacrifier la rentabilité. La collection la plus ancienne a 21 ans et se vend encore tous les jours.</p>
 
-            <div class="lecture">
-                <div class="lecture-label">L'idée clé</div>
-                <p>Cette logique — un socle commun avec des adaptations périphériques — devrait inspirer votre architecture SI.</p>
-            </div>
+            <p><strong>Cette logique (un socle commun avec des adaptations périphériques) devrait inspirer votre architecture SI.</strong></p>
         </section>
 
         <!-- Section 3 -->
@@ -1254,20 +1417,20 @@
             <div class="section-num">Section 3</div>
             <h2>Les causes profondes</h2>
 
-            <p>Votre force historique — un SI qui s'adapte à tout et qui ne dit jamais non — est devenue votre principale vulnérabilité. Pour comprendre comment en sortir, il faut comprendre comment vous y êtes arrivés.</p>
+            <p>Une de vos forces historiques : un SI qui s'adapte à tout et qui ne dit jamais non, est devenue votre principale vulnérabilité. Pour comprendre comment en sortir, il faut comprendre comment vous y êtes arrivés.</p>
 
             <h3>Analyse des causes racines</h3>
 
-            <p>Pour chaque symptôme que vous nous avez décrit, on a remonté le fil. Pas pour le plaisir de l'analyse — pour savoir où agir.</p>
+            <p>Pour chaque symptôme que vous nous avez décrit, on a remonté le fil. Pas pour le plaisir de l'analyse, pour savoir où agir. Évidemment, ces analyses sont théoriques et seront a challenger / ajuster avec vous.</p>
 
-            <div class="pourquoi-block">
-                <div class="pourquoi-header">
-                    <span class="pourquoi-num">#1</span>
-                    <h4 class="pourquoi-title">La croissance externe est bloquée</h4>
+            <div class="why-block">
+                <div class="why-header">
+                    <span class="why-num">#1</span>
+                    <h4 class="why-title">La croissance externe est bloquée</h4>
                 </div>
-                <div class="pourquoi-content">
-                    <div class="cause-symptom">
-                        <span class="cause-symptom-text">Chaque acquisition = projet SI de plusieurs mois</span>
+                <div class="why-content">
+                    <div class="symptom">
+                        <span class="symptom-text">Chaque acquisition = projet SI de plusieurs mois</span>
                     </div>
                     <div class="cause-chain">
                         <div>→ Parce qu'il faut refaire toute la plomberie à chaque fois</div>
@@ -1275,46 +1438,46 @@
                         <div class="indent-2">→ Parce que chaque entité a développé ses propres outils isolément</div>
                         <div class="indent-3">→ Parce que le SI ne dit jamais non depuis 15 ans</div>
                     </div>
-                    <div class="cause-root">L'entreprise a priorisé la réactivité opérationnelle sur la cohérence architecturale. Le système s'est adapté au personnel, jamais l'inverse.</div>
+                    <div class="root-cause">L'entreprise a priorisé la réactivité opérationnelle sur la cohérence architecturale. Le système s'est adapté au personnel, jamais l'inverse.</div>
                 </div>
             </div>
 
-            <div class="lecture">
-                <div class="lecture-label">Notre lecture</div>
+            <div class="insight">
+                <div class="insight-label">Notre lecture</div>
                 <p>Le succès historique de Cameleon repose sur une culture du "on va s'arranger". Cette culture, vertueuse commercialement, a généré une dette technique et organisationnelle qui atteint aujourd'hui son point de rupture. Ce qui vous a fait passer de 0 à 50M€ vous empêche de passer de 50 à 500M€.</p>
             </div>
 
-            <div class="pourquoi-block">
-                <div class="pourquoi-header">
-                    <span class="pourquoi-num">#2</span>
-                    <h4 class="pourquoi-title">Le pilotage manque de visibilité</h4>
+            <div class="why-block">
+                <div class="why-header">
+                    <span class="why-num">#2</span>
+                    <h4 class="why-title">Le pilotage manque de visibilité</h4>
                 </div>
-                <div class="pourquoi-content">
-                    <div class="cause-symptom">
-                        <span class="cause-symptom-text">Consolidation laborieuse, pas de vision temps réel</span>
+                <div class="why-content">
+                    <div class="symptom">
+                        <span class="symptom-text">Consolidation laborieuse, pas de vision temps réel</span>
                     </div>
                     <div class="cause-chain">
                         <div>→ Parce qu'il faut aller chercher dans plusieurs systèmes et tout retraiter</div>
                         <div class="indent-1">→ Parce qu'il n'y a pas de référentiel unique (client, produit, projet)</div>
                         <div class="indent-2">→ Parce que chaque BU a sa propre définition de ces concepts</div>
                     </div>
-                    <div class="cause-root">Absence de gouvernance de la donnée. Le groupe fonctionne comme 3 PME juxtaposées, pas comme une ETI intégrée.</div>
+                    <div class="root-cause">Absence de gouvernance de la donnée. Le groupe fonctionne comme 3 PME juxtaposées, pas comme une ETI intégrée.</div>
                 </div>
             </div>
 
-            <div class="lecture">
-                <div class="lecture-label">Notre lecture</div>
+            <div class="insight">
+                <div class="insight-label">Notre lecture</div>
                 <p>Le problème n'est pas technique. C'est un problème de définition partagée des concepts métier. Qu'est-ce qu'un "client" ? Un "projet" ? Une "affaire" ? Tant que ces définitions varient d'une entité à l'autre, aucun outil ne résoudra le problème.</p>
             </div>
 
-            <div class="pourquoi-block">
-                <div class="pourquoi-header">
-                    <span class="pourquoi-num">#3</span>
-                    <h4 class="pourquoi-title">Deux projets Odoo ont échoué</h4>
+            <div class="why-block">
+                <div class="why-header">
+                    <span class="why-num">#3</span>
+                    <h4 class="why-title">Deux projets Odoo ont échoué</h4>
                 </div>
-                <div class="pourquoi-content">
-                    <div class="cause-symptom">
-                        <span class="cause-symptom-text">Deux tentatives, deux échecs. Méfiance généralisée.</span>
+                <div class="why-content">
+                    <div class="symptom">
+                        <span class="symptom-text">Deux tentatives, deux échecs. Méfiance généralisée.</span>
                     </div>
                     <div class="cause-chain">
                         <div>→ Parce que les utilisateurs n'ont pas adopté l'outil</div>
@@ -1322,23 +1485,23 @@
                         <div class="indent-2">→ Parce qu'on a voulu tout faire d'un coup (Big Bang)</div>
                         <div class="indent-3">→ Parce qu'on pensait que le problème était l'outil, pas l'organisation</div>
                     </div>
-                    <div class="cause-root">Confusion entre "implémenter un ERP" et "transformer l'organisation". L'outil a été vu comme solution, pas comme levier.</div>
+                    <div class="root-cause">Confusion entre "implémenter un ERP" et "transformer l'organisation". L'outil a été vu comme solution, pas comme levier.</div>
                 </div>
             </div>
 
-            <div class="lecture">
-                <div class="lecture-label">Notre lecture</div>
-                <p>Les échecs Odoo ne sont pas des échecs d'Odoo. Ce sont des échecs de conduite du changement. Le système s'est adapté au personnel et non à l'inverse — et ce "choc" dont vous parliez n'a jamais été préparé.</p>
+            <div class="insight">
+                <div class="insight-label">Notre lecture</div>
+                <p>Les échecs Odoo ne sont pas des échecs d'Odoo. Ce sont des échecs de conduite du changement. Le système s'est adapté au personnel et non à l'inverse, et ce "choc" dont vous parliez n'a jamais été préparé. C'est pour ça que ça a échoué.</p>
             </div>
 
-            <div class="pourquoi-block">
-                <div class="pourquoi-header">
-                    <span class="pourquoi-num">#4</span>
-                    <h4 class="pourquoi-title">Le dilemme standardisation/flexibilité semble insoluble</h4>
+            <div class="why-block">
+                <div class="why-header">
+                    <span class="why-num">#4</span>
+                    <h4 class="why-title">Le dilemme standardisation/flexibilité semble insoluble</h4>
                 </div>
-                <div class="pourquoi-content">
-                    <div class="cause-symptom">
-                        <span class="cause-symptom-text">Les commerciaux font leur "tambouille", les stats sont faussées</span>
+                <div class="why-content">
+                    <div class="symptom">
+                        <span class="symptom-text">Les commerciaux font leur "tambouille", les stats sont faussées</span>
                     </div>
                     <div class="cause-chain">
                         <div>→ Parce que chaque commercial organise ses devis comme il veut</div>
@@ -1346,7 +1509,7 @@
                         <div class="indent-2">→ Parce que Cameleon travaille avec des grands comptes qui imposent leurs standards</div>
                         <div class="indent-3">→ Parce que le positionnement commercial repose sur l'hyper-adaptation</div>
                     </div>
-                    <div class="cause-root">La flexibilité commerciale EST l'avantage concurrentiel. La supprimer = perdre des clients. La question n'est pas "faut-il standardiser ?" mais "où placer le curseur ?"</div>
+                    <div class="root-cause">La flexibilité commerciale EST l'avantage concurrentiel. La supprimer = perdre des clients. La question n'est pas "faut-il standardiser ?" mais "où placer le curseur ?"</div>
                 </div>
             </div>
 
@@ -1358,19 +1521,19 @@
             </ul>
             <p>Et pourtant, PubliDécor montre qu'une standardisation forte est possible : ils ne donnent jamais le détail de leurs prix aux clients. Et ça marche.</p>
 
-            <div class="lecture">
-                <div class="lecture-label">Notre lecture</div>
+            <div class="insight">
+                <div class="insight-label">Notre lecture</div>
                 <p>Cette question — où placer le curseur — n'a jamais fait l'objet d'une décision explicite. Elle est tranchée différemment selon qui décide, quel jour, avec quel client. C'est ça le vrai problème.</p>
             </div>
 
-            <div class="pourquoi-block">
-                <div class="pourquoi-header">
-                    <span class="pourquoi-num">#5</span>
-                    <h4 class="pourquoi-title">La dette technique est critique</h4>
+            <div class="why-block">
+                <div class="why-header">
+                    <span class="why-num">#5</span>
+                    <h4 class="why-title">La dette technique est critique</h4>
                 </div>
-                <div class="pourquoi-content">
-                    <div class="cause-symptom">
-                        <span class="cause-symptom-text">Symfony 2 en production gère 6M€ d'activité</span>
+                <div class="why-content">
+                    <div class="symptom">
+                        <span class="symptom-text">Symfony 2 en production gère 6M€ d'activité</span>
                     </div>
                     <div class="cause-chain">
                         <div>→ Parce que personne n'a osé lancer la migration</div>
@@ -1378,16 +1541,85 @@
                         <div class="indent-2">→ Parce que le code est enchevêtré avec la logique métier non documentée</div>
                         <div class="indent-3">→ Parce que le développement a été fait "en pompier" pendant des années</div>
                     </div>
-                    <div class="cause-root">Absence de vision technique long terme. Le développement a toujours été piloté par l'urgence opérationnelle, pas par une roadmap architecturale.</div>
+                    <div class="root-cause">Absence de vision technique long terme. Le développement a toujours été piloté par l'urgence opérationnelle, pas par une roadmap architecturale.</div>
                 </div>
             </div>
 
-            <div class="lecture">
-                <div class="lecture-label">Notre lecture</div>
+            <div class="insight">
+                <div class="insight-label">Notre lecture</div>
                 <p>Ce n'est pas juste 6M€ qui sont exposés. Il y a des interdépendances : si ce système disparaît, vous risquez de perdre 10%, 20%, voire 30% sur d'autres activités. C'est une bombe à retardement.</p>
             </div>
 
-            <h3>Matrice d'impact</h3>
+            <h3>Cartographie systémique : les 6 domaines de friction</h3>
+
+            <p>Ces causes racines ne sont pas isolées. Elles forment un système interconnecté :</p>
+
+            <div class="system-map">
+                <div class="system-block system-strategy">
+                    <div class="system-title">STRATÉGIE D'ENTREPRISE</div>
+                    <ul>
+                        <li>Croissance externe bloquée par le SI</li>
+                        <li>Ambition internationale (Europe 2030, Monde 2040)</li>
+                        <li>Valorisation groupe compromise (due diligence)</li>
+                    </ul>
+                </div>
+                <div class="system-row">
+                    <div class="system-block">
+                        <div class="system-title">DONNÉES & RÉFÉRENTIELS</div>
+                        <ul>
+                            <li>Pas de MDM*</li>
+                            <li>Client ≠ Client</li>
+                            <li>Projet ≠ Projet</li>
+                            <li>Pas de reporting consolidé fiable</li>
+                        </ul>
+                    </div>
+                    <div class="system-block">
+                        <div class="system-title">PROCESSUS</div>
+                        <ul>
+                            <li>Hétérogénéité des devis</li>
+                            <li>BPM débranché</li>
+                            <li>1000 projets/an sans suivi</li>
+                        </ul>
+                    </div>
+                    <div class="system-block">
+                        <div class="system-title">TECHNOLOGIE</div>
+                        <ul>
+                            <li>9 outils isolés</li>
+                            <li>Symfony 2 critique</li>
+                            <li>WinDev obsolète</li>
+                            <li>VPN = mobilité KO</li>
+                            <li>Pas d'API moderne</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="system-block system-org">
+                    <div class="system-title">ORGANISATION & RH</div>
+                    <ul>
+                        <li>Expertise WinDev = dépendance à des personnes clés</li>
+                        <li>Pas de culture de documentation</li>
+                        <li>"On va s'arranger" = frein au changement</li>
+                        <li>Commerciaux = coordinateurs malgré eux</li>
+                    </ul>
+                </div>
+                <div class="system-block system-client">
+                    <div class="system-title">RELATION CLIENT</div>
+                    <ul>
+                        <li>Clients grands comptes imposent leurs standards</li>
+                        <li>Multiplication des plateformes de facturation</li>
+                        <li>Exigence de sur-mesure croissante</li>
+                        <li>Passage série → customisation de masse</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p class="footnote">*MDM = Master Data Management</p>
+
+            <div class="insight">
+                <div class="insight-label">Lecture</div>
+                <p>Chaque domaine impacte les autres. C'est pourquoi une approche "outil par outil" ne fonctionne pas.</p>
+            </div>
+
+            <h3>Matrice d'impact : Urgence vs Importance</h3>
 
             <div class="table-wrap">
                 <table>
@@ -1402,20 +1634,20 @@
                     <tbody>
                         <tr>
                             <td><strong>Symfony 2 / Field</strong></td>
-                            <td><span class="tag-critique">Critique</span></td>
+                            <td><span class="tag-critical">Critique</span></td>
                             <td>Haute</td>
                             <td>Risque technique immédiat, 6M€ exposés</td>
                         </tr>
                         <tr>
                             <td><strong>Référentiel unique</strong></td>
                             <td>Haute</td>
-                            <td><span class="tag-critique">Critique</span></td>
+                            <td><span class="tag-critical">Critique</span></td>
                             <td>Pré-requis à tout projet d'unification</td>
                         </tr>
                         <tr>
                             <td><strong>Croissance externe</strong></td>
                             <td>Moyenne</td>
-                            <td><span class="tag-critique">Critique</span></td>
+                            <td><span class="tag-critical">Critique</span></td>
                             <td>Dépend de référentiel + architecture moderne</td>
                         </tr>
                         <tr>
@@ -1452,7 +1684,7 @@
 
             <p>Lors de notre échange, Teddy a posé une question qui a provoqué un silence :</p>
 
-            <div class="question-cle">
+            <div class="key-question">
                 « À partir de quel degré de standardisation des processus vous perdez un client ? »
             </div>
 
@@ -1460,7 +1692,7 @@
 
             <p>C'est pourtant <strong>LA question structurante</strong> de tout le projet :</p>
 
-            <div class="deux-cols">
+            <div class="two-cols">
                 <div class="col-card">
                     <h4>Trop de standardisation</h4>
                     <p style="margin: 0;">→ perte de flexibilité → perte de clients</p>
@@ -1479,11 +1711,11 @@
         <!-- Section 5 -->
         <section id="invariants">
             <div class="section-num">Section 5</div>
-            <h2>Ce qui ne change pas (et c'est important)</h2>
+            <h2>Ce qui ne change pas</h2>
 
             <p>Toute transformation qui ignorerait vos fondamentaux serait vouée à l'échec.</p>
 
-            <div class="deux-cols">
+            <div class="two-cols">
                 <div class="col-card dark">
                     <h4>Ce qui ne change pas</h4>
                     <ul>
@@ -1512,67 +1744,240 @@
         <!-- Section 6 -->
         <section id="architecture">
             <div class="section-num">Section 6</div>
-            <h2>L'architecture : notre recommandation</h2>
+            <h2>L'architecture : les options et notre lecture</h2>
 
-            <h3>Trois approches possibles</h3>
+            <p>L'idée d'un "Group Manager" central que vous avez décrite est la bonne direction. Mais avant de dessiner une cible, il faut comprendre les options qui s'offrent à vous.</p>
 
-            <div class="option">
-                <div class="option-letter">A</div>
-                <div class="option-content">
-                    <h4>Tout dans un ERP</h4>
-                    <p>Un seul outil (Odoo, SAP...) qui fait tout. Votre métier est trop spécifique. Le Field Manager, les chiffrages complexes, les collections — ça ne rentre pas dans un ERP standard. C'est ce qui a échoué deux fois.</p>
+            <h3>Aujourd'hui : les outils qui ne se parlent pas</h3>
+
+            <div class="arch-diagram">
+                <div class="arch-modules" style="grid-template-columns: repeat(5, 1fr);">
+                    <div class="arch-module">
+                        <div class="arch-module-name">Cameleon Manager</div>
+                        <div class="arch-module-status">WinDev</div>
+                    </div>
+                    <div class="arch-module">
+                        <div class="arch-module-name">Field Manager</div>
+                        <div class="arch-module-status">Symfony 2</div>
+                    </div>
+                    <div class="arch-module">
+                        <div class="arch-module-name">Odoo (CCI)</div>
+                        <div class="arch-module-status">partiel</div>
+                    </div>
+                    <div class="arch-module">
+                        <div class="arch-module-name">Publi Manager</div>
+                        <div class="arch-module-status">PubliDécor</div>
+                    </div>
+                    <div class="arch-module">
+                        <div class="arch-module-name">Sage</div>
+                        <div class="arch-module-status">compta</div>
+                    </div>
                 </div>
-                <span class="option-verdict verdict-non">Non</span>
+                <div style="text-align: center; padding: 1rem 0; font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--gris-500);">
+                    ↓ Excel + emails (synchro manuelle) ↓
+                </div>
             </div>
 
-            <div class="option">
-                <div class="option-letter">B</div>
-                <div class="option-content">
-                    <h4>Data Warehouse seul</h4>
-                    <p>On connecte tout à un cerveau central pour piloter. Ça donne la visibilité, mais ça ne refait pas le Field Manager, ça ne crée pas de référentiel unique, ça ne simplifie pas les acquisitions.</p>
-                </div>
-                <span class="option-verdict verdict-partiel">Insuffisant</span>
+            <p><strong>Plus</strong> : Store Manager, Dynamax (ancien CCI), Rhinoceros/Solidworks (design), etc.</p>
+
+            <p><strong>Le problème</strong> : Chaque outil vit sa vie. Pour consolider, il faut tout ressaisir dans Excel. Pour intégrer une acquisition, il faut des mois de plomberie.</p>
+
+            <h3>Les grandes options d'architecture</h3>
+
+            <p>Face à votre situation, il existe fondamentalement <strong>trois approches</strong> :</p>
+
+            <h4>Option A : Tout refaire dans un ERP unique</h4>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Principe</th><th>Avantages</th><th>Inconvénients</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Un seul outil (Odoo, SAP, Dynamics...) qui fait tout</td>
+                            <td>Une seule base, un seul éditeur, formation homogène</td>
+                            <td>Rigidité (l'ERP impose ses process), coût de personnalisation explosif, projets de 18-36 mois, Big Bang risqué</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class="option reco">
-                <div class="option-letter">C</div>
-                <div class="option-content">
-                    <h4>Tronc commun + outils métiers + système nerveux</h4>
-                    <p>Un socle central (commerce, référentiel) + des outils métiers spécialisés + un DWH pour piloter. C'est votre modèle collections appliqué au SI : structure standard, habillage personnalisé.</p>
-                </div>
-                <span class="option-verdict verdict-oui">Recommandé</span>
+            <p><strong>Notre avis</strong> : C'est l'approche classique des intégrateurs. Elle fonctionne pour des entreprises aux processus standards. <strong>Pas pour Cameleon</strong> : votre métier est trop spécifique (Field Manager, chiffrages complexes, collections). Forcer tout dans un ERP standard = dénaturer ce qui fait votre force.</p>
+
+            <div class="insight">
+                <div class="insight-label">Pourquoi on peut en parler</div>
+                <p>On implémente Odoo depuis des années. On connaît ses forces, et ses limites. On a vu des projets "tout ERP" réussir (process standards) et d'autres échouer (métiers spécifiques). On sait reconnaître quand cette approche est adaptée. Pour vous, elle ne l'est pas.</p>
+            </div>
+
+            <h4>Option B : Garder l'existant et ajouter une couche d'intelligence</h4>
+
+            <p>Cette option a deux variantes :</p>
+
+            <p><strong>B1 : Connecteurs point-à-point (à éviter)</strong></p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Principe</th><th>Avantages</th><th>Inconvénients</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>On crée des connecteurs entre chaque outil (Cameleon Manager ↔ Field Manager ↔ Odoo...)</td>
+                            <td>Rapide à mettre en place</td>
+                            <td>Complexité exponentielle (N outils = N² connexions), maintenance cauchemardesque, pas de vision consolidée</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>C'est la tentation du "on fait communiquer ce qui existe". Ça crée un plat de spaghettis impossible à maintenir.</p>
+
+            <div class="insight">
+                <div class="insight-label">Pourquoi on peut en parler</div>
+                <p>On fait de l'intégration de systèmes au quotidien. On a hérité de projets où des équipes précédentes avaient multiplié les connecteurs point-à-point. On sait ce que ça coûte à maintenir, et pourquoi ça finit toujours par casser.</p>
+            </div>
+
+            <p><strong>B2 : Data Warehouse / cerveau central (pertinent pour le pilotage)</strong></p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Principe</th><th>Avantages</th><th>Inconvénients</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tous les outils déversent leurs données dans un entrepôt central. L'intelligence est dans le DWH, pas dans les outils.</td>
+                            <td>Pilotage temps réel sans toucher aux outils, setup rapide, pas de changement pour les utilisateurs</td>
+                            <td>Ne crée pas de référentiel unique (chaque outil garde sa propre vérité), ne résout pas les problèmes d'outils obsolètes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Notre avis sur B2</strong> : C'est une vraie option, et c'est peut-être un quick win pour Cameleon. Nicolas peut avoir son pilotage consolidé en quelques mois, sans perturber personne.</p>
+
+            <p><strong>Mais attention</strong> : le Data Warehouse ne résout pas tout. Il consolide ce qui existe — il ne le transforme pas.</p>
+
+            <ul>
+                <li>Il ne refait pas le Field Manager (Symfony 2 reste une bombe à retardement)</li>
+                <li>Il ne crée pas de référentiel client unique (chaque outil garde sa définition de "client")</li>
+                <li>Il ne simplifie pas l'intégration des acquisitions (il faudra toujours connecter chaque nouvel outil)</li>
+            </ul>
+
+            <div class="insight">
+                <div class="insight-label">Pourquoi on peut en parler</div>
+                <p>On construit ce type de "cerveau central" pour nos clients (des solutions qui se connectent à tous les outils existants (ERP, CRM, compta, emails...)) et donnent une vision unifiée en temps réel. On sait ce que ça peut faire, et surtout ce que ça ne peut pas faire.</p>
+            </div>
+
+            <p><strong>Pour Cameleon, B2 seul ne suffit pas.</strong> Mais B2 + Option C = la combinaison gagnante.</p>
+
+            <h4>Option C : Tronc commun + outils métiers spécialisés + Data Warehouse</h4>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Principe</th><th>Avantages</th><th>Inconvénients</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Un socle central (référentiel, commerce, finance) + des outils métiers spécialisés + un Data Warehouse pour le pilotage</td>
+                            <td>Le meilleur des mondes : cohérence groupe, spécificités métier préservées, pilotage temps réel</td>
+                            <td>Nécessite une vraie réflexion d'architecture, des compétences hybrides (ERP + dev + data)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight rouge">
+                <p><strong>C'est la combinaison B2 + C</strong> : le Data Warehouse donne le pilotage immédiat (quick win), pendant que le tronc commun se construit progressivement.</p>
+            </div>
+
+            <p><strong>Notre avis</strong> : C'est l'approche qui correspond à votre ADN — exactement comme vos collections (structure standard, habillage personnalisé). C'est plus complexe à concevoir, mais c'est la seule qui tienne la route à long terme.</p>
+
+            <p>Le Data Warehouse devient le "système nerveux" qui :</p>
+            <ul>
+                <li>Connecte tout (ancien ET nouveau) dès le départ</li>
+                <li>Permet à Nicolas de piloter en temps réel sans attendre</li>
+                <li>Sert de filet de sécurité pendant la transition (on peut toujours comparer ancien vs nouveau)</li>
+                <li>Reste pertinent après la transformation (pilotage groupe, traçabilité, prédictif)</li>
+            </ul>
+
+            <div class="insight">
+                <div class="insight-label">Pourquoi Drakkar peut l'exécuter</div>
+                <p>voir section suivante.</p>
+            </div>
+
+            <h3>Ce qu'on sait et ce qu'on doit valider ensemble</h3>
+
+            <p><strong>Ce qu'on sait :</strong></p>
+            <ul>
+                <li>La direction semble claire (Option C)</li>
+                <li>Le Field Manager (Symfony 2) est une urgence technique, à traiter indépendamment du reste</li>
+                <li>Il faut un système nerveux pour piloter en temps réel</li>
+            </ul>
+
+            <p><strong>Ce qu'on doit valider en conception :</strong></p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Pourquoi c'est important</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Odoo ou autre chose pour le Group Manager ?</strong></td>
+                            <td>Odoo est une piste sérieuse, mais vos devis complexes et votre "tambouille commerciale" rentrent-ils dedans ? On doit voir vos cas réels.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Les outils existants sont-ils connectables ?</strong></td>
+                            <td>S'ils exposent des APIs, on peut construire le système nerveux rapidement. Sinon, c'est un chantier en soi.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Portails clients / sous-traitants ?</strong></td>
+                            <td>Chanel/LVMH ont-ils besoin de suivre leurs projets en ligne ? Vos 600 sous-traitants Field ont-ils besoin d'un portail dédié ?</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Quelle stratégie de bascule ?</strong></td>
+                            <td>Ça dépend de vos contraintes (périodes creuses, interdépendances, tolérance au risque).</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <h3>L'option C en image</h3>
 
-            <div class="archi-diagram">
-                <div class="archi-top">
+            <div class="arch-diagram">
+                <div class="arch-header">
                     <h4>GROUP MANAGER</h4>
                     <p>Référentiel unique • Cycle commercial • Pilotage groupe</p>
                 </div>
-                <div class="archi-connector">
-                    <div class="archi-connector-line"></div>
+                <div class="arch-connector">
+                    <div class="arch-connector-line"></div>
                 </div>
-                <div class="archi-modules">
-                    <div class="archi-mod">
-                        <div class="archi-mod-name">Think Manager</div>
-                        <div class="archi-mod-status">existant</div>
+                <div class="arch-modules">
+                    <div class="arch-module">
+                        <div class="arch-module-name">Think Manager</div>
+                        <div class="arch-module-status">existant</div>
                     </div>
-                    <div class="archi-mod">
-                        <div class="archi-mod-name">Factory Manager</div>
-                        <div class="archi-mod-status">existant</div>
+                    <div class="arch-module">
+                        <div class="arch-module-name">Factory Manager</div>
+                        <div class="arch-module-status">existant</div>
                     </div>
-                    <div class="archi-mod refonte">
-                        <div class="archi-mod-name">Field Manager</div>
-                        <div class="archi-mod-status">à refondre</div>
+                    <div class="arch-module refonte">
+                        <div class="arch-module-name">Field Manager</div>
+                        <div class="arch-module-status">à refondre</div>
                     </div>
-                    <div class="archi-mod">
-                        <div class="archi-mod-name">Print & Metal</div>
-                        <div class="archi-mod-status">existant</div>
+                    <div class="arch-module">
+                        <div class="arch-module-name">Print & Metal</div>
+                        <div class="arch-module-status">existant</div>
                     </div>
-                    <div class="archi-mod nerveux">
-                        <div class="archi-mod-name">Système Nerveux</div>
-                        <div class="archi-mod-status">consolide</div>
+                    <div class="arch-module nervous">
+                        <div class="arch-module-name">Système Nerveux</div>
+                        <div class="arch-module-status">consolide</div>
                     </div>
                 </div>
             </div>
@@ -1587,8 +1992,8 @@
 
             <p>Vos devis hyper-complexes avec des règles métier évolutives ? On ne sait pas encore si Odoo peut les gérer. <strong>C'est pourquoi on propose de le valider en conception.</strong></p>
 
-            <div class="lecture">
-                <div class="lecture-label">Notre engagement</div>
+            <div class="insight">
+                <div class="insight-label">Notre engagement</div>
                 <p>Si on découvre qu'Odoo n'est pas adapté, on vous le dira — et on construira autrement. On n'est pas là pour vendre Odoo. On est là pour trouver ce qui marche.</p>
             </div>
 
@@ -1642,7 +2047,7 @@
                         <tr>
                             <td><strong>IA</strong></td>
                             <td>Data, automatisation, pilotage</td>
-                            <td>Système nerveux, consolidation</td>
+                            <td>Système Nerveux, consolidation</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1661,7 +2066,7 @@
             <p>Pour résoudre le dilemme standardisation/flexibilité, on propose de définir ensemble une matrice :</p>
 
             <div class="zones-grid">
-                <div class="zone rouge-zone">
+                <div class="zone red-zone">
                     <div class="zone-label">Rouge</div>
                     <div class="zone-desc">Aucune liberté</div>
                     <div class="zone-ex">Référentiel client, facturation, données consolidées</div>
@@ -1671,7 +2076,7 @@
                     <div class="zone-desc">Liberté encadrée</div>
                     <div class="zone-ex">Construction devis, manipulation prix (tracée)</div>
                 </div>
-                <div class="zone vert-zone">
+                <div class="zone green-zone">
                     <div class="zone-label">Verte</div>
                     <div class="zone-desc">Liberté totale</div>
                     <div class="zone-ex">Présentation commerciale, argumentation</div>
@@ -1684,8 +2089,8 @@
 
             <p>C'est exactement comme vos collections : un socle commun + des adaptations.</p>
 
-            <div class="lecture">
-                <div class="lecture-label">Important</div>
+            <div class="insight">
+                <div class="insight-label">Important</div>
                 <p>Cette matrice sera définie avec vous — pas par nous.</p>
             </div>
         </section>
@@ -1697,13 +2102,13 @@
 
             <p>On ne peut pas tout faire en séquentiel. Le commerce est le cœur du sujet, mais l'urgence technique (Field Manager, outils legacy) ne peut pas attendre.</p>
 
-            <p><strong>On propose deux volets qui avancent en parallèle :</strong></p>
+            <p><strong>On propose deux tracks qui avancent en parallèle :</strong></p>
 
-            <div class="volets">
-                <div class="volet">
-                    <div class="volet-label">Volet 1</div>
+            <div class="tracks">
+                <div class="track">
+                    <div class="track-label">Volet 1</div>
                     <h4>Commerce</h4>
-                    <div class="volet-team">Drakkar Accélérateur</div>
+                    <div class="track-team">Drakkar Accélérateur</div>
                     <ul>
                         <li>Cycle commercial</li>
                         <li>Modèle de données</li>
@@ -1711,10 +2116,10 @@
                         <li>Matrice ROUGE/ORANGE/VERT</li>
                     </ul>
                 </div>
-                <div class="volet">
-                    <div class="volet-label">Volet 2</div>
+                <div class="track">
+                    <div class="track-label">Volet 2</div>
                     <h4>Audit technique</h4>
-                    <div class="volet-team">Drakkar Studio</div>
+                    <div class="track-team">Drakkar Studio</div>
                     <ul>
                         <li>État des outils existants</li>
                         <li>Connectabilité (APIs, bases)</li>
@@ -1798,17 +2203,6 @@
                 <li>Évaluation de connectabilité (système nerveux faisable rapidement ou pas)</li>
                 <li>Recommandation stack et planning pour Field Manager v2</li>
             </ul>
-
-            <h3>Ce qu'on attend avant de chiffrer</h3>
-
-            <div class="checklist">
-                <ul>
-                    <li>Réponses aux questions listées dans cette note</li>
-                    <li>Accès à 2-3 exemples de devis (simple, complexe, cas limite)</li>
-                    <li>1h avec la personne qui maintient le Field Manager</li>
-                    <li>Liste des outils avec qui les utilise / qui les maintient</li>
-                </ul>
-            </div>
 
             <h3>À l'issue de la conception</h3>
 
@@ -1898,6 +2292,25 @@
                 </table>
             </div>
 
+            <h3>M&A Ready : le fil rouge, pas une vague</h3>
+
+            <p>On a posé dès le départ que l'enjeu c'est la croissance externe. Pourtant, on ne peut pas vous promettre aujourd'hui une "vague M&A Ready" bien ficelée. <strong>On ne sait pas encore ce qu'il faut construire pour que vous puissiez intégrer une acquisition en semaines.</strong></p>
+
+            <p><strong>Ce qu'on sait :</strong></p>
+            <ul>
+                <li>Aujourd'hui, chaque acquisition = projet SI de plusieurs mois</li>
+                <li>L'objectif = réduire ça drastiquement</li>
+            </ul>
+
+            <p><strong>Ce qu'on doit définir ensemble :</strong></p>
+            <ul>
+                <li>Les vrais points de friction lors d'une intégration</li>
+                <li>Ce qui doit être "prêt" côté Cameleon pour absorber une nouvelle entité</li>
+                <li>La cible réaliste : 2 semaines ? 2 mois ?</li>
+            </ul>
+
+            <p><strong>C'est l'objet de notre réunion de cadrage.</strong></p>
+
             <h3>Les vagues : une hypothèse de travail</h3>
 
             <div class="table-wrap">
@@ -1906,26 +2319,32 @@
                         <tr>
                             <th>Vague</th>
                             <th>Périmètre</th>
+                            <th>Contribution M&A</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>1 — Commerce</strong></td>
+                            <td><strong>1. Commerce</strong></td>
                             <td>Group Manager MVP, workflow devis → commande, référentiel client unifié</td>
+                            <td><em>À définir</em></td>
                         </tr>
                         <tr>
-                            <td><strong>2 — Pilotage</strong></td>
-                            <td>Système nerveux connecté, dashboards groupe, traçabilité chiffré vs vendu</td>
+                            <td><strong>2. Pilotage</strong></td>
+                            <td>Système nerveux connecté, dashboards groupe, traçabilité</td>
+                            <td><em>À définir</em></td>
                         </tr>
                         <tr>
-                            <td><strong>3 — À définir</strong></td>
-                            <td>En conception selon vos priorités</td>
+                            <td><strong>3. ?</strong></td>
+                            <td><em>À définir en conception</em></td>
+                            <td><em>À définir</em></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <p><strong>+ En parallèle : Field Manager v2</strong> — chantier séparé, piloté par Drakkar Studio.</p>
+            <p><strong>+ En parallèle : Field Manager v2</strong> = chantier séparé, piloté par Drakkar Studio.</p>
+
+            <p>Le séquencement final sortira de la conception.</p>
         </section>
 
         <!-- Section 11 -->
@@ -1935,7 +2354,7 @@
 
             <p>La transformation, c'est 50% nous, 50% vous.</p>
 
-            <div class="engagements">
+            <div class="commitments">
                 <ul>
                     <li><strong>Sponsor direction visible</strong> — Nicolas présent aux moments clés, qui tranche quand il faut trancher</li>
                     <li><strong>Disponibilité des personnes clés</strong> — les commerciaux, chefs de projet, Alexandre — pas 5 minutes entre deux réunions, du vrai temps</li>
@@ -1949,28 +2368,105 @@
         <!-- Section 12 -->
         <section id="next">
             <div class="section-num">Section 12</div>
-            <h2>Prochaine étape</h2>
+            <h2>Prochaine étape : Réunion de cadrage</h2>
 
-            <p>Cette note est notre compréhension de vos enjeux après notre rencontre.</p>
+            <p>Cette note est notre compréhension de vos enjeux après notre rencontre. Si cette lecture vous parle, passons à l'étape suivante.</p>
 
-            <p><strong>Si cette lecture vous parle</strong>, proposons un point pour :</p>
+            <div class="highlight">
+                <p><strong>Objectif :</strong> Aligner sur le scope, valider l'approche, décider Go/No-Go sur la conception</p>
+                <p><strong>Participants :</strong> Nicolas, Alexandre, Drakkar</p>
+                <p><strong>Durée :</strong> 1h30</p>
+            </div>
 
+            <h3>Notre méthode pour cette réunion</h3>
+
+            <p>On ne vient pas avec un PowerPoint de 50 slides. On vient avec :</p>
             <ul>
-                <li>Valider le périmètre des deux volets (commerce + audit technique)</li>
-                <li>Cadrer précisément le budget et le planning</li>
-                <li>Identifier les personnes à mobiliser de votre côté</li>
+                <li>Notre lecture de vos enjeux (cette note)</li>
+                <li>Des questions précises</li>
+                <li>De quoi décider à la fin</li>
             </ul>
 
-            <p>On ne vous demande pas de signer un projet de 18 mois. On vous propose quelques semaines pour <strong>décider ensemble</strong> si ça a du sens — et si oui, par quoi commencer.</p>
+            <p><strong>Ce qu'on attend de vous :</strong></p>
+            <ul>
+                <li>Des réponses franches, pas la version "officielle"</li>
+                <li>Des exemples concrets (un devis qui a posé problème, une intégration qui a merdé)</li>
+                <li>Vos vraies inquiétudes</li>
+            </ul>
 
-            <div class="question-cle">
-                La seule chose qu'on ne peut pas se permettre, c'est de se planter. On est d'accord là-dessus.
+            <p><strong>Ce qu'on fait ensemble :</strong></p>
+            <ul>
+                <li>On valide ou on corrige notre diagnostic</li>
+                <li>On arbitre les priorités</li>
+                <li>On cale le périmètre conception</li>
+                <li>On décide : Go, No-Go, ou ajustements</li>
+            </ul>
+
+            <h3>Déroulé</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Temps</th>
+                            <th>Sujet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>15 min</td>
+                            <td><strong>Diagnostic</strong> : Voyons-nous la situation pareil ?</td>
+                        </tr>
+                        <tr>
+                            <td>25 min</td>
+                            <td><strong>Enjeux commerce</strong> : Questions clés</td>
+                        </tr>
+                        <tr>
+                            <td>25 min</td>
+                            <td><strong>Enjeux techniques & M&A</strong> : Questions clés</td>
+                        </tr>
+                        <tr>
+                            <td>15 min</td>
+                            <td><strong>Cadrage conception</strong> : Scope, planning, budget</td>
+                        </tr>
+                        <tr>
+                            <td>10 min</td>
+                            <td><strong>Décision</strong> : Go / No-Go</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
+            <h3>Exemples questions clés : commerce</h3>
+            <ul>
+                <li>Combien de devis/mois ? Quelle répartition simple vs complexe ?</li>
+                <li>PubliDécor impose ses prix sans détail, pourquoi ça passe là et pas ailleurs ?</li>
+                <li>Les échecs Odoo : problème d'outil, de méthode, ou de personnes ?</li>
+                <li>Qui sont les 2-3 commerciaux à embarquer dès le départ ?</li>
+            </ul>
+
+            <h3>Questions clés : technique & M&A</h3>
+            <ul>
+                <li>Field Manager : qui maintient aujourd'hui ? Y a un plan B si ça tombe ?</li>
+                <li>Lors de l'intégration CCI, qu'est-ce qui a vraiment pris du temps ?</li>
+                <li>Profil des cibles d'acquisition : PME locales ou ETI structurées ?</li>
+                <li>Accès code et bases : c'est faisable rapidement ?</li>
+            </ul>
+
+            <h3>À l'issue de cette réunion</h3>
+            <ul>
+                <li>Périmètre conception verrouillé</li>
+                <li>Planning de démarrage calé</li>
+                <li>Interlocuteurs identifiés côté Cameleon</li>
+                <li>Décision Go / No-Go</li>
+            </ul>
+
+            <p>On ne vous demande pas de signer un projet de 18 mois. On vous propose quelques semaines pour <strong>décider ensemble</strong> si ça a du sens et, si oui, par quoi commencer.</p>
 
             <div class="signature">
                 <div class="signature-content">
-                    <div class="signature-names">Nathan Ménard, Teddy Thierry</div>
-                    <div class="signature-date">25 novembre 2025</div>
+                    <div class="signature-names">Nathan Menard, Teddy Thierry</div>
+                    <div class="signature-date">27 novembre 2025</div>
                 </div>
                 <div class="signature-logo">
                     <img src="logo_drakkar_noir.png" alt="Drakkar">
@@ -1982,8 +2478,11 @@
     <script>
         const tocBlock = document.getElementById('tocBlock');
         const tocNav = document.getElementById('tocNav');
+        const tocNavInner = document.querySelector('.toc-nav-inner');
         const sections = document.querySelectorAll('section[id]');
         const tocNavLinks = document.querySelectorAll('.toc-nav a');
+        const navArrowLeft = document.querySelector('.nav-arrow-left');
+        const navArrowRight = document.querySelector('.nav-arrow-right');
 
         // Show/hide sticky TOC nav based on scroll
         function handleScroll() {
@@ -1997,6 +2496,7 @@
 
             // Update active section in nav
             let currentSection = '';
+            let activeLink = null;
             sections.forEach(section => {
                 const sectionTop = section.getBoundingClientRect().top;
                 if (sectionTop < 160) {
@@ -2008,8 +2508,26 @@
                 link.classList.remove('active');
                 if (link.getAttribute('href') === '#' + currentSection) {
                     link.classList.add('active');
+                    activeLink = link;
                 }
             });
+
+            // Auto-scroll the nav to show active item
+            if (activeLink && tocNav.classList.contains('visible')) {
+                const linkRect = activeLink.getBoundingClientRect();
+                const navRect = tocNavInner.getBoundingClientRect();
+                const scrollLeft = tocNavInner.scrollLeft;
+                const linkCenter = linkRect.left + linkRect.width / 2;
+                const navCenter = navRect.left + navRect.width / 2;
+
+                tocNavInner.scrollTo({
+                    left: scrollLeft + (linkCenter - navCenter),
+                    behavior: 'smooth'
+                });
+            }
+
+            // Update arrow visibility
+            updateArrows();
 
             // Progress bar
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -2018,6 +2536,29 @@
             document.getElementById('progress').style.width = scrolled + '%';
         }
 
+        // Update arrow visibility based on scroll position
+        function updateArrows() {
+            if (!navArrowLeft || !navArrowRight) return;
+            const canScrollLeft = tocNavInner.scrollLeft > 10;
+            const canScrollRight = tocNavInner.scrollLeft < tocNavInner.scrollWidth - tocNavInner.clientWidth - 10;
+
+            navArrowLeft.style.opacity = canScrollLeft ? '1' : '0.3';
+            navArrowRight.style.opacity = canScrollRight ? '1' : '0.3';
+        }
+
+        // Arrow click handlers
+        if (navArrowLeft) {
+            navArrowLeft.addEventListener('click', () => {
+                tocNavInner.scrollBy({ left: -200, behavior: 'smooth' });
+            });
+        }
+        if (navArrowRight) {
+            navArrowRight.addEventListener('click', () => {
+                tocNavInner.scrollBy({ left: 200, behavior: 'smooth' });
+            });
+        }
+
+        tocNavInner.addEventListener('scroll', updateArrows);
         window.addEventListener('scroll', handleScroll);
         handleScroll();
     </script>
