@@ -82,7 +82,7 @@
         }
 
         .nav-logo img {
-            height: 26px;
+            height: 22px;
             width: auto;
             display: block;
         }
@@ -96,7 +96,7 @@
         }
 
         .nav-logo .logo-cameleon {
-            height: 38px !important;
+            height: 32px !important;
             width: auto;
             filter: brightness(0) invert(1);
         }
@@ -2701,12 +2701,27 @@
             // Update active section in nav
             let currentSection = '';
             let activeLink = null;
+            const targetPos = window.innerHeight * 0.3; // 30% from top
+
             sections.forEach(section => {
                 const sectionTop = section.getBoundingClientRect().top;
-                if (sectionTop < 160) {
+                const sectionBottom = section.getBoundingClientRect().bottom;
+
+                // Section is active if it occupies the target position
+                if (sectionTop <= targetPos && sectionBottom > targetPos) {
                     currentSection = section.getAttribute('id');
                 }
             });
+
+            // Fallback: if no section found, pick the one closest to top
+            if (!currentSection) {
+                sections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    if (sectionTop < 200) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+            }
 
             tocNavLinks.forEach(link => {
                 link.classList.remove('active');
