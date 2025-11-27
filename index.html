@@ -789,28 +789,6 @@
             position: relative;
         }
 
-        .scroll-fade {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-            pointer-events: none;
-            opacity: 0;
-        }
-        .scroll-fade.left {
-            left: 0;
-            background: linear-gradient(to left, transparent, rgba(255,255,255,0.95));
-        }
-        .scroll-fade.right {
-            right: 0;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.95));
-        }
-        .scroll-fade.visible { opacity: 1; }
-
-        @media (min-width: 1025px) {
-            .scroll-fade { display: none; }
-        }
-
         .arch-header {
             background: var(--noir);
             padding: 1.75rem 2rem;
@@ -2764,30 +2742,6 @@
         tocNavInner.addEventListener('scroll', updateArrows);
         window.addEventListener('scroll', handleScroll);
         handleScroll();
-
-        // Scroll fade indicators
-        document.querySelectorAll('.arch-diagram, .table-wrap').forEach(el => {
-            const leftFade = document.createElement('div');
-            const rightFade = document.createElement('div');
-            leftFade.className = 'scroll-fade left';
-            rightFade.className = 'scroll-fade right';
-            el.appendChild(leftFade);
-            el.appendChild(rightFade);
-
-            function update() {
-                const max = el.scrollWidth - el.clientWidth;
-                if (max < 10) {
-                    leftFade.classList.remove('visible');
-                    rightFade.classList.remove('visible');
-                    return;
-                }
-                leftFade.classList.toggle('visible', el.scrollLeft > 5);
-                rightFade.classList.toggle('visible', el.scrollLeft < max - 5);
-            }
-
-            el.addEventListener('scroll', update);
-            setTimeout(update, 200);
-        });
     </script>
 </body>
 </html>
