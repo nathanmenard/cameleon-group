@@ -868,7 +868,6 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 0.75rem;
-            min-width: 500px;
         }
 
         .arch-module {
@@ -1382,7 +1381,7 @@
         @media (max-width: 480px) {
             main { padding: 90px 1rem 2rem; }
 
-            .arch-modules { grid-template-columns: 1fr; }
+            .arch-modules { grid-template-columns: repeat(2, 1fr); }
             .process-flow { grid-template-columns: 1fr; }
 
             .toc-grid { gap: 0.4rem; }
