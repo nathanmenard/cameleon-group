@@ -2782,27 +2782,31 @@
                 el.appendChild(rightHint);
 
                 function updateHints() {
-                    const scrollLeft = el.scrollLeft;
-                    const maxScroll = el.scrollWidth - el.clientWidth;
+                    const scrollLeft = Math.round(el.scrollLeft);
+                    const scrollWidth = el.scrollWidth;
+                    const clientWidth = el.clientWidth;
+                    const maxScroll = scrollWidth - clientWidth;
 
-                    // Show right arrow if can scroll right
-                    if (maxScroll > 10 && scrollLeft < maxScroll - 10) {
-                        rightHint.classList.add('visible');
-                    } else {
-                        rightHint.classList.remove('visible');
-                    }
-
-                    // Show left arrow if scrolled right
-                    if (scrollLeft > 10) {
-                        leftHint.classList.add('visible');
-                    } else {
+                    // No scroll needed
+                    if (maxScroll <= 5) {
                         leftHint.classList.remove('visible');
+                        rightHint.classList.remove('visible');
+                        return;
                     }
+
+                    // Left arrow: show if not at start
+                    leftHint.classList.toggle('visible', scrollLeft > 5);
+
+                    // Right arrow: show if not at end
+                    rightHint.classList.toggle('visible', scrollLeft < maxScroll - 5);
                 }
 
                 el.addEventListener('scroll', updateHints);
                 window.addEventListener('resize', updateHints);
-                updateHints();
+
+                // Delay initial check for layout
+                setTimeout(updateHints, 100);
+                setTimeout(updateHints, 500);
             });
         }
 
