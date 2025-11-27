@@ -789,26 +789,22 @@
             position: relative;
         }
 
-        .scroll-hint {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--gris-200);
-            color: var(--gris-500);
-            padding: 0.4rem 0.5rem;
-            border-radius: 50%;
-            font-size: 0.75rem;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s;
-            z-index: 10;
-        }
-        .scroll-hint.left { left: 6px; }
-        .scroll-hint.right { right: 6px; }
-        .scroll-hint.visible { opacity: 0.9; }
-
-        @media (min-width: 1025px) {
-            .scroll-hint { display: none !important; }
+        @media (max-width: 1024px) {
+            .arch-diagram,
+            .table-wrap {
+                -webkit-overflow-scrolling: touch;
+            }
+            .arch-diagram::after,
+            .table-wrap::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 30px;
+                background: linear-gradient(to right, transparent, rgba(255,255,255,0.9));
+                pointer-events: none;
+            }
         }
 
         .arch-header {
@@ -2764,53 +2760,6 @@
         tocNavInner.addEventListener('scroll', updateArrows);
         window.addEventListener('scroll', handleScroll);
         handleScroll();
-
-        // Scroll hints for horizontally scrollable elements
-        function setupScrollHints() {
-            const scrollables = document.querySelectorAll('.arch-diagram, .table-wrap');
-
-            scrollables.forEach(el => {
-                const leftHint = document.createElement('span');
-                leftHint.className = 'scroll-hint left';
-                leftHint.textContent = '←';
-
-                const rightHint = document.createElement('span');
-                rightHint.className = 'scroll-hint right';
-                rightHint.textContent = '→';
-
-                el.appendChild(leftHint);
-                el.appendChild(rightHint);
-
-                function updateHints() {
-                    const scrollLeft = Math.round(el.scrollLeft);
-                    const scrollWidth = el.scrollWidth;
-                    const clientWidth = el.clientWidth;
-                    const maxScroll = scrollWidth - clientWidth;
-
-                    // No scroll needed
-                    if (maxScroll <= 5) {
-                        leftHint.classList.remove('visible');
-                        rightHint.classList.remove('visible');
-                        return;
-                    }
-
-                    // Left arrow: show if not at start
-                    leftHint.classList.toggle('visible', scrollLeft > 5);
-
-                    // Right arrow: show if not at end
-                    rightHint.classList.toggle('visible', scrollLeft < maxScroll - 5);
-                }
-
-                el.addEventListener('scroll', updateHints);
-                window.addEventListener('resize', updateHints);
-
-                // Delay initial check for layout
-                setTimeout(updateHints, 100);
-                setTimeout(updateHints, 500);
-            });
-        }
-
-        setupScrollHints();
     </script>
 </body>
 </html>
