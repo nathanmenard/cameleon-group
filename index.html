@@ -2756,12 +2756,20 @@
         window.addEventListener('scroll', handleScroll);
         handleScroll();
 
-        // Hint texte pour éléments scrollables
+        // Hint texte pour éléments scrollables (seulement si overflow)
         document.querySelectorAll('.arch-diagram, .table-wrap').forEach(el => {
             const hint = document.createElement('div');
             hint.className = 'scroll-hint-text';
             hint.textContent = '← Glissez pour voir plus →';
             el.after(hint);
+
+            function checkOverflow() {
+                const hasOverflow = el.scrollWidth > el.clientWidth + 10;
+                hint.style.display = hasOverflow ? '' : 'none';
+            }
+
+            checkOverflow();
+            window.addEventListener('resize', checkOverflow);
         });
     </script>
 </body>
