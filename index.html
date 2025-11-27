@@ -789,6 +789,19 @@
             position: relative;
         }
 
+        .scroll-hint-text {
+            display: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            color: var(--gris-400);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .scroll-hint-text { display: block; }
+        }
+
         .arch-header {
             background: var(--noir);
             padding: 1.75rem 2rem;
@@ -2742,6 +2755,14 @@
         tocNavInner.addEventListener('scroll', updateArrows);
         window.addEventListener('scroll', handleScroll);
         handleScroll();
+
+        // Hint texte pour éléments scrollables
+        document.querySelectorAll('.arch-diagram, .table-wrap').forEach(el => {
+            const hint = document.createElement('div');
+            hint.className = 'scroll-hint-text';
+            hint.textContent = '← Glissez pour voir plus →';
+            el.after(hint);
+        });
     </script>
 </body>
 </html>
