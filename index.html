@@ -1233,23 +1233,22 @@
             gap: 0.3rem;
         }
 
-        .author-contact a {
+        .author-contact a:not(.author-note) {
             color: var(--rouge);
             text-decoration: none;
             font-weight: 500;
         }
 
-        .author-contact a:hover {
+        .author-contact a:not(.author-note):hover {
             text-decoration: underline;
         }
 
         .author-note {
-            display: block;
+            display: inline;
             font-size: 0.65rem;
             color: var(--gris-400);
             font-style: italic;
             text-decoration: none;
-            margin-top: 0;
             font-weight: 400;
         }
 
