@@ -1,0 +1,5 @@
+litestar[standard]==2.16.1
+piccolo[postgres]==1.27.0
+pydantic==2.11.3
+uvicorn==0.34.2
+python-dotenv==1.1.0

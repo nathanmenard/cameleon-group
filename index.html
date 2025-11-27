@@ -1407,6 +1407,428 @@
             main { padding: 0; max-width: 100%; }
             section { scroll-margin-top: 0; page-break-inside: avoid; }
             .why-block, .highlight, .arch-diagram { page-break-inside: avoid; }
+            .feedback-section { display: none; }
+        }
+
+        /* ===========================================
+           FEEDBACK / COMMENTS SYSTEM
+           =========================================== */
+
+        .feedback-section {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gris-200);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gris-400);
+        }
+
+        .feedback-count {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--gris-400);
+        }
+
+        /* Emoji reactions row */
+        .feedback-reactions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .reaction-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.5rem 0.85rem;
+            border: 1px solid var(--gris-200);
+            border-radius: 20px;
+            background: var(--blanc);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            color: var(--gris-600);
+        }
+
+        .reaction-btn:hover {
+            border-color: var(--gris-400);
+            background: var(--gris-50);
+        }
+
+        .reaction-btn.active {
+            border-color: var(--rouge);
+            background: rgba(178, 34, 34, 0.08);
+            color: var(--rouge-sombre);
+        }
+
+        .reaction-btn .emoji {
+            font-size: 1rem;
+        }
+
+        .reaction-btn .count {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Add comment button */
+        .add-comment-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            border: 1px dashed var(--gris-300);
+            border-radius: 6px;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            color: var(--gris-500);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .add-comment-btn:hover {
+            border-color: var(--rouge);
+            color: var(--rouge-sombre);
+            background: rgba(178, 34, 34, 0.04);
+        }
+
+        /* Comments list */
+        .comments-list {
+            margin-top: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .comment-card {
+            padding: 1rem 1.25rem;
+            background: var(--gris-50);
+            border-radius: 8px;
+            border-left: 3px solid var(--gris-300);
+        }
+
+        .comment-card.internal {
+            background: rgba(178, 34, 34, 0.04);
+            border-left-color: var(--rouge);
+        }
+
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-author {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--noir);
+        }
+
+        .comment-time {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            color: var(--gris-400);
+        }
+
+        .comment-content {
+            font-size: 0.95rem;
+            color: var(--gris-700);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .comment-emoji {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .comment-internal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--rouge-sombre);
+            background: rgba(178, 34, 34, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            margin-left: 0.5rem;
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .comment-action {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            color: var(--gris-400);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: color 0.15s ease;
+        }
+
+        .comment-action:hover {
+            color: var(--rouge);
+        }
+
+        /* Comment form modal */
+        .comment-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .comment-modal.open {
+            display: flex;
+        }
+
+        .comment-modal-content {
+            background: var(--blanc);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .comment-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--gris-200);
+        }
+
+        .comment-modal-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--noir);
+        }
+
+        .comment-modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--gris-100);
+            border-radius: 50%;
+            font-size: 1.25rem;
+            color: var(--gris-500);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .comment-modal-close:hover {
+            background: var(--gris-200);
+            color: var(--noir);
+        }
+
+        .comment-modal-body {
+            padding: 1.5rem;
+        }
+
+        .comment-form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .comment-form-label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gris-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-form-input,
+        .comment-form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gris-200);
+            border-radius: 6px;
+            font-family: 'Newsreader', Georgia, serif;
+            font-size: 1rem;
+            color: var(--noir);
+            transition: border-color 0.15s ease;
+        }
+
+        .comment-form-input:focus,
+        .comment-form-textarea:focus {
+            outline: none;
+            border-color: var(--rouge);
+        }
+
+        .comment-form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .comment-form-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+        }
+
+        .comment-form-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            accent-color: var(--rouge);
+        }
+
+        .comment-form-checkbox-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gris-600);
+            line-height: 1.4;
+        }
+
+        .comment-form-checkbox-text strong {
+            color: var(--rouge-sombre);
+        }
+
+        .comment-modal-footer {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--gris-200);
+            background: var(--gris-50);
+        }
+
+        .comment-btn-cancel {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gris-300);
+            border-radius: 6px;
+            background: var(--blanc);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gris-600);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .comment-btn-cancel:hover {
+            background: var(--gris-100);
+        }
+
+        .comment-btn-submit {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 6px;
+            background: var(--noir);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--blanc);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .comment-btn-submit:hover {
+            background: var(--gris-800);
+        }
+
+        .comment-btn-submit:disabled {
+            background: var(--gris-300);
+            cursor: not-allowed;
+        }
+
+        /* Name prompt modal */
+        .name-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2001;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .name-modal.open {
+            display: flex;
+        }
+
+        /* Mobile responsive for feedback */
+        @media (max-width: 768px) {
+            .feedback-reactions {
+                gap: 0.4rem;
+            }
+
+            .reaction-btn {
+                padding: 0.5rem 0.7rem;
+                font-size: 0.8rem;
+            }
+
+            .comment-modal-content {
+                max-height: 85vh;
+            }
+
+            .comment-modal-body {
+                padding: 1.25rem;
+            }
+
+            .comment-card {
+                padding: 0.875rem 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feedback-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .comment-modal-header {
+                padding: 1rem;
+            }
+
+            .comment-modal-body {
+                padding: 1rem;
+            }
+
+            .comment-modal-footer {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -2798,6 +3220,483 @@
             checkOverflow();
             window.addEventListener('resize', checkOverflow);
         });
+    </script>
+
+    <!-- Comment Modal -->
+    <div class="comment-modal" id="commentModal">
+        <div class="comment-modal-content">
+            <div class="comment-modal-header">
+                <h3 class="comment-modal-title">Ajouter un commentaire</h3>
+                <button class="comment-modal-close" onclick="closeCommentModal()">&times;</button>
+            </div>
+            <div class="comment-modal-body">
+                <div class="comment-form-group" id="nameGroup">
+                    <label class="comment-form-label">Votre nom</label>
+                    <input type="text" class="comment-form-input" id="commentAuthor" placeholder="Prénom Nom">
+                </div>
+                <div class="comment-form-group">
+                    <label class="comment-form-label">Votre commentaire</label>
+                    <textarea class="comment-form-textarea" id="commentContent" placeholder="Partagez votre avis ou posez une question..."></textarea>
+                </div>
+                <div class="comment-form-group">
+                    <label class="comment-form-checkbox">
+                        <input type="checkbox" id="commentInternal">
+                        <span class="comment-form-checkbox-text">
+                            <strong>Commentaire confidentiel</strong><br>
+                            Visible uniquement par l'équipe Drakkar
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="comment-modal-footer">
+                <button class="comment-btn-cancel" onclick="closeCommentModal()">Annuler</button>
+                <button class="comment-btn-submit" id="submitComment" onclick="submitComment()">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Name Prompt Modal (for reactions) -->
+    <div class="name-modal" id="nameModal">
+        <div class="comment-modal-content">
+            <div class="comment-modal-header">
+                <h3 class="comment-modal-title">Avant de continuer</h3>
+                <button class="comment-modal-close" onclick="closeNameModal()">&times;</button>
+            </div>
+            <div class="comment-modal-body">
+                <div class="comment-form-group">
+                    <label class="comment-form-label">Votre nom</label>
+                    <input type="text" class="comment-form-input" id="nameInput" placeholder="Prénom Nom">
+                </div>
+            </div>
+            <div class="comment-modal-footer">
+                <button class="comment-btn-cancel" onclick="closeNameModal()">Annuler</button>
+                <button class="comment-btn-submit" onclick="saveName()">Continuer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // =====================================================
+    // FEEDBACK / COMMENTS SYSTEM
+    // =====================================================
+
+    const API_URL = 'http://localhost:8000'; // Change for production
+    const DOCUMENT_ID = 'cameleon-group-note';
+    const REACTIONS = [
+        { emoji: '👍', label: "D'accord" },
+        { emoji: '👎', label: 'Pas convaincu' },
+        { emoji: '❓', label: 'Question' },
+        { emoji: '💡', label: 'Idée' }
+    ];
+
+    // User identity management
+    function getUser() {
+        const stored = localStorage.getItem('feedback_user');
+        if (stored) {
+            return JSON.parse(stored);
+        }
+        return null;
+    }
+
+    function setUser(name) {
+        const token = generateToken();
+        const user = { name, token };
+        localStorage.setItem('feedback_user', JSON.stringify(user));
+        return user;
+    }
+
+    function generateToken() {
+        const array = new Uint8Array(32);
+        crypto.getRandomValues(array);
+        return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // State
+    let currentSectionId = null;
+    let pendingAction = null; // { type: 'reaction' | 'comment', sectionId, emoji? }
+    let commentsData = {};
+
+    // Initialize feedback sections
+    function initFeedback() {
+        document.querySelectorAll('section[id]').forEach(section => {
+            const sectionId = section.getAttribute('id');
+
+            // Create feedback container
+            const feedback = document.createElement('div');
+            feedback.className = 'feedback-section';
+            feedback.id = `feedback-${sectionId}`;
+            feedback.innerHTML = `
+                <div class="feedback-header">
+                    <span class="feedback-title">Votre avis sur cette section</span>
+                    <span class="feedback-count" id="count-${sectionId}"></span>
+                </div>
+                <div class="feedback-reactions" id="reactions-${sectionId}">
+                    ${REACTIONS.map(r => `
+                        <button class="reaction-btn" data-emoji="${r.emoji}" data-section="${sectionId}" onclick="handleReaction('${sectionId}', '${r.emoji}')">
+                            <span class="emoji">${r.emoji}</span>
+                            <span class="count" id="reaction-count-${sectionId}-${r.emoji}">0</span>
+                        </button>
+                    `).join('')}
+                    <button class="add-comment-btn" onclick="openCommentModal('${sectionId}')">
+                        <span>+</span> Commenter
+                    </button>
+                </div>
+                <div class="comments-list" id="comments-${sectionId}"></div>
+            `;
+
+            section.appendChild(feedback);
+        });
+
+        // Load existing comments
+        loadComments();
+    }
+
+    // Load comments from API
+    async function loadComments() {
+        const user = getUser();
+        const token = user ? user.token : '';
+
+        try {
+            const response = await fetch(`${API_URL}/api/comments?document_id=${DOCUMENT_ID}&token=${token}`);
+            if (!response.ok) throw new Error('Failed to load comments');
+
+            const data = await response.json();
+            commentsData = {};
+
+            // Group by section
+            data.comments.forEach(comment => {
+                if (!commentsData[comment.section_id]) {
+                    commentsData[comment.section_id] = [];
+                }
+                commentsData[comment.section_id].push(comment);
+            });
+
+            // Render all sections
+            Object.keys(commentsData).forEach(sectionId => {
+                renderSection(sectionId);
+            });
+
+            // Update counts for empty sections too
+            document.querySelectorAll('section[id]').forEach(section => {
+                const sectionId = section.getAttribute('id');
+                if (!commentsData[sectionId]) {
+                    renderSection(sectionId);
+                }
+            });
+
+        } catch (error) {
+            console.error('Error loading comments:', error);
+        }
+    }
+
+    // Render a section's comments and reaction counts
+    function renderSection(sectionId) {
+        const comments = commentsData[sectionId] || [];
+        const user = getUser();
+
+        // Count reactions
+        const reactionCounts = {};
+        REACTIONS.forEach(r => reactionCounts[r.emoji] = 0);
+
+        const textComments = [];
+        let userReaction = null;
+
+        comments.forEach(c => {
+            if (c.emoji && !c.content) {
+                reactionCounts[c.emoji] = (reactionCounts[c.emoji] || 0) + 1;
+                if (c.is_owner) userReaction = c.emoji;
+            }
+            if (c.content) {
+                textComments.push(c);
+            }
+        });
+
+        // Update reaction buttons
+        REACTIONS.forEach(r => {
+            const countEl = document.getElementById(`reaction-count-${sectionId}-${r.emoji}`);
+            const btnEl = document.querySelector(`.reaction-btn[data-section="${sectionId}"][data-emoji="${r.emoji}"]`);
+            if (countEl) countEl.textContent = reactionCounts[r.emoji] || '';
+            if (btnEl) {
+                btnEl.classList.toggle('active', userReaction === r.emoji);
+            }
+        });
+
+        // Update total count
+        const countEl = document.getElementById(`count-${sectionId}`);
+        if (countEl) {
+            const total = textComments.length;
+            countEl.textContent = total > 0 ? `${total} commentaire${total > 1 ? 's' : ''}` : '';
+        }
+
+        // Render text comments
+        const container = document.getElementById(`comments-${sectionId}`);
+        if (container) {
+            container.innerHTML = textComments.map(c => `
+                <div class="comment-card ${c.is_internal ? 'internal' : ''}" data-id="${c.id}">
+                    <div class="comment-meta">
+                        <span class="comment-author">
+                            ${escapeHtml(c.author_name)}
+                            ${c.is_internal ? '<span class="comment-internal-badge">Confidentiel</span>' : ''}
+                        </span>
+                        <span class="comment-time">${formatDate(c.created_at)}</span>
+                    </div>
+                    ${c.emoji ? `<div class="comment-emoji">${c.emoji}</div>` : ''}
+                    <p class="comment-content">${escapeHtml(c.content)}</p>
+                    ${c.is_owner ? `
+                        <div class="comment-actions">
+                            <button class="comment-action" onclick="deleteComment(${c.id}, '${sectionId}')">Supprimer</button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+    }
+
+    // Handle emoji reaction
+    async function handleReaction(sectionId, emoji) {
+        const user = getUser();
+
+        if (!user) {
+            pendingAction = { type: 'reaction', sectionId, emoji };
+            openNameModal();
+            return;
+        }
+
+        // Check if user already reacted with this emoji
+        const comments = commentsData[sectionId] || [];
+        const existingReaction = comments.find(c => c.is_owner && c.emoji === emoji && !c.content);
+
+        try {
+            if (existingReaction) {
+                // Remove reaction
+                await fetch(`${API_URL}/api/comments/${existingReaction.id}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ author_token: user.token })
+                });
+            } else {
+                // Remove any existing reaction first
+                const otherReaction = comments.find(c => c.is_owner && c.emoji && !c.content);
+                if (otherReaction) {
+                    await fetch(`${API_URL}/api/comments/${otherReaction.id}`, {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ author_token: user.token })
+                    });
+                }
+
+                // Add new reaction
+                await fetch(`${API_URL}/api/comments`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        document_id: DOCUMENT_ID,
+                        section_id: sectionId,
+                        author_name: user.name,
+                        author_token: user.token,
+                        emoji: emoji,
+                        is_internal: false
+                    })
+                });
+            }
+
+            await loadComments();
+        } catch (error) {
+            console.error('Error handling reaction:', error);
+            alert('Une erreur est survenue. Veuillez réessayer.');
+        }
+    }
+
+    // Comment modal
+    function openCommentModal(sectionId) {
+        currentSectionId = sectionId;
+        const user = getUser();
+
+        const modal = document.getElementById('commentModal');
+        const authorInput = document.getElementById('commentAuthor');
+        const nameGroup = document.getElementById('nameGroup');
+        const contentInput = document.getElementById('commentContent');
+        const internalCheckbox = document.getElementById('commentInternal');
+
+        // Pre-fill name if known
+        if (user) {
+            authorInput.value = user.name;
+            nameGroup.style.display = 'none';
+        } else {
+            authorInput.value = '';
+            nameGroup.style.display = 'block';
+        }
+
+        contentInput.value = '';
+        internalCheckbox.checked = false;
+        modal.classList.add('open');
+
+        // Focus on content if name known, else on name
+        setTimeout(() => {
+            if (user) {
+                contentInput.focus();
+            } else {
+                authorInput.focus();
+            }
+        }, 100);
+    }
+
+    function closeCommentModal() {
+        document.getElementById('commentModal').classList.remove('open');
+        currentSectionId = null;
+    }
+
+    async function submitComment() {
+        const authorInput = document.getElementById('commentAuthor');
+        const contentInput = document.getElementById('commentContent');
+        const internalCheckbox = document.getElementById('commentInternal');
+        const submitBtn = document.getElementById('submitComment');
+
+        const content = contentInput.value.trim();
+        if (!content) {
+            alert('Veuillez écrire un commentaire');
+            return;
+        }
+
+        let user = getUser();
+        if (!user) {
+            const name = authorInput.value.trim();
+            if (!name) {
+                alert('Veuillez entrer votre nom');
+                return;
+            }
+            user = setUser(name);
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Envoi...';
+
+        try {
+            await fetch(`${API_URL}/api/comments`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    document_id: DOCUMENT_ID,
+                    section_id: currentSectionId,
+                    author_name: user.name,
+                    author_token: user.token,
+                    content: content,
+                    is_internal: internalCheckbox.checked
+                })
+            });
+
+            closeCommentModal();
+            await loadComments();
+        } catch (error) {
+            console.error('Error submitting comment:', error);
+            alert('Une erreur est survenue. Veuillez réessayer.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Envoyer';
+        }
+    }
+
+    // Name modal (for reactions without account)
+    function openNameModal() {
+        document.getElementById('nameModal').classList.add('open');
+        setTimeout(() => {
+            document.getElementById('nameInput').focus();
+        }, 100);
+    }
+
+    function closeNameModal() {
+        document.getElementById('nameModal').classList.remove('open');
+        pendingAction = null;
+    }
+
+    function saveName() {
+        const nameInput = document.getElementById('nameInput');
+        const name = nameInput.value.trim();
+
+        if (!name) {
+            alert('Veuillez entrer votre nom');
+            return;
+        }
+
+        setUser(name);
+        closeNameModal();
+
+        // Execute pending action
+        if (pendingAction) {
+            if (pendingAction.type === 'reaction') {
+                handleReaction(pendingAction.sectionId, pendingAction.emoji);
+            }
+            pendingAction = null;
+        }
+    }
+
+    // Delete comment
+    async function deleteComment(commentId, sectionId) {
+        if (!confirm('Supprimer ce commentaire ?')) return;
+
+        const user = getUser();
+        if (!user) return;
+
+        try {
+            await fetch(`${API_URL}/api/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ author_token: user.token })
+            });
+
+            await loadComments();
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+            alert('Une erreur est survenue. Veuillez réessayer.');
+        }
+    }
+
+    // Utilities
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return "À l'instant";
+        if (diffMins < 60) return `Il y a ${diffMins} min`;
+        if (diffHours < 24) return `Il y a ${diffHours}h`;
+        if (diffDays < 7) return `Il y a ${diffDays}j`;
+
+        return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+    }
+
+    // Close modals on escape key
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            closeCommentModal();
+            closeNameModal();
+        }
+    });
+
+    // Close modals on backdrop click
+    document.getElementById('commentModal').addEventListener('click', e => {
+        if (e.target.classList.contains('comment-modal')) {
+            closeCommentModal();
+        }
+    });
+
+    document.getElementById('nameModal').addEventListener('click', e => {
+        if (e.target.classList.contains('name-modal')) {
+            closeNameModal();
+        }
+    });
+
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', initFeedback);
     </script>
 </body>
 </html>
