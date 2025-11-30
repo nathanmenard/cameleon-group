@@ -1,3 +1,23 @@
+@import "tailwindcss";
+
+/* Tailwind v4 custom theme */
+@theme {
+    --color-noir: #0a0a0a;
+    --color-blanc: #ffffff;
+    --color-gris-50: #f8f8f8;
+    --color-gris-100: #f0f0f0;
+    --color-gris-200: #e0e0e0;
+    --color-gris-300: #d0d0d0;
+    --color-gris-400: #a0a0a0;
+    --color-gris-500: #707070;
+    --color-gris-600: #505050;
+    --color-gris-700: #333333;
+    --color-gris-800: #1a1a1a;
+    --color-rouge: #B22222;
+    --color-rouge-vif: #FF4A48;
+    --color-rouge-sombre: #992C2B;
+}
+
 :root {
     --noir: #0a0a0a;
     --blanc: #ffffff;
