@@ -8,7 +8,8 @@ export default function DesignSystemPage() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [scrollProgress, setScrollProgress] = useState(0);
   const [tocNavVisible, setTocNavVisible] = useState(false);
-  const tocNavInnerRef = useRef<HTMLDivElement>(null);
+  const [inBlocksSection, setInBlocksSection] = useState(false);
+  const prevInBlocksRef = useRef(false);
 
   const filteredBlocks = activeCategory === "all"
     ? BLOCK_REGISTRY
@@ -30,6 +31,13 @@ export default function DesignSystemPage() {
     { id: "usage", num: "5", title: "Usage" },
   ];
 
+  const catColors: Record<string, string> = {
+    content: "#3b82f6",
+    visual: "#f59e0b",
+    data: "#10b981",
+    layout: "#8b5cf6",
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -37,6 +45,20 @@ export default function DesignSystemPage() {
       setScrollProgress((winScroll / height) * 100);
       const heroEnd = 300;
       setTocNavVisible(winScroll > heroEnd);
+
+      // Check if we're in the blocks section
+      const blocksSection = document.getElementById("blocks");
+      const usageSection = document.getElementById("usage");
+      if (blocksSection && usageSection) {
+        const blocksTop = blocksSection.getBoundingClientRect().top;
+        const usageTop = usageSection.getBoundingClientRect().top;
+        const newInBlocks = blocksTop < 150 && usageTop > 150;
+
+        if (newInBlocks !== prevInBlocksRef.current) {
+          setInBlocksSection(newInBlocks);
+          prevInBlocksRef.current = newInBlocks;
+        }
+      }
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -54,12 +76,123 @@ export default function DesignSystemPage() {
       <div className="progress-bar" style={{ width: `${scrollProgress}%` }} />
 
       <div className={`toc-nav ${tocNavVisible ? "visible" : ""}`}>
-        <div className="toc-nav-inner" ref={tocNavInnerRef}>
-          {tocItems.map((item) => (
-            <a key={item.id} href={`#${item.id}`}>
-              <span className="nav-num">{item.num}.</span> {item.title}
-            </a>
-          ))}
+        <div className="toc-nav-inner" style={{ position: "relative" }}>
+          {/* Sections nav - crossfade out when in blocks */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.25rem",
+            opacity: inBlocksSection ? 0 : 1,
+            transform: inBlocksSection ? "translateY(-4px)" : "translateY(0)",
+            transition: "opacity 0.2s ease, transform 0.2s ease",
+            position: inBlocksSection ? "absolute" : "relative",
+            pointerEvents: inBlocksSection ? "none" : "auto",
+          }}>
+            {tocItems.map((item) => (
+              <a key={item.id} href={`#${item.id}`}>
+                <span className="nav-num">{item.num}.</span> {item.title}
+              </a>
+            ))}
+          </div>
+
+          {/* Components nav - crossfade in when in blocks */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            opacity: inBlocksSection ? 1 : 0,
+            transform: inBlocksSection ? "translateY(0)" : "translateY(4px)",
+            transition: "opacity 0.2s ease, transform 0.2s ease",
+            position: inBlocksSection ? "relative" : "absolute",
+            pointerEvents: inBlocksSection ? "auto" : "none",
+            width: "100%",
+          }}>
+            {/* Fixed left part */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+              {/* Back to sections */}
+              <a
+                href="#colors"
+                style={{
+                  fontSize: 11,
+                  color: "var(--gris-400)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 4,
+                  padding: "6px 10px",
+                  background: "var(--gris-700)",
+                  borderRadius: 4,
+                }}
+              >
+                ← Sections
+              </a>
+              {/* Separator */}
+              <div style={{ width: 1, height: 20, background: "var(--gris-600)" }} />
+              {/* Category filters */}
+              <div style={{
+                display: "flex",
+                gap: 2,
+                padding: 3,
+                background: "var(--gris-700)",
+                borderRadius: 6,
+              }}>
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    style={{
+                      padding: "5px 10px",
+                      background: activeCategory === cat.id ? "var(--rouge)" : "transparent",
+                      color: activeCategory === cat.id ? "#fff" : "var(--gris-300)",
+                      border: "none",
+                      borderRadius: 4,
+                      fontSize: 12,
+                      fontWeight: 500,
+                      cursor: "pointer",
+                      fontFamily: "'Inter', sans-serif",
+                      whiteSpace: "nowrap",
+                      transition: "all 0.15s ease",
+                    }}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+              {/* Separator */}
+              <div style={{ width: 1, height: 20, background: "var(--gris-600)" }} />
+            </div>
+
+            {/* Scrollable component links with fade hints */}
+            <div style={{
+              position: "relative",
+              flex: 1,
+              overflow: "hidden",
+            }}>
+              <div style={{
+                display: "flex",
+                gap: 6,
+                overflowX: "auto",
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+                paddingRight: 24,
+              }} className="hide-scrollbar">
+                {filteredBlocks.map((block) => (
+                  <a key={block.type} href={`#block-${block.type}`} style={{ fontSize: 12, flexShrink: 0 }}>
+                    {block.name}
+                  </a>
+                ))}
+              </div>
+              {/* Fade right */}
+              <div style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                bottom: 0,
+                width: 40,
+                background: "linear-gradient(to right, transparent, var(--gris-800))",
+                pointerEvents: "none",
+              }} />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -96,7 +229,7 @@ export default function DesignSystemPage() {
           <p>La palette officielle Drakkar avec codes hex et variables CSS.</p>
 
           <h3>Couleurs principales</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
+          <div className="ds-color-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
             {[
               { name: "Rouge", hex: COLORS.rouge, css: "--rouge", tw: "bg-rouge" },
               { name: "Rouge Vif", hex: COLORS.rougeVif, css: "--rouge-vif", tw: "bg-rouge-vif" },
@@ -107,7 +240,7 @@ export default function DesignSystemPage() {
           </div>
 
           <h3>Neutres</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
+          <div className="ds-color-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 32 }}>
             {[
               { name: "Noir", hex: COLORS.noir, css: "--noir", tw: "bg-noir" },
               { name: "Blanc", hex: COLORS.blanc, css: "--blanc", tw: "bg-blanc" },
@@ -117,7 +250,7 @@ export default function DesignSystemPage() {
           </div>
 
           <h3>Échelle de gris</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+          <div className="ds-color-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
             {Object.entries(COLORS.gris).map(([key, hex]) => (
               <ColorCard
                 key={key}
@@ -137,7 +270,7 @@ export default function DesignSystemPage() {
           <p>Deux familles de polices complémentaires pour un équilibre éditorial / interface.</p>
 
           <h3>Familles de polices</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
+          <div className="ds-fonts-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
             <div style={{
               padding: 24,
               background: "var(--gris-50)",
@@ -317,45 +450,63 @@ export default function DesignSystemPage() {
         <section id="blocks">
           <div className="section-num">Section 4</div>
           <h2>Composants</h2>
-          <p>Les blocs de construction pour vos documents.</p>
+          <p>Les {BLOCK_REGISTRY.length} blocs de construction pour vos documents.</p>
 
-          <div style={{
-            display: "flex",
-            gap: 8,
-            marginBottom: 32,
-            padding: 6,
-            background: "var(--gris-50)",
-            borderRadius: 10,
-            border: "1px solid var(--gris-200)",
-            width: "fit-content",
-          }}>
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                style={{
-                  padding: "8px 16px",
-                  background: activeCategory === cat.id ? "var(--noir)" : "transparent",
-                  color: activeCategory === cat.id ? "#fff" : "var(--gris-600)",
-                  border: "none",
-                  borderRadius: 6,
-                  fontSize: 13,
-                  fontWeight: 500,
-                  cursor: "pointer",
-                  fontFamily: "'Inter', sans-serif",
-                }}
-              >
-                {cat.label}
-                <span style={{ marginLeft: 6, opacity: 0.5, fontSize: 12 }}>{cat.count}</span>
-              </button>
-            ))}
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {filteredBlocks.map((block) => (
-              <BlockCard key={block.type} block={block} />
-            ))}
-          </div>
+          {activeCategory === "all" ? (
+            // Show grouped by category
+            <>
+              {[
+                { id: "content", label: "Contenu", description: "Texte, titres, listes" },
+                { id: "visual", label: "Visuels", description: "Encadrés, mises en avant" },
+                { id: "data", label: "Données", description: "Tableaux, diagrammes" },
+                { id: "layout", label: "Layout", description: "Colonnes, grilles" },
+              ].map((cat) => {
+                const catBlocks = BLOCK_REGISTRY.filter(b => b.category === cat.id);
+                if (catBlocks.length === 0) return null;
+                return (
+                  <div key={cat.id} id={`cat-${cat.id}`} style={{ marginBottom: 48, scrollMarginTop: 120 }}>
+                    <h3 style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      marginBottom: 20,
+                      paddingBottom: 12,
+                      borderBottom: `2px solid ${catColors[cat.id] || "var(--gris-300)"}`,
+                    }}>
+                      <span style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: "50%",
+                        background: catColors[cat.id] || "var(--gris-500)",
+                        flexShrink: 0,
+                      }} />
+                      {cat.label}
+                      <span style={{
+                        fontSize: 14,
+                        fontWeight: 400,
+                        color: "var(--gris-500)",
+                        fontStyle: "italic",
+                      }}>
+                        — {cat.description}
+                      </span>
+                    </h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                      {catBlocks.map((block) => (
+                        <BlockCard key={block.type} block={block} catColors={catColors} />
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            // Show filtered list
+            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+              {filteredBlocks.map((block) => (
+                <BlockCard key={block.type} block={block} catColors={catColors} />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Section 5: Usage */}
@@ -458,13 +609,7 @@ function ColorCard({ name, hex, css, tw }: { name: string; hex: string; css: str
   );
 }
 
-function BlockCard({ block }: { block: BlockDefinition }) {
-  const catColors: Record<string, string> = {
-    content: "#3b82f6",
-    visual: "#f59e0b",
-    data: "#10b981",
-    layout: "#8b5cf6",
-  };
+function BlockCard({ block, catColors }: { block: BlockDefinition; catColors: Record<string, string> }) {
 
   return (
     <div
@@ -474,6 +619,7 @@ function BlockCard({ block }: { block: BlockDefinition }) {
         borderRadius: 12,
         border: "1px solid var(--gris-200)",
         overflow: "hidden",
+        scrollMarginTop: 120,
       }}
     >
       <div style={{
