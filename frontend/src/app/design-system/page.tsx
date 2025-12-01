@@ -1081,7 +1081,8 @@ function VariantShowcase({ block }: { block: BlockDefinition }) {
   // Highlight variants
   if (block.type === "highlight") {
     const variants = [
-      { variant: "default", label: "Default (rouge)" },
+      { variant: "default", label: "Default (noir)" },
+      { variant: "rouge", label: "Rouge (gradient)" },
       { variant: "info", label: "Info (bleu)" },
       { variant: "success", label: "Success (vert)" },
     ];
@@ -1252,7 +1253,7 @@ function BlockCard({ block, catColors }: { block: BlockDefinition; catColors: Re
         }}>{block.description}</span>
       </div>
 
-      <div style={{ padding: 24 }}>
+      <div style={{ padding: 24, overflow: "hidden" }}>
         {block.isUIComponent ? (
           <UIComponentPreview type={block.type} catColor={catColors[block.category]} />
         ) : (
