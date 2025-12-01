@@ -491,6 +491,39 @@ export const COLORS = {
   rougeSombre: "#992C2B",
 };
 
+// Règles de lisibilité des couleurs
+export const COLOR_READABILITY = {
+  fondClair: {
+    background: ["blanc", "gris-50", "gris-100", "gris-200"],
+    textesPrincipaux: "noir",
+    textesSecondaires: "gris-600",
+    textesMuted: "gris-500",
+    labels: "gris-600",
+    bordures: "gris-200",
+  },
+  fondSombre: {
+    background: ["noir", "gris-800", "gris-700"],
+    textesPrincipaux: "blanc",
+    textesSecondaires: "gris-300",
+    textesMuted: "gris-400",
+    labels: "gris-400",
+    bordures: "gris-700",
+  },
+  fondRouge: {
+    background: ["rouge", "rouge-vif", "rouge-sombre"],
+    textesPrincipaux: "blanc",
+    textesSecondaires: "blanc",
+    textesMuted: "rgba(255,255,255,0.8)",
+    labels: "blanc",
+    bordures: "transparent",
+  },
+  contrastes: {
+    minAANormal: 4.5,
+    minAALarge: 3.0,
+    minAAA: 7.0,
+  },
+};
+
 // Typographie
 export const TYPOGRAPHY = {
   fontSerif: "'Newsreader', Georgia, serif",

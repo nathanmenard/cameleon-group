@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { BLOCK_REGISTRY, COLORS, TYPOGRAPHY, BlockDefinition } from "@/lib/design-system";
+import { BLOCK_REGISTRY, COLORS, TYPOGRAPHY, COLOR_READABILITY, BlockDefinition } from "@/lib/design-system";
 import { ContentRenderer } from "@/components/sections/ContentRenderer";
 
 export default function DesignSystemPage() {
@@ -345,6 +345,110 @@ export default function DesignSystemPage() {
                 tw={`bg-gris-${key}`}
               />
             ))}
+          </div>
+
+          <h3 style={{ marginTop: 32 }}>Lisibilité selon le fond</h3>
+          <p>Règles de contraste pour garantir la lisibilité WCAG AA (4.5:1 pour le texte normal).</p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {/* Fond clair */}
+            <div style={{
+              background: "var(--gris-50)",
+              borderRadius: 10,
+              border: "1px solid var(--gris-200)",
+              overflow: "hidden",
+            }}>
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid var(--gris-200)", background: "#fff" }}>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, fontWeight: 600, color: "var(--noir)" }}>
+                  Fond clair
+                </span>
+                <span style={{ marginLeft: 8, fontSize: 11, color: "var(--gris-500)" }}>
+                  blanc, gris-50, gris-100, gris-200
+                </span>
+              </div>
+              <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "var(--noir)", fontWeight: 600, marginBottom: 4 }}>Texte principal</div>
+                  <code style={{ fontSize: 10, color: "var(--gris-500)" }}>noir</code>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "var(--gris-600)", marginBottom: 4 }}>Texte secondaire</div>
+                  <code style={{ fontSize: 10, color: "var(--gris-500)" }}>gris-600</code>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "var(--gris-500)", marginBottom: 4 }}>Texte muted</div>
+                  <code style={{ fontSize: 10, color: "var(--gris-500)" }}>gris-500</code>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ border: "1px solid var(--gris-200)", padding: "4px 8px", borderRadius: 4, marginBottom: 4 }}>Bordures</div>
+                  <code style={{ fontSize: 10, color: "var(--gris-500)" }}>gris-200</code>
+                </div>
+              </div>
+            </div>
+
+            {/* Fond sombre */}
+            <div style={{
+              background: "var(--noir)",
+              borderRadius: 10,
+              overflow: "hidden",
+            }}>
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid var(--gris-700)" }}>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, fontWeight: 600, color: "#fff" }}>
+                  Fond sombre
+                </span>
+                <span style={{ marginLeft: 8, fontSize: 11, color: "var(--gris-400)" }}>
+                  noir, gris-800, gris-700
+                </span>
+              </div>
+              <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "#fff", fontWeight: 600, marginBottom: 4 }}>Texte principal</div>
+                  <code style={{ fontSize: 10, color: "var(--gris-400)" }}>blanc</code>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "var(--gris-300)", marginBottom: 4 }}>Texte secondaire</div>
+                  <code style={{ fontSize: 10, color: "var(--gris-400)" }}>gris-300</code>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "var(--gris-400)", marginBottom: 4 }}>Texte muted</div>
+                  <code style={{ fontSize: 10, color: "var(--gris-400)" }}>gris-400</code>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ border: "1px solid var(--gris-700)", padding: "4px 8px", borderRadius: 4, marginBottom: 4, color: "var(--gris-300)" }}>Bordures</div>
+                  <code style={{ fontSize: 10, color: "var(--gris-400)" }}>gris-700</code>
+                </div>
+              </div>
+            </div>
+
+            {/* Fond rouge */}
+            <div style={{
+              background: "linear-gradient(135deg, var(--rouge), var(--rouge-vif), var(--rouge-sombre))",
+              borderRadius: 10,
+              overflow: "hidden",
+            }}>
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.2)" }}>
+                <span style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, fontWeight: 600, color: "#fff" }}>
+                  Fond coloré (rouge)
+                </span>
+                <span style={{ marginLeft: 8, fontSize: 11, color: "rgba(255,255,255,0.8)" }}>
+                  rouge, rouge-vif, rouge-sombre
+                </span>
+              </div>
+              <div style={{ padding: 16, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "#fff", fontWeight: 600, marginBottom: 4 }}>Texte principal</div>
+                  <code style={{ fontSize: 10, color: "rgba(255,255,255,0.7)" }}>blanc</code>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "rgba(255,255,255,0.9)", marginBottom: 4 }}>Texte secondaire</div>
+                  <code style={{ fontSize: 10, color: "rgba(255,255,255,0.7)" }}>blanc 90%</code>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ color: "rgba(255,255,255,0.7)", marginBottom: 4 }}>Texte muted</div>
+                  <code style={{ fontSize: 10, color: "rgba(255,255,255,0.7)" }}>blanc 70%</code>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -1112,12 +1216,12 @@ function BlockCard({ block, catColors }: { block: BlockDefinition; catColors: Re
       }}
     >
       <div style={{
-        padding: "14px 20px",
+        padding: "12px 20px",
         background: "var(--gris-50)",
         borderBottom: "1px solid var(--gris-200)",
         display: "flex",
         alignItems: "center",
-        gap: 10,
+        gap: 12,
       }}>
         <span style={{
           width: 8,

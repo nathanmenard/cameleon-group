@@ -11,6 +11,9 @@ export function ArchDiagram({ data }: ArchDiagramProps) {
         <h4>{data.header.title}</h4>
         <p>{data.header.description}</p>
       </div>
+      <div className="arch-connector">
+        <div className="arch-connector-line" />
+      </div>
       <div className="arch-modules">
         {data.modules.map((module, index) => (
           <div key={index} className={`arch-module ${module.variant || ""}`}>
@@ -19,11 +22,6 @@ export function ArchDiagram({ data }: ArchDiagramProps) {
           </div>
         ))}
       </div>
-      {data.connectors && data.connectors.length > 0 && (
-        <div className="arch-connector">
-          <div className="arch-connector-line" />
-        </div>
-      )}
     </div>
   );
 }
