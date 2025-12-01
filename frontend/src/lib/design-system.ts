@@ -41,16 +41,16 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
   {
     type: "heading",
     name: "Titre",
-    description: "Titre de niveau 2 (h2) ou 3 (h3)",
+    description: "Titre de niveau 1 (h1 - couverture), 2 (h2 - section) ou 3 (h3 - sous-section)",
     category: "content",
     props: [
-      { name: "level", type: "2 | 3", required: true, description: "Niveau du titre" },
+      { name: "level", type: "1 | 2 | 3", required: true, description: "Niveau du titre (1=couverture, 2=section, 3=sous-section)" },
       { name: "text", type: "string", required: true, description: "Texte du titre" },
     ],
     example: {
       type: "heading",
-      level: 3,
-      text: "Exemple de sous-titre",
+      level: 1,
+      text: "Titre Principal",
     },
   },
   {
@@ -110,11 +110,11 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
   {
     type: "highlight",
     name: "Highlight",
-    description: "Encadré mis en valeur (jaune ou rouge)",
+    description: "Encadré mis en valeur avec 4 variantes",
     category: "visual",
     props: [
       { name: "text", type: "string", required: true, description: "Contenu" },
-      { name: "variant", type: "'default' | 'rouge'", required: false, description: "Style (défaut ou rouge)" },
+      { name: "variant", type: "'default' | 'rouge' | 'info' | 'success'", required: false, description: "Style: jaune (défaut), rouge, bleu (info), vert (success)" },
     ],
     example: {
       type: "highlight",
@@ -261,14 +261,16 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
   {
     type: "checklist",
     name: "Checklist",
-    description: "Liste de vérification avec coches",
+    description: "Liste de vérification avec états cochés/non cochés",
     category: "content",
     props: [
       { name: "items", type: "string[]", required: true, description: "Éléments à vérifier" },
+      { name: "checked", type: "boolean[]", required: false, description: "État de chaque élément (true = coché)" },
     ],
     example: {
       type: "checklist",
       items: ["Valider le périmètre", "Identifier les parties prenantes", "Définir les KPIs"],
+      checked: [true, true, false],
     },
   },
   {

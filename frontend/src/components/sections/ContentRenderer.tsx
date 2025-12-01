@@ -30,11 +30,9 @@ export function ContentRenderer({ block }: ContentRendererProps) {
       );
 
     case "heading":
-      return block.level === 2 ? (
-        <h2>{block.text}</h2>
-      ) : (
-        <h3>{block.text}</h3>
-      );
+      if (block.level === 1) return <h1>{block.text}</h1>;
+      if (block.level === 2) return <h2>{block.text}</h2>;
+      return <h3>{block.text}</h3>;
 
     case "list":
       return block.ordered ? (

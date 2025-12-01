@@ -387,6 +387,19 @@ section {
     margin-bottom: 0.5rem;
 }
 
+h1 {
+    font-size: 2.75rem;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    color: var(--noir);
+    background: linear-gradient(90deg, var(--noir) 0%, var(--gris-700) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 h2 {
     font-size: 1.85rem;
     font-weight: 500;
@@ -462,6 +475,28 @@ li::marker {
 
 .highlight.rouge p,
 .highlight.rouge strong {
+    color: var(--blanc);
+}
+
+.highlight.info {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa, #2563eb);
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease-in-out infinite;
+}
+
+.highlight.info p,
+.highlight.info strong {
+    color: var(--blanc);
+}
+
+.highlight.success {
+    background: linear-gradient(135deg, #10b981, #34d399, #059669);
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease-in-out infinite;
+}
+
+.highlight.success p,
+.highlight.success strong {
     color: var(--blanc);
 }
 
@@ -1073,33 +1108,38 @@ tr:last-child td {
 
 /* Process timeline */
 .process-flow {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
     margin: 2rem 0;
 }
 
 .process-step {
+    flex: 1;
     text-align: center;
-    padding: 1.25rem 0.75rem;
+    padding: 1.25rem 1rem;
     background: var(--gris-100);
     border-radius: 6px;
     position: relative;
     border: 1px solid var(--gris-200);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.process-step::after {
-    content: '\2192';
-    position: absolute;
-    right: -14px;
-    top: 50%;
-    transform: translateY(-50%);
+.process-step:first-child {
+    border-left: 3px solid var(--rouge);
+}
+
+.process-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
     color: var(--gris-400);
-    font-size: 0.9rem;
-}
-
-.process-step:last-child::after {
-    display: none;
+    font-size: 1rem;
+    flex-shrink: 0;
 }
 
 .process-name {
@@ -1107,13 +1147,17 @@ tr:last-child td {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--noir);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
 }
 
 .process-duration {
     font-family: 'Inter', sans-serif;
-    font-size: 0.7rem;
-    color: var(--gris-500);
+    font-size: 0.65rem;
+    color: var(--blanc);
+    background: var(--gris-600);
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    letter-spacing: 0.02em;
 }
 
 /* Checklist */
@@ -1135,8 +1179,9 @@ tr:last-child td {
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
     padding: 0.5rem 0;
-    padding-left: 1.75rem;
-    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     border-bottom: 1px solid var(--gris-200);
 }
 
@@ -1144,11 +1189,22 @@ tr:last-child td {
     border-bottom: none;
 }
 
-.checklist li::before {
-    content: '☐';
-    position: absolute;
-    left: 0;
+.checklist .check-icon {
+    font-size: 1rem;
     color: var(--gris-400);
+    width: 1.25rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.checklist li.checked .check-icon {
+    color: #10b981;
+    font-weight: bold;
+}
+
+.checklist .checked-text {
+    text-decoration: line-through;
+    color: var(--gris-500);
 }
 
 /* Commitments */
@@ -1346,8 +1402,9 @@ tr:last-child td {
     .arch-module-name { font-size: 0.7rem; }
     .arch-module-status { font-size: 0.6rem; }
 
-    .process-flow { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-    .process-step::after { display: none; }
+    .process-flow { flex-wrap: wrap; gap: 0.5rem; }
+    .process-step { flex: 1 1 calc(50% - 1.5rem); min-width: 120px; }
+    .process-arrow { display: none; }
 
     .why-block { margin: 2rem 0; padding-top: 1.5rem; }
     .why-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
@@ -1421,7 +1478,7 @@ tr:last-child td {
     main { padding: 90px 1rem 2rem; }
 
     .arch-modules { grid-template-columns: repeat(2, 1fr); }
-    .process-flow { grid-template-columns: 1fr; }
+    .process-step { flex: 1 1 100%; }
 
     .toc-grid { gap: 0.4rem; }
     .toc-item-text { font-size: 0.8rem; }

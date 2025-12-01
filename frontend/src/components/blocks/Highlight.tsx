@@ -5,8 +5,9 @@ interface HighlightProps {
 }
 
 export function Highlight({ data }: HighlightProps) {
+  const variantClass = data.variant && data.variant !== "default" ? data.variant : "";
   return (
-    <div className={`highlight ${data.variant === "rouge" ? "rouge" : ""}`}>
+    <div className={`highlight ${variantClass}`}>
       <p>{data.text}</p>
     </div>
   );

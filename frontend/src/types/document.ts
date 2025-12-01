@@ -39,7 +39,7 @@ export interface ParagraphBlock {
 
 export interface HeadingBlock {
   type: "heading";
-  level: 2 | 3;
+  level: 1 | 2 | 3;
   text: string;
 }
 

@@ -10,7 +10,10 @@ export default function DesignSystemPage() {
   const [tocNavVisible, setTocNavVisible] = useState(false);
   const [inBlocksSection, setInBlocksSection] = useState(false);
   const [forceShowSections, setForceShowSections] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("colors");
+  const [activeBlock, setActiveBlock] = useState<string>("");
   const prevInBlocksRef = useRef(false);
+  const blockLinksRef = useRef<HTMLDivElement>(null);
 
   const filteredBlocks = activeCategory === "all"
     ? BLOCK_REGISTRY
@@ -49,6 +52,25 @@ export default function DesignSystemPage() {
       const heroEnd = 300;
       setTocNavVisible(winScroll > heroEnd);
 
+      // Detect active section based on scroll position
+      const sectionIds = ["colors", "typography", "spacing", "blocks", "usage"];
+      let foundActive = false;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sectionIds[i]);
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top < 200) {
+            setActiveSection(sectionIds[i]);
+            foundActive = true;
+            break;
+          }
+        }
+      }
+      // Default to first section if none found
+      if (!foundActive) {
+        setActiveSection("colors");
+      }
+
       // Check if we're in the blocks section
       const blocksSection = document.getElementById("blocks");
       const usageSection = document.getElementById("usage");
@@ -62,12 +84,41 @@ export default function DesignSystemPage() {
           prevInBlocksRef.current = newInBlocks;
           // Reset manual override when scroll changes section
           setForceShowSections(false);
+          // Reset category filter when leaving blocks section
+          if (!newInBlocks) {
+            setActiveCategory("all");
+          }
         }
+      }
+
+      // Detect active block (always, not just when inBlocksSection changes)
+      const blockElements = document.querySelectorAll("[id^='block-']");
+      let foundBlock = "";
+      blockElements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < 200 && rect.bottom > 0) {
+          foundBlock = el.id.replace("block-", "");
+        }
+      });
+      if (foundBlock) {
+        setActiveBlock(foundBlock);
       }
     };
     window.addEventListener("scroll", handleScroll);
+    // Run once on mount
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Auto-scroll component links to show active block
+  useEffect(() => {
+    if (activeBlock && blockLinksRef.current) {
+      const activeLink = blockLinksRef.current.querySelector(`a[href="#block-${activeBlock}"]`);
+      if (activeLink) {
+        activeLink.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
+    }
+  }, [activeBlock]);
 
   return (
     <>
@@ -94,7 +145,12 @@ export default function DesignSystemPage() {
             pointerEvents: (inBlocksSection && !forceShowSections) ? "none" : "auto",
           }}>
             {tocItems.map((item) => (
-              <a key={item.id} href={`#${item.id}`} onClick={() => setForceShowSections(false)}>
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setForceShowSections(false)}
+                className={activeSection === item.id ? "active" : ""}
+              >
                 <span className="nav-num">{item.num}.</span> {item.title}
               </a>
             ))}
@@ -161,8 +217,8 @@ export default function DesignSystemPage() {
                     }}
                     style={{
                       padding: "5px 10px",
-                      background: activeCategory === cat.id ? "var(--rouge)" : "transparent",
-                      color: activeCategory === cat.id ? "#fff" : "var(--gris-300)",
+                      background: activeCategory === cat.id ? "var(--gris-600)" : "transparent",
+                      color: activeCategory === cat.id ? "#fff" : "var(--gris-400)",
                       border: "none",
                       borderRadius: 4,
                       fontSize: 12,
@@ -187,16 +243,25 @@ export default function DesignSystemPage() {
               flex: 1,
               overflow: "hidden",
             }}>
-              <div style={{
-                display: "flex",
-                gap: 6,
-                overflowX: "auto",
-                scrollbarWidth: "none",
-                msOverflowStyle: "none",
-                paddingRight: 24,
-              }} className="hide-scrollbar">
+              <div
+                ref={blockLinksRef}
+                style={{
+                  display: "flex",
+                  gap: 6,
+                  overflowX: "auto",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  paddingRight: 24,
+                }}
+                className="hide-scrollbar"
+              >
                 {filteredBlocks.map((block) => (
-                  <a key={block.type} href={`#block-${block.type}`} style={{ fontSize: 12, flexShrink: 0 }}>
+                  <a
+                    key={block.type}
+                    href={`#block-${block.type}`}
+                    className={activeBlock === block.type ? "active" : ""}
+                    style={{ fontSize: 12, flexShrink: 0 }}
+                  >
                     {block.name}
                   </a>
                 ))}
@@ -672,18 +737,50 @@ function UIComponentPreview({ type, catColor }: { type: string; catColor: string
   // Logos showcase
   if (type === "logos") {
     return (
-      <div style={{ display: "flex", gap: 16 }}>
-        {/* Logo blanc sur fond noir */}
-        <div style={{ flex: 1, background: "var(--noir)", borderRadius: 8, padding: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-          <img src="/logos/logo_drakkar_blanc.png" alt="Drakkar blanc" style={{ height: 24 }} />
-          <span style={{ fontSize: 11, color: "var(--gris-500)", fontFamily: "'Inter', sans-serif" }}>logo_drakkar_blanc.png</span>
-          <span style={{ fontSize: 10, color: "var(--gris-600)", fontFamily: "'Inter', sans-serif" }}>Sur fond sombre</span>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <div style={{ display: "flex", gap: 16 }}>
+          {/* Logo blanc sur fond noir */}
+          <div style={{ flex: 1, background: "var(--noir)", borderRadius: 8, padding: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+            <img src="/logos/logo_drakkar_blanc.png" alt="Drakkar blanc" style={{ height: 24 }} />
+            <span style={{ fontSize: 11, color: "var(--gris-400)", fontFamily: "'Inter', sans-serif" }}>logo_drakkar_blanc.png</span>
+            <span style={{ fontSize: 10, color: "var(--gris-500)", fontFamily: "'Inter', sans-serif" }}>Sur fond sombre</span>
+          </div>
+          {/* Logo noir sur fond clair */}
+          <div style={{ flex: 1, background: "var(--gris-100)", borderRadius: 8, padding: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 12, border: "1px solid var(--gris-200)" }}>
+            <img src="/logos/logo_drakkar_noir.png" alt="Drakkar noir" style={{ height: 24 }} />
+            <span style={{ fontSize: 11, color: "var(--gris-500)", fontFamily: "'Inter', sans-serif" }}>logo_drakkar_noir.png</span>
+            <span style={{ fontSize: 10, color: "var(--gris-600)", fontFamily: "'Inter', sans-serif" }}>Sur fond clair</span>
+          </div>
         </div>
-        {/* Logo noir sur fond clair */}
-        <div style={{ flex: 1, background: "var(--gris-100)", borderRadius: 8, padding: 24, display: "flex", flexDirection: "column", alignItems: "center", gap: 12, border: "1px solid var(--gris-200)" }}>
-          <img src="/logos/logo_drakkar_noir.png" alt="Drakkar noir" style={{ height: 24 }} />
-          <span style={{ fontSize: 11, color: "var(--gris-500)", fontFamily: "'Inter', sans-serif" }}>logo_drakkar_noir.png</span>
-          <span style={{ fontSize: 10, color: "var(--gris-600)", fontFamily: "'Inter', sans-serif" }}>Sur fond clair</span>
+        {/* Règles + icône */}
+        <div style={{
+          marginTop: 16,
+          padding: "12px 16px",
+          background: "var(--gris-50)",
+          borderRadius: 6,
+          border: "1px solid var(--gris-200)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 16,
+        }}>
+          <div style={{
+            fontSize: 11,
+            color: "var(--gris-600)",
+            fontFamily: "'Inter', sans-serif",
+            lineHeight: 1.8,
+          }}>
+            <strong style={{ color: "var(--noir)" }}>Règles :</strong> Taille min. 16px · Zone de protection 12px · Ne jamais déformer · En carré → utiliser l'icône
+          </div>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            flexShrink: 0,
+          }}>
+            <span style={{ fontSize: 10, color: "var(--gris-500)", fontFamily: "'Inter', sans-serif" }}>Icône :</span>
+            <img src="/logos/icon_drk.png" alt="DRK" style={{ height: 32, borderRadius: 4 }} />
+          </div>
         </div>
       </div>
     );
@@ -876,6 +973,131 @@ function UIComponentPreview({ type, catColor }: { type: string; catColor: string
   );
 }
 
+function VariantShowcase({ block }: { block: BlockDefinition }) {
+  // Highlight variants
+  if (block.type === "highlight") {
+    const variants = [
+      { variant: "default", label: "Default (rouge)" },
+      { variant: "info", label: "Info (bleu)" },
+      { variant: "success", label: "Success (vert)" },
+    ];
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        {variants.map((v) => (
+          <div key={v.variant}>
+            <div style={{
+              fontSize: 11,
+              color: "var(--gris-500)",
+              marginBottom: 8,
+              fontFamily: "'Inter', sans-serif",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+            }}>
+              variant="{v.variant}"
+            </div>
+            <ContentRenderer block={{
+              type: "highlight",
+              text: `Exemple de highlight avec la variante "${v.label}"`,
+              variant: v.variant as "default" | "rouge" | "info" | "success",
+            }} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Checklist variants
+  if (block.type === "checklist") {
+    return (
+      <div style={{ display: "flex", gap: 24 }}>
+        <div style={{ flex: 1 }}>
+          <div style={{
+            fontSize: 11,
+            color: "var(--gris-500)",
+            marginBottom: 8,
+            fontFamily: "'Inter', sans-serif",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}>
+            Sans états cochés
+          </div>
+          <ContentRenderer block={{
+            type: "checklist",
+            items: ["Tâche à faire", "Autre tâche", "Dernière tâche"],
+          }} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{
+            fontSize: 11,
+            color: "var(--gris-500)",
+            marginBottom: 8,
+            fontFamily: "'Inter', sans-serif",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}>
+            Avec états cochés
+          </div>
+          <ContentRenderer block={{
+            type: "checklist",
+            items: ["Tâche terminée", "En cours", "Aussi terminée"],
+            checked: [true, false, true],
+          }} />
+        </div>
+      </div>
+    );
+  }
+
+  // Heading levels
+  if (block.type === "heading") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <div>
+          <div style={{
+            fontSize: 11,
+            color: "var(--gris-500)",
+            marginBottom: 8,
+            fontFamily: "'Inter', sans-serif",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}>
+            level=1 (couverture)
+          </div>
+          <ContentRenderer block={{ type: "heading", level: 1, text: "Titre Principal" }} />
+        </div>
+        <div>
+          <div style={{
+            fontSize: 11,
+            color: "var(--gris-500)",
+            marginBottom: 8,
+            fontFamily: "'Inter', sans-serif",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}>
+            level=2 (section)
+          </div>
+          <ContentRenderer block={{ type: "heading", level: 2, text: "Titre de Section" }} />
+        </div>
+        <div>
+          <div style={{
+            fontSize: 11,
+            color: "var(--gris-500)",
+            marginBottom: 8,
+            fontFamily: "'Inter', sans-serif",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+          }}>
+            level=3 (sous-section)
+          </div>
+          <ContentRenderer block={{ type: "heading", level: 3, text: "Sous-titre" }} />
+        </div>
+      </div>
+    );
+  }
+
+  // Default: just render the example
+  return <ContentRenderer block={block.example} />;
+}
+
 function BlockCard({ block, catColors }: { block: BlockDefinition; catColors: Record<string, string> }) {
 
   return (
@@ -930,7 +1152,7 @@ function BlockCard({ block, catColors }: { block: BlockDefinition; catColors: Re
         {block.isUIComponent ? (
           <UIComponentPreview type={block.type} catColor={catColors[block.category]} />
         ) : (
-          <ContentRenderer block={block.example} />
+          <VariantShowcase block={block} />
         )}
       </div>
 
