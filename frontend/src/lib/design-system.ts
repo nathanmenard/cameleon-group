@@ -3,6 +3,9 @@
  *
  * Ce fichier définit tous les blocs disponibles pour construire des notes stratégiques.
  * Une IA peut utiliser ces définitions pour comprendre et utiliser les composants.
+ *
+ * ORDRE UX: Contenu → Visuels → Données → Layout → UI
+ * Dans chaque catégorie: du plus simple au plus complexe
  */
 
 import { ContentBlock } from "@/types/document";
@@ -24,20 +27,9 @@ export interface BlockDefinition {
 }
 
 export const BLOCK_REGISTRY: BlockDefinition[] = [
-  {
-    type: "paragraph",
-    name: "Paragraphe",
-    description: "Texte simple ou en gras",
-    category: "content",
-    props: [
-      { name: "text", type: "string", required: true, description: "Contenu du paragraphe" },
-      { name: "bold", type: "boolean", required: false, description: "Met tout le texte en gras" },
-    ],
-    example: {
-      type: "paragraph",
-      text: "Ceci est un exemple de paragraphe avec du contenu textuel.",
-    },
-  },
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CONTENU - Blocs de base, les plus utilisés
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     type: "heading",
     name: "Titre",
@@ -51,6 +43,20 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
       type: "heading",
       level: 1,
       text: "Titre Principal",
+    },
+  },
+  {
+    type: "paragraph",
+    name: "Paragraphe",
+    description: "Texte simple ou en gras",
+    category: "content",
+    props: [
+      { name: "text", type: "string", required: true, description: "Contenu du paragraphe" },
+      { name: "bold", type: "boolean", required: false, description: "Met tout le texte en gras" },
+    ],
+    example: {
+      type: "paragraph",
+      text: "Ceci est un exemple de paragraphe avec du contenu textuel.",
     },
   },
   {
@@ -68,30 +74,37 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
     },
   },
   {
-    type: "why-block",
-    name: "Bloc Pourquoi",
-    description: "Analyse cause racine avec symptôme, chaîne de causes et conclusion",
-    category: "visual",
+    type: "checklist",
+    name: "Checklist",
+    description: "Liste de vérification avec états cochés/non cochés",
+    category: "content",
     props: [
-      { name: "num", type: "string", required: true, description: "Numéro du bloc (ex: '1')" },
-      { name: "title", type: "string", required: true, description: "Titre du problème" },
-      { name: "symptom", type: "string", required: true, description: "Symptôme observable" },
-      { name: "causes", type: "{ text: string; indent: number }[]", required: true, description: "Chaîne de causes avec indentation 0-4" },
-      { name: "rootCause", type: "string", required: true, description: "Cause racine identifiée" },
+      { name: "items", type: "string[]", required: true, description: "Éléments à vérifier" },
+      { name: "checked", type: "boolean[]", required: false, description: "État de chaque élément (true = coché)" },
     ],
     example: {
-      type: "why-block",
-      num: "1",
-      title: "La croissance externe est bloquée",
-      symptom: "Chaque acquisition = projet SI de plusieurs mois",
-      causes: [
-        { text: "→ Parce qu'il faut refaire toute la plomberie à chaque fois", indent: 0 },
-        { text: "→ Parce qu'il n'existe pas de tronc commun", indent: 1 },
-        { text: "→ Parce que chaque entité a développé ses propres outils", indent: 2 },
-      ],
-      rootCause: "L'entreprise a priorisé la réactivité sur la cohérence architecturale.",
+      type: "checklist",
+      items: ["Valider le périmètre", "Identifier les parties prenantes", "Définir les KPIs"],
+      checked: [true, true, false],
     },
   },
+  {
+    type: "footnote",
+    name: "Note de bas",
+    description: "Texte secondaire en petit",
+    category: "content",
+    props: [
+      { name: "text", type: "string", required: true, description: "Contenu de la note" },
+    ],
+    example: {
+      type: "footnote",
+      text: "* Ces estimations sont basées sur notre expérience avec des projets similaires.",
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // VISUELS - Mise en valeur et callouts
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     type: "insight",
     name: "Insight",
@@ -136,89 +149,63 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
     },
   },
   {
-    type: "system-map",
-    name: "Cartographie Système",
-    description: "Vue des domaines interconnectés (stratégie, org, client)",
-    category: "data",
-    props: [
-      { name: "blocks", type: "array", required: true, description: "Blocs avec id, title, items[], variant" },
-    ],
-    example: {
-      type: "system-map",
-      blocks: [
-        { id: "strategy", title: "STRATÉGIE", items: ["Vision long terme", "Investissements"], variant: "strategy" as const },
-        { id: "org", title: "ORGANISATION", items: ["Processus", "Équipes"], variant: "org" as const },
-        { id: "client", title: "CLIENT", items: ["Satisfaction", "Fidélisation"], variant: "client" as const },
-      ],
-    },
-  },
-  {
-    type: "zones-grid",
-    name: "Grille de Zones",
-    description: "Zones vert/orange/rouge avec descriptions",
+    type: "commitments",
+    name: "Engagements",
+    description: "Liste d'engagements formels",
     category: "visual",
     props: [
-      { name: "zones", type: "array", required: true, description: "Zones avec title, description, example, variant" },
+      { name: "items", type: "string[]", required: true, description: "Engagements" },
     ],
     example: {
-      type: "zones-grid",
-      zones: [
-        { title: "Zone verte", description: "Liberté totale", example: "Ex: choix des outils locaux", variant: "green" as const },
-        { title: "Zone orange", description: "Cadre souple", example: "Ex: process adaptables", variant: "orange" as const },
-        { title: "Zone rouge", description: "Non négociable", example: "Ex: référentiels communs", variant: "red" as const },
-      ],
+      type: "commitments",
+      items: ["Livraison en 3 mois", "Budget fixe", "Équipe dédiée"],
     },
   },
   {
-    type: "arch-diagram",
-    name: "Diagramme Architecture",
-    description: "Schéma des modules SI avec statuts",
+    type: "why-block",
+    name: "Bloc Pourquoi",
+    description: "Analyse cause racine avec symptôme, chaîne de causes et conclusion",
+    category: "visual",
+    props: [
+      { name: "num", type: "string", required: true, description: "Numéro du bloc (ex: '1')" },
+      { name: "title", type: "string", required: true, description: "Titre du problème" },
+      { name: "symptom", type: "string", required: true, description: "Symptôme observable" },
+      { name: "causes", type: "{ text: string; indent: number }[]", required: true, description: "Chaîne de causes avec indentation 0-4" },
+      { name: "rootCause", type: "string", required: true, description: "Cause racine identifiée" },
+    ],
+    example: {
+      type: "why-block",
+      num: "1",
+      title: "La croissance externe est bloquée",
+      symptom: "Chaque acquisition = projet SI de plusieurs mois",
+      causes: [
+        { text: "→ Parce qu'il faut refaire toute la plomberie à chaque fois", indent: 0 },
+        { text: "→ Parce qu'il n'existe pas de tronc commun", indent: 1 },
+        { text: "→ Parce que chaque entité a développé ses propres outils", indent: 2 },
+      ],
+      rootCause: "L'entreprise a priorisé la réactivité sur la cohérence architecturale.",
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // DONNÉES - Tableaux, diagrammes, visualisation
+  // ═══════════════════════════════════════════════════════════════════════════
+  {
+    type: "table",
+    name: "Tableau",
+    description: "Tableau de données avec en-têtes",
     category: "data",
     props: [
-      { name: "header", type: "{ title: string; description: string }", required: true, description: "En-tête du diagramme" },
-      { name: "modules", type: "array", required: true, description: "Modules avec name, status, variant?" },
+      { name: "headers", type: "string[]", required: true, description: "En-têtes de colonnes" },
+      { name: "rows", type: "array", required: true, description: "Lignes de données (string ou { text, tag? })" },
     ],
     example: {
-      type: "arch-diagram",
-      header: { title: "Architecture cible", description: "Vision à 3 ans" },
-      modules: [
-        { name: "ERP Central", status: "À déployer", variant: "refonte" as const },
-        { name: "CRM", status: "Existant" },
-        { name: "Legacy", status: "À migrer", variant: "nervous" as const },
-      ],
-    },
-  },
-  {
-    type: "tracks",
-    name: "Volets/Chantiers",
-    description: "Présentation de chantiers parallèles",
-    category: "layout",
-    props: [
-      { name: "tracks", type: "array", required: true, description: "Volets avec label, title, team, items[]" },
-    ],
-    example: {
-      type: "tracks",
-      tracks: [
-        { label: "Volet A", title: "Conception", team: "Équipe produit", items: ["Ateliers métier", "Prototypes"] },
-        { label: "Volet B", title: "Quick wins", team: "Équipe tech", items: ["Corrections urgentes", "Stabilisation"] },
-      ],
-    },
-  },
-  {
-    type: "process-flow",
-    name: "Flux de Processus",
-    description: "Étapes d'un processus avec durées",
-    category: "data",
-    props: [
-      { name: "steps", type: "array", required: true, description: "Étapes avec name et duration" },
-    ],
-    example: {
-      type: "process-flow",
-      steps: [
-        { name: "Cadrage", duration: "2 sem" },
-        { name: "Conception", duration: "6 sem" },
-        { name: "Développement", duration: "12 sem" },
-        { name: "Déploiement", duration: "4 sem" },
+      type: "table",
+      headers: ["Module", "État actuel", "Priorité"],
+      rows: [
+        ["ERP", "Legacy", { text: "Haute", tag: "critical" as const }],
+        ["CRM", "Fonctionnel", "Moyenne"],
+        ["RH", "À déployer", "Basse"],
       ],
     },
   },
@@ -240,52 +227,80 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
     },
   },
   {
-    type: "table",
-    name: "Tableau",
-    description: "Tableau de données avec en-têtes",
+    type: "process-flow",
+    name: "Flux Processus",
+    description: "Étapes d'un processus avec durées",
     category: "data",
     props: [
-      { name: "headers", type: "string[]", required: true, description: "En-têtes de colonnes" },
-      { name: "rows", type: "array", required: true, description: "Lignes de données (string ou { text, tag? })" },
+      { name: "steps", type: "array", required: true, description: "Étapes avec name et duration" },
     ],
     example: {
-      type: "table",
-      headers: ["Module", "État actuel", "Priorité"],
-      rows: [
-        ["ERP", "Legacy", { text: "Haute", tag: "critical" as const }],
-        ["CRM", "Fonctionnel", "Moyenne"],
-        ["RH", "À déployer", "Basse"],
+      type: "process-flow",
+      steps: [
+        { name: "Cadrage", duration: "2 sem" },
+        { name: "Conception", duration: "6 sem" },
+        { name: "Développement", duration: "12 sem" },
+        { name: "Déploiement", duration: "4 sem" },
       ],
     },
   },
   {
-    type: "checklist",
-    name: "Checklist",
-    description: "Liste de vérification avec états cochés/non cochés",
-    category: "content",
+    type: "zones-grid",
+    name: "Grille Zones",
+    description: "Zones vert/orange/rouge avec descriptions",
+    category: "data",
     props: [
-      { name: "items", type: "string[]", required: true, description: "Éléments à vérifier" },
-      { name: "checked", type: "boolean[]", required: false, description: "État de chaque élément (true = coché)" },
+      { name: "zones", type: "array", required: true, description: "Zones avec title, description, example, variant" },
     ],
     example: {
-      type: "checklist",
-      items: ["Valider le périmètre", "Identifier les parties prenantes", "Définir les KPIs"],
-      checked: [true, true, false],
+      type: "zones-grid",
+      zones: [
+        { title: "Zone verte", description: "Liberté totale", example: "Ex: choix des outils locaux", variant: "green" as const },
+        { title: "Zone orange", description: "Cadre souple", example: "Ex: process adaptables", variant: "orange" as const },
+        { title: "Zone rouge", description: "Non négociable", example: "Ex: référentiels communs", variant: "red" as const },
+      ],
     },
   },
   {
-    type: "commitments",
-    name: "Engagements",
-    description: "Liste d'engagements formels",
-    category: "content",
+    type: "system-map",
+    name: "Cartographie",
+    description: "Vue des domaines interconnectés (stratégie, org, client)",
+    category: "data",
     props: [
-      { name: "items", type: "string[]", required: true, description: "Engagements" },
+      { name: "blocks", type: "array", required: true, description: "Blocs avec id, title, items[], variant" },
     ],
     example: {
-      type: "commitments",
-      items: ["Livraison en 3 mois", "Budget fixe", "Équipe dédiée"],
+      type: "system-map",
+      blocks: [
+        { id: "strategy", title: "STRATÉGIE", items: ["Vision long terme", "Investissements"], variant: "strategy" as const },
+        { id: "org", title: "ORGANISATION", items: ["Processus", "Équipes"], variant: "org" as const },
+        { id: "client", title: "CLIENT", items: ["Satisfaction", "Fidélisation"], variant: "client" as const },
+      ],
     },
   },
+  {
+    type: "arch-diagram",
+    name: "Architecture",
+    description: "Schéma des modules SI avec statuts",
+    category: "data",
+    props: [
+      { name: "header", type: "{ title: string; description: string }", required: true, description: "En-tête du diagramme" },
+      { name: "modules", type: "array", required: true, description: "Modules avec name, status, variant?" },
+    ],
+    example: {
+      type: "arch-diagram",
+      header: { title: "Architecture cible", description: "Vision à 3 ans" },
+      modules: [
+        { name: "ERP Central", status: "À déployer", variant: "refonte" as const },
+        { name: "CRM", status: "Existant" },
+        { name: "Legacy", status: "À migrer", variant: "nervous" as const },
+      ],
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAYOUT - Organisation de page
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     type: "two-cols",
     name: "Deux Colonnes",
@@ -303,19 +318,25 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
     },
   },
   {
-    type: "footnote",
-    name: "Note de bas de page",
-    description: "Texte secondaire en petit",
-    category: "content",
+    type: "tracks",
+    name: "Chantiers",
+    description: "Présentation de chantiers parallèles",
+    category: "layout",
     props: [
-      { name: "text", type: "string", required: true, description: "Contenu de la note" },
+      { name: "tracks", type: "array", required: true, description: "Volets avec label, title, team, items[]" },
     ],
     example: {
-      type: "footnote",
-      text: "* Ces estimations sont basées sur notre expérience avec des projets similaires.",
+      type: "tracks",
+      tracks: [
+        { label: "Volet A", title: "Conception", team: "Équipe produit", items: ["Ateliers métier", "Prototypes"] },
+        { label: "Volet B", title: "Quick wins", team: "Équipe tech", items: ["Corrections urgentes", "Stabilisation"] },
+      ],
     },
   },
-  // UI Components
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // UI - Composants d'interface
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     type: "logos",
     name: "Logos",
@@ -333,7 +354,7 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
   },
   {
     type: "main-navbar",
-    name: "Navbar Principale",
+    name: "Navbar",
     description: "Barre de navigation fixe avec logos Drakkar et client",
     category: "ui",
     isUIComponent: true,
@@ -350,7 +371,7 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
   },
   {
     type: "progress-bar",
-    name: "Barre de Progression",
+    name: "Progression",
     description: "Indicateur de progression de lecture avec gradient Drakkar",
     category: "ui",
     isUIComponent: true,
@@ -364,7 +385,7 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
   },
   {
     type: "toc-nav",
-    name: "Navigation Sections",
+    name: "Nav Sections",
     description: "Sous-navigation sticky avec liens vers les sections du document",
     category: "ui",
     isUIComponent: true,
@@ -382,7 +403,7 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
   },
   {
     type: "toc-nav-contextual",
-    name: "Navigation Contextuelle",
+    name: "Nav Contextuelle",
     description: "Sous-navigation avec crossfade animation qui change selon le scroll",
     category: "ui",
     isUIComponent: true,
@@ -399,7 +420,7 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
   },
   {
     type: "filter-tabs",
-    name: "Onglets de Filtre",
+    name: "Filtres",
     description: "Tabs pour filtrer du contenu par catégorie",
     category: "ui",
     isUIComponent: true,
