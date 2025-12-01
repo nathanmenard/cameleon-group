@@ -11,7 +11,7 @@ export interface BlockDefinition {
   type: string;
   name: string;
   description: string;
-  category: "content" | "layout" | "data" | "visual";
+  category: "content" | "layout" | "data" | "visual" | "ui";
   props: {
     name: string;
     type: string;
@@ -19,6 +19,8 @@ export interface BlockDefinition {
     description: string;
   }[];
   example: ContentBlock;
+  /** Pour les composants UI qui ne sont pas rendus via ContentRenderer */
+  isUIComponent?: boolean;
 }
 
 export const BLOCK_REGISTRY: BlockDefinition[] = [
@@ -311,6 +313,108 @@ export const BLOCK_REGISTRY: BlockDefinition[] = [
       text: "* Ces estimations sont basées sur notre expérience avec des projets similaires.",
     },
   },
+  // UI Components
+  {
+    type: "logos",
+    name: "Logos",
+    description: "Variantes du logo Drakkar (blanc, noir) pour différents fonds",
+    category: "ui",
+    isUIComponent: true,
+    props: [
+      { name: "variant", type: "'blanc' | 'noir'", required: true, description: "Variante du logo" },
+      { name: "height", type: "number", required: false, description: "Hauteur en pixels (défaut: 22)" },
+    ],
+    example: {
+      type: "logos",
+      variant: "blanc",
+    } as ContentBlock,
+  },
+  {
+    type: "main-navbar",
+    name: "Navbar Principale",
+    description: "Barre de navigation fixe avec logos Drakkar et client",
+    category: "ui",
+    isUIComponent: true,
+    props: [
+      { name: "logoSrc", type: "string", required: true, description: "Logo Drakkar" },
+      { name: "clientLogoSrc", type: "string", required: false, description: "Logo client (optionnel)" },
+      { name: "date", type: "string", required: false, description: "Date ou version affichée" },
+    ],
+    example: {
+      type: "main-navbar",
+      logoSrc: "/logos/logo_drakkar_blanc.png",
+      date: "Novembre 2024",
+    } as ContentBlock,
+  },
+  {
+    type: "progress-bar",
+    name: "Barre de Progression",
+    description: "Indicateur de progression de lecture avec gradient Drakkar",
+    category: "ui",
+    isUIComponent: true,
+    props: [
+      { name: "progress", type: "number", required: true, description: "Progression 0-100" },
+    ],
+    example: {
+      type: "progress-bar",
+      progress: 45,
+    } as ContentBlock,
+  },
+  {
+    type: "toc-nav",
+    name: "Navigation Sections",
+    description: "Sous-navigation sticky avec liens vers les sections du document",
+    category: "ui",
+    isUIComponent: true,
+    props: [
+      { name: "items", type: "TocItem[]", required: true, description: "Sections de navigation" },
+      { name: "activeId", type: "string", required: false, description: "ID de la section active" },
+    ],
+    example: {
+      type: "toc-nav",
+      items: [
+        { id: "intro", num: "1", title: "Introduction" },
+        { id: "analysis", num: "2", title: "Analyse" },
+      ],
+    } as ContentBlock,
+  },
+  {
+    type: "toc-nav-contextual",
+    name: "Navigation Contextuelle",
+    description: "Sous-navigation avec crossfade animation qui change selon le scroll",
+    category: "ui",
+    isUIComponent: true,
+    props: [
+      { name: "sections", type: "TocItem[]", required: true, description: "Sections principales" },
+      { name: "components", type: "BlockDefinition[]", required: true, description: "Composants à afficher" },
+      { name: "categories", type: "Category[]", required: true, description: "Filtres de catégories" },
+      { name: "inBlocksSection", type: "boolean", required: true, description: "État déclenché par scroll" },
+    ],
+    example: {
+      type: "toc-nav-contextual",
+      inBlocksSection: false,
+    } as ContentBlock,
+  },
+  {
+    type: "filter-tabs",
+    name: "Onglets de Filtre",
+    description: "Tabs pour filtrer du contenu par catégorie",
+    category: "ui",
+    isUIComponent: true,
+    props: [
+      { name: "categories", type: "{ id: string; label: string; count: number }[]", required: true, description: "Catégories disponibles" },
+      { name: "active", type: "string", required: true, description: "ID de la catégorie active" },
+      { name: "onChange", type: "(id: string) => void", required: true, description: "Callback au changement" },
+    ],
+    example: {
+      type: "filter-tabs",
+      categories: [
+        { id: "all", label: "Tous", count: 18 },
+        { id: "content", label: "Contenu", count: 6 },
+      ],
+      active: "all",
+    } as ContentBlock,
+  },
 ];
 
 // Catégories pour l'affichage
@@ -319,6 +423,7 @@ export const BLOCK_CATEGORIES = {
   visual: { name: "Visuels", description: "Blocs mis en forme avec style" },
   data: { name: "Données", description: "Tableaux, diagrammes, options" },
   layout: { name: "Mise en page", description: "Organisation du contenu" },
+  ui: { name: "Interface", description: "Composants de navigation et UI" },
 };
 
 // Fonction utilitaire pour obtenir un bloc par type
