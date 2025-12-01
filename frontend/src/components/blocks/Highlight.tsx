@@ -1,4 +1,4 @@
-import { HighlightBlock } from "@/types/document";
+import type { HighlightBlock } from "@/types/document";
 
 interface HighlightProps {
   data: HighlightBlock;

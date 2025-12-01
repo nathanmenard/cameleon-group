@@ -1,4 +1,4 @@
-import { Author, DocumentMeta } from "@/types/document";
+import type { Author, DocumentMeta } from "@/types/document";
 
 interface SignatureProps {
   meta: DocumentMeta;

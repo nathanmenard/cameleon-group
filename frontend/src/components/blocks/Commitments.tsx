@@ -1,4 +1,4 @@
-import { CommitmentsBlock } from "@/types/document";
+import type { CommitmentsBlock } from "@/types/document";
 
 interface CommitmentsProps {
   data: CommitmentsBlock;

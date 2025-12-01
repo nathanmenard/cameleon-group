@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Navbar } from "@/components/strategic-note";
 import { CommentsSidebar, SelectionPopup } from "@/components/comments";
 import type { ClientConfig } from "@/types";

@@ -1,4 +1,4 @@
-import { KeyQuestionBlock } from "@/types/document";
+import type { KeyQuestionBlock } from "@/types/document";
 
 interface KeyQuestionProps {
   data: KeyQuestionBlock;

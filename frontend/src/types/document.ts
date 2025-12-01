@@ -67,7 +67,7 @@ export interface InsightBlock {
 export interface HighlightBlock {
   type: "highlight";
   text: string;
-  variant?: "default" | "rouge";
+  variant?: "default" | "rouge" | "info" | "success";
 }
 
 export interface KeyQuestionBlock {
@@ -158,6 +158,7 @@ export interface TableBlock {
 export interface ChecklistBlock {
   type: "checklist";
   items: string[];
+  checked?: boolean[];
 }
 
 export interface CommitmentsBlock {
@@ -179,6 +180,42 @@ export interface FootnoteBlock {
   text: string;
 }
 
+// UI Component Blocks (for design system)
+export interface LogosBlock {
+  type: "logos";
+  variant: "blanc" | "noir";
+  height?: number;
+}
+
+export interface MainNavbarBlock {
+  type: "main-navbar";
+  logoSrc: string;
+  clientLogoSrc?: string;
+  date?: string;
+}
+
+export interface ProgressBarBlock {
+  type: "progress-bar";
+  progress: number;
+}
+
+export interface TocNavBlock {
+  type: "toc-nav";
+  items: { id: string; num: string; title: string }[];
+  activeId?: string;
+}
+
+export interface TocNavContextualBlock {
+  type: "toc-nav-contextual";
+  inBlocksSection: boolean;
+}
+
+export interface FilterTabsBlock {
+  type: "filter-tabs";
+  categories: { id: string; label: string; count: number }[];
+  active: string;
+}
+
 export type ContentBlock =
   | ParagraphBlock
   | HeadingBlock
@@ -197,7 +234,13 @@ export type ContentBlock =
   | ChecklistBlock
   | CommitmentsBlock
   | TwoColsBlock
-  | FootnoteBlock;
+  | FootnoteBlock
+  | LogosBlock
+  | MainNavbarBlock
+  | ProgressBarBlock
+  | TocNavBlock
+  | TocNavContextualBlock
+  | FilterTabsBlock;
 
 export interface Section {
   id: string;

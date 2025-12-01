@@ -1,4 +1,4 @@
-import { ChecklistBlock } from "@/types/document";
+import type { ChecklistBlock } from "@/types/document";
 
 interface ChecklistProps {
   data: ChecklistBlock;

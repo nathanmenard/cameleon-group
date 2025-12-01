@@ -1,4 +1,4 @@
-import { SystemMapBlock } from "@/types/document";
+import type { SystemMapBlock } from "@/types/document";
 
 interface SystemMapProps {
   data: SystemMapBlock;

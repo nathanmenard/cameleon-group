@@ -1,4 +1,4 @@
-import { InsightBlock } from "@/types/document";
+import type { InsightBlock } from "@/types/document";
 
 interface InsightProps {
   data: InsightBlock;

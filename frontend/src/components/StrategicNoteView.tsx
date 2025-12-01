@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { StrategicNote, TocItem } from "@/types/document";
+import type { StrategicNote, TocItem } from "@/types/document";
 import { Navigation, DocumentHeader, TableOfContents, Section, Signature } from "./sections";
 import { CommentsSidebar } from "./comments";
 import { SelectionPopup } from "./comments/SelectionPopup";
@@ -57,7 +57,7 @@ export function StrategicNoteView({ note, documentId }: StrategicNoteViewProps) 
         <DocumentHeader meta={meta} />
         <TableOfContents items={toc} />
 
-        {sections.map((section, index) => (
+        {sections.map((section, _index) => (
           <Section key={section.id} section={section} />
         ))}
 

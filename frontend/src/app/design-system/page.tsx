@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { BLOCK_REGISTRY, COLORS, TYPOGRAPHY, COLOR_READABILITY, BlockDefinition } from "@/lib/design-system";
+import { BLOCK_REGISTRY, COLORS, TYPOGRAPHY, type BlockDefinition } from "@/lib/design-system";
 import { ContentRenderer } from "@/components/sections/ContentRenderer";
 
 export default function DesignSystemPage() {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui";
+import { Button } from "@/components/Ui";
 
 interface ReplyFormProps {
   onSubmit: (content: string) => Promise<void>;
@@ -41,7 +41,6 @@ export function ReplyForm({ onSubmit, onCancel }: ReplyFormProps) {
           "w-full px-3 py-2 text-sm rounded-lg border border-gris-200 resize-none mb-2",
           "focus:outline-none focus:ring-2 focus:ring-rouge/20 focus:border-rouge"
         )}
-        autoFocus
       />
       <div className="flex gap-2 justify-end">
         <Button type="button" variant="ghost" size="sm" onClick={onCancel}>

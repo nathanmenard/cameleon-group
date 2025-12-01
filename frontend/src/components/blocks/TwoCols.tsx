@@ -1,4 +1,4 @@
-import { TwoColsBlock } from "@/types/document";
+import type { TwoColsBlock } from "@/types/document";
 
 interface TwoColsProps {
   data: TwoColsBlock;

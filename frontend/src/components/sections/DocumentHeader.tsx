@@ -1,4 +1,4 @@
-import { DocumentMeta } from "@/types/document";
+import type { DocumentMeta } from "@/types/document";
 
 interface DocumentHeaderProps {
   meta: DocumentMeta;

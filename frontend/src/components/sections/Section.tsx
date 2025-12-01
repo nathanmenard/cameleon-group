@@ -1,4 +1,4 @@
-import { Section as SectionType } from "@/types/document";
+import type { Section as SectionType } from "@/types/document";
 import { ContentRenderer } from "./ContentRenderer";
 
 interface SectionProps {

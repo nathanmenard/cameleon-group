@@ -1,4 +1,4 @@
-import { WhyBlockData } from "@/types/document";
+import type { WhyBlockData } from "@/types/document";
 
 interface WhyBlockProps {
   data: WhyBlockData;

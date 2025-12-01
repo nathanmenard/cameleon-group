@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui";
+import { Button } from "@/components/Ui";
 import { useCommentsStore } from "@/stores/useCommentsStore";
 import { useUser } from "@/hooks/useUser";
 
@@ -97,7 +97,6 @@ export function NewCommentForm({ onSubmit, onCancel }: NewCommentFormProps) {
             "w-full px-3 py-2 text-sm rounded-lg border border-gris-200 resize-none",
             "focus:outline-none focus:ring-2 focus:ring-rouge/20 focus:border-rouge"
           )}
-          autoFocus={!!user}
         />
       </div>
 

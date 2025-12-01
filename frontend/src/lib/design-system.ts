@@ -8,7 +8,7 @@
  * Dans chaque catégorie: du plus simple au plus complexe
  */
 
-import { ContentBlock } from "@/types/document";
+import type { ContentBlock } from "@/types/document";
 
 export interface BlockDefinition {
   type: string;

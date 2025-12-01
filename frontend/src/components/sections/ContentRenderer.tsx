@@ -1,4 +1,4 @@
-import { ContentBlock } from "@/types/document";
+import type { ContentBlock } from "@/types/document";
 import {
   WhyBlock,
   Insight,

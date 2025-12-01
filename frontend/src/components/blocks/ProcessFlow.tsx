@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { ProcessFlowBlock } from "@/types/document";
+import type { ProcessFlowBlock } from "@/types/document";
 
 interface ProcessFlowProps {
   data: ProcessFlowBlock;

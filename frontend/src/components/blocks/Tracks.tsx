@@ -1,4 +1,4 @@
-import { TracksBlock } from "@/types/document";
+import type { TracksBlock } from "@/types/document";
 
 interface TracksProps {
   data: TracksBlock;

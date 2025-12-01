@@ -1,4 +1,4 @@
-import { TocItem } from "@/types/document";
+import type { TocItem } from "@/types/document";
 
 interface TableOfContentsProps {
   items: TocItem[];

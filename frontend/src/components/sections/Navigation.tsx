@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { TocItem, DocumentMeta } from "@/types/document";
+import type { TocItem, DocumentMeta } from "@/types/document";
 
 interface NavigationProps {
   meta: DocumentMeta;

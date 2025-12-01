@@ -1,4 +1,4 @@
-import { ArchDiagramBlock } from "@/types/document";
+import type { ArchDiagramBlock } from "@/types/document";
 
 interface ArchDiagramProps {
   data: ArchDiagramBlock;

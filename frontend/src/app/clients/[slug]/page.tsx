@@ -1115,7 +1115,7 @@ export default function ClientNotePage() {
               <p>Référentiel unique • Cycle commercial • Pilotage groupe</p>
             </div>
             <div className="arch-connector">
-              <div className="arch-connector-line"></div>
+              <div className="arch-connector-line" />
             </div>
             <div className="arch-modules">
               <div className="arch-module">

@@ -1,4 +1,4 @@
-import { TableBlock } from "@/types/document";
+import type { TableBlock } from "@/types/document";
 
 interface TableProps {
   data: TableBlock;

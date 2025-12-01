@@ -1,4 +1,4 @@
-import { OptionsBlock } from "@/types/document";
+import type { OptionsBlock } from "@/types/document";
 
 interface OptionsProps {
   data: OptionsBlock;

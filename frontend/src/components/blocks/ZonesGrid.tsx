@@ -1,4 +1,4 @@
-import { ZonesGridBlock } from "@/types/document";
+import type { ZonesGridBlock } from "@/types/document";
 
 interface ZonesGridProps {
   data: ZonesGridBlock;
