@@ -134,7 +134,7 @@ export function CommentsSidebar({ documentId }: CommentsSidebarProps) {
       {/* Backdrop (mobile) */}
       <div
         className={cn(
-          "fixed inset-0 bg-black/30 z-40 transition-opacity duration-300 md:hidden",
+          "fixed inset-0 bg-noir/30 z-40 transition-opacity duration-300 md:hidden",
           isSidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         onClick={closeSidebar}

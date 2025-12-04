@@ -109,7 +109,7 @@ export function SelectionPopup() {
         className={cn(
           "flex items-center gap-2 px-3 py-2 rounded-md",
           "text-blanc text-sm font-medium",
-          "hover:bg-white/10 transition-colors"
+          "hover:bg-blanc/10 transition-colors"
         )}
       >
         <span>💬</span>

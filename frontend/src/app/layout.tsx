@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="light">
+    <html lang="fr" className="light" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/png" href="/logos/icon_drk.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

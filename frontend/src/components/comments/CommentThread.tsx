@@ -80,7 +80,7 @@ export function CommentThread({
             </span>
           )}
           {comment.is_resolved && (
-            <span className="text-xs font-semibold uppercase tracking-wide text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">
+            <span className="text-xs font-semibold uppercase tracking-wide text-gris-600 bg-gris-200 px-2 py-0.5 rounded">
               Résolu
             </span>
           )}

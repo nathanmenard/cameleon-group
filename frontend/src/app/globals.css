@@ -160,6 +160,11 @@ li::marker {
   100% { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes popup-in {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.9) translateY(-4px); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    UTILITY CLASSES
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -181,6 +186,10 @@ li::marker {
 
   .animate-fade-in-up {
     animation: fade-in-up 0.5s ease-out;
+  }
+
+  .animate-popup-in {
+    animation: popup-in 0.15s ease-out forwards;
   }
 
   .hide-scrollbar::-webkit-scrollbar {
@@ -1484,6 +1493,77 @@ tr:last-child td {
   .process-step { flex: 1 1 100%; }
   .toc-grid { gap: 0.4rem; }
   .toc-item-text { font-size: 0.8rem; }
+}
+
+/* Selection Popup */
+.selection-popup {
+  position: fixed;
+  z-index: 1000;
+  background: var(--noir);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  padding: 4px;
+  animation: popup-in 0.15s ease-out forwards;
+}
+
+.selection-popup button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: var(--blanc);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.selection-popup button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Comment hint banner */
+.comment-hint {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--noir);
+  color: var(--blanc);
+  padding: 12px 20px;
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fade-in-up 0.5s ease-out;
+}
+
+.comment-hint-icon {
+  font-size: 1.1rem;
+}
+
+.comment-hint-close {
+  background: transparent;
+  border: none;
+  color: var(--gris-400);
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 8px;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.comment-hint-close:hover {
+  color: var(--blanc);
 }
 
 @media print {
