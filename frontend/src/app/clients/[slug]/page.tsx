@@ -2,40 +2,101 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { notFound, useParams } from "next/navigation";
-import { SelectionPopup } from "@/components/comments/SelectionPopup";
-import { CommentsSidebar } from "@/components/comments/CommentsSidebar";
-const DOCUMENT_ID = "cameleon-group-note";
+// Comments disabled for now
+// import { SelectionPopup } from "@/components/comments/SelectionPopup";
+// import { CommentsSidebar } from "@/components/comments/CommentsSidebar";
 
-// TOC items matching original
-const tocItems = [
-  { id: "ambition", num: "1.", title: "Ambition" },
-  { id: "forces", num: "2.", title: "Forces" },
-  { id: "causes", num: "3.", title: "Causes" },
-  { id: "question", num: "4.", title: "Question" },
-  { id: "invariants", num: "5.", title: "Invariants" },
-  { id: "architecture", num: "6.", title: "Architecture" },
-  { id: "drakkar", num: "7.", title: "Drakkar" },
-  { id: "approche", num: "8.", title: "Approche" },
-  { id: "proposition", num: "9.", title: "Proposition" },
-  { id: "apres", num: "10.", title: "Mise en œuvre" },
-  { id: "attentes", num: "11.", title: "Attentes" },
-  { id: "next", num: "12.", title: "Cadrage" },
-];
-
-const tocGridItems = [
-  { id: "ambition", num: "01", title: "Votre ambition" },
-  { id: "forces", num: "02", title: "Vos forces" },
-  { id: "causes", num: "03", title: "Causes profondes" },
-  { id: "question", num: "04", title: "Question centrale" },
-  { id: "invariants", num: "05", title: "Ce qui ne change pas" },
-  { id: "architecture", num: "06", title: "Architecture" },
-  { id: "drakkar", num: "07", title: "Qui on est" },
-  { id: "approche", num: "08", title: "Zones de liberté" },
-  { id: "proposition", num: "09", title: "Notre proposition" },
-  { id: "apres", num: "10", title: "Mise en œuvre" },
-  { id: "attentes", num: "11", title: "Nos attentes" },
-  { id: "next", num: "12", title: "Réunion de cadrage" },
-];
+// Client data configuration
+const clientsData: Record<string, {
+  title: string;
+  subtitle: string;
+  date: string;
+  logo?: string;
+  tocItems: { id: string; num: string; title: string }[];
+  tocGridItems: { id: string; num: string; title: string }[];
+}> = {
+  "cameleon-group": {
+    title: "Cameleon Group",
+    subtitle: "Suite à notre échange du 17 novembre 2025",
+    date: "27 novembre 2025",
+    logo: "/logos/logo_cameleon_group.webp",
+    tocItems: [
+      { id: "ambition", num: "1.", title: "Ambition" },
+      { id: "forces", num: "2.", title: "Forces" },
+      { id: "causes", num: "3.", title: "Causes" },
+      { id: "question", num: "4.", title: "Question" },
+      { id: "invariants", num: "5.", title: "Invariants" },
+      { id: "architecture", num: "6.", title: "Architecture" },
+      { id: "drakkar", num: "7.", title: "Drakkar" },
+      { id: "approche", num: "8.", title: "Approche" },
+      { id: "proposition", num: "9.", title: "Proposition" },
+      { id: "apres", num: "10.", title: "Mise en œuvre" },
+      { id: "attentes", num: "11.", title: "Attentes" },
+      { id: "next", num: "12.", title: "Cadrage" },
+    ],
+    tocGridItems: [
+      { id: "ambition", num: "01", title: "Votre ambition" },
+      { id: "forces", num: "02", title: "Vos forces" },
+      { id: "causes", num: "03", title: "Causes profondes" },
+      { id: "question", num: "04", title: "Question centrale" },
+      { id: "invariants", num: "05", title: "Ce qui ne change pas" },
+      { id: "architecture", num: "06", title: "Architecture" },
+      { id: "drakkar", num: "07", title: "Qui on est" },
+      { id: "approche", num: "08", title: "Zones de liberté" },
+      { id: "proposition", num: "09", title: "Notre proposition" },
+      { id: "apres", num: "10", title: "Mise en œuvre" },
+      { id: "attentes", num: "11", title: "Nos attentes" },
+      { id: "next", num: "12", title: "Réunion de cadrage" },
+    ],
+  },
+  "cronite": {
+    title: "Cronite Group",
+    subtitle: "À l'attention de Pierre Munch, Denis Viard et Édouard Lotthé",
+    date: "08 décembre 2025",
+    tocItems: [
+      { id: "objet", num: "0.", title: "Objet" },
+      { id: "avant-propos", num: "1.", title: "Avant-propos" },
+      { id: "situation", num: "2.", title: "Situation" },
+      { id: "gisement", num: "3.", title: "Gisement" },
+      { id: "ax", num: "4.", title: "AX" },
+      { id: "directus", num: "5.", title: "Directus" },
+      { id: "codir", num: "6.", title: "CODIR" },
+      { id: "inconnus", num: "7.", title: "Inconnus" },
+      { id: "question", num: "8.", title: "Question" },
+      { id: "hypotheses", num: "9.", title: "Hypothèses" },
+      { id: "invariants", num: "10.", title: "Invariants" },
+      { id: "proposition", num: "11.", title: "Proposition" },
+      { id: "approche", num: "12.", title: "Approche" },
+      { id: "apres", num: "13.", title: "Et après" },
+      { id: "drakkar", num: "14.", title: "Drakkar" },
+      { id: "equipe", num: "15.", title: "Équipe" },
+      { id: "attentes", num: "16.", title: "Attentes" },
+      { id: "investissement", num: "17.", title: "Investissement" },
+      { id: "next", num: "18.", title: "Prochaine étape" },
+    ],
+    tocGridItems: [
+      { id: "objet", num: "00", title: "À quoi sert ce document" },
+      { id: "avant-propos", num: "01", title: "Avant-propos" },
+      { id: "situation", num: "02", title: "Votre situation" },
+      { id: "gisement", num: "03", title: "Où est le gisement" },
+      { id: "ax", num: "04", title: "La contrainte AX" },
+      { id: "directus", num: "05", title: "Projet Directus" },
+      { id: "codir", num: "06", title: "L'enjeu CODIR" },
+      { id: "inconnus", num: "07", title: "Ce qu'on ne sait pas" },
+      { id: "question", num: "08", title: "La question clé" },
+      { id: "hypotheses", num: "09", title: "Nos hypothèses" },
+      { id: "invariants", num: "10", title: "Ce qui ne change pas" },
+      { id: "proposition", num: "11", title: "Ce que vous achetez" },
+      { id: "approche", num: "12", title: "L'approche proposée" },
+      { id: "apres", num: "13", title: "Et après ?" },
+      { id: "drakkar", num: "14", title: "Pourquoi Drakkar" },
+      { id: "equipe", num: "15", title: "L'équipe" },
+      { id: "attentes", num: "16", title: "Nos attentes" },
+      { id: "investissement", num: "17", title: "Investissement" },
+      { id: "next", num: "18", title: "Prochaine étape" },
+    ],
+  },
+};
 
 export default function ClientNotePage() {
   const params = useParams();
@@ -48,9 +109,12 @@ export default function ClientNotePage() {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const tocNavInnerRef = useRef<HTMLDivElement>(null);
 
-  if (slug !== "cameleon-group") {
+  const clientData = clientsData[slug];
+  if (!clientData) {
     notFound();
   }
+
+  const { tocItems, tocGridItems } = clientData;
 
   const updateArrows = useCallback(() => {
     const inner = tocNavInnerRef.current;
@@ -165,10 +229,14 @@ export default function ClientNotePage() {
       <nav>
         <a href="#" className="nav-logo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
           <img src="/logos/logo_drakkar_blanc.png" alt="Drakkar" />
-          <span className="nav-collab">×</span>
-          <img src="/logos/logo_cameleon_group.webp" alt="Cameleon Group" className="logo-cameleon" />
+          {clientData.logo && (
+            <>
+              <span className="nav-collab">×</span>
+              <img src={clientData.logo} alt={clientData.title} className="logo-cameleon" />
+            </>
+          )}
         </a>
-        <span className="nav-date">27 novembre 2025</span>
+        <span className="nav-date">{clientData.date}</span>
       </nav>
 
       <div className="progress-bar" id="progress" style={{ width: `${scrollProgress}%` }} />
@@ -188,14 +256,14 @@ export default function ClientNotePage() {
       <main>
         <header className="doc-header">
           <div className="doc-type">Note stratégique</div>
-          <h1 className="doc-title">Cameleon Group</h1>
-          <p className="doc-subtitle">Suite à notre échange du 17 novembre 2025</p>
+          <h1 className="doc-title">{clientData.title}</h1>
+          <p className="doc-subtitle">{clientData.subtitle}</p>
         </header>
 
         <div className="toc" id="tocBlock">
           <div className="toc-header">
             <div className="toc-title">Sommaire</div>
-            <div className="toc-count">12 sections</div>
+            <div className="toc-count">{tocGridItems.length} sections</div>
           </div>
           <div className="toc-grid">
             {tocGridItems.map((item) => (
@@ -207,6 +275,20 @@ export default function ClientNotePage() {
           </div>
         </div>
 
+        {/* Render content based on client */}
+        {slug === "cameleon-group" && <CameleonContent />}
+        {slug === "cronite" && <CroniteContent />}
+      </main>
+
+      {/* Comments disabled for now */}
+    </>
+  );
+}
+
+// Cameleon Group Content Component
+function CameleonContent() {
+  return (
+    <>
         {/* Section 1 */}
         <section id="ambition">
           <div className="section-num">Section 1</div>
@@ -1380,11 +1462,974 @@ export default function ClientNotePage() {
             </div>
           </div>
         </section>
-      </main>
+    </>
+  );
+}
 
-      {/* Comments - Using reusable components */}
-      <SelectionPopup />
-      <CommentsSidebar documentId={DOCUMENT_ID} />
+// Cronite Group Content Component
+function CroniteContent() {
+  return (
+    <>
+      {/* Section 0 - Objet */}
+      <section id="objet">
+        <div className="section-num">Introduction</div>
+        <h2>À quoi sert ce document</h2>
+
+        <p>Vous voulez transformer votre structure de coûts. Passer de 50/50 à 60/40, puis 70/30. Rester compétitifs.</p>
+
+        <p>Une formation IA ne fera pas ça.</p>
+
+        <p>Ce qui le fera : comprendre où passe le temps dans votre chaîne de valeur, identifier les bons chantiers, et embarquer votre CODIR pour qu&apos;ils aient envie de les mener.</p>
+
+        <p>Dans cet ordre, pas dans l&apos;autre.</p>
+
+        <p>Or, vous avez trois propositions sur la table et deux sont probablement des propositions de formations. La nôtre commence par la compréhension de CRONITE. C&apos;est plus long, c&apos;est moins sexy, mais c&apos;est comme ça qu&apos;on passe d&apos;un CODIR qui repart en disant &quot;c&apos;était intéressant&quot; à un CODIR averti et armé d&apos;une roadmap claire pour faire gagner son équipe en performance grâce à l&apos;IA.</p>
+
+        <div className="highlight">
+          <p><strong>Concrètement, ce qu&apos;on propose :</strong> envoyer une équipe pilotée par Thierry, notre expert industriel avec 27 ans d&apos;expérience chez Airbus, épaulé par des profils qui ont accompagné des ETI comme la vôtre dans la transformation qui vous attend. Ensemble, on va interviewer vos équipes, visiter votre usine, cartographier votre chaîne de valeur. Objectif : détecter les quick wins par pôle qui deviendront le cœur de la formation CODIR.</p>
+        </div>
+
+        <p>Proposer une formation sans avoir fait ce travail avant, c&apos;est compter sur la chance pour vous donner ce dont vous avez besoin.</p>
+
+        <p>Les pages qui suivent détaillent notre raisonnement et notre offre. Si cette approche fait sens pour vous, on vous invite à les parcourir. Ensuite, prenons 30 minutes ensemble pour valider ou invalider nos hypothèses et vous permettre de faire votre choix en pleine connaissance de vos options.</p>
+      </section>
+
+      {/* Section 1 - Avant-propos */}
+      <section id="avant-propos">
+        <div className="section-num">Section 1</div>
+        <h2>Avant-propos</h2>
+
+        <p>Ce qui suit repose sur deux échanges de 45 minutes. C&apos;est forcément incomplet, forcément spéculatif.</p>
+
+        <p>On ne prétend pas avoir compris votre entreprise en une heure et demie. On a capté des signaux, formulé des hypothèses, tiré des fils. Certaines de nos lectures sont probablement justes. D&apos;autres sont peut-être à côté de la plaque.</p>
+
+        <div className="insight">
+          <div className="insight-label">Important</div>
+          <p>Cette note n&apos;est pas un diagnostic définitif. C&apos;est une base d&apos;alignement. On veut votre réaction : ce qu&apos;on a vu juste, ce qu&apos;on a mal compris, ce qui manque.</p>
+        </div>
+
+        <p>Si notre lecture vous parle, on avance. Si elle est fausse, dites-le, c&apos;est le moment.</p>
+      </section>
+
+      {/* Section 2 - Situation */}
+      <section id="situation">
+        <div className="section-num">Section 2</div>
+        <h2>Ce qu&apos;on a compris de votre situation</h2>
+
+        <h3>Le contexte stratégique</h3>
+
+        <p>Vous êtes leader sur une niche mondiale, équipements pour fours de traitement thermique et incinération. Alliages haute résistance, R&amp;D propriétaire, nouvel alliage tous les 2-3 ans. Des clients comme Tesla, Mercedes, BYD, Volkswagen.</p>
+
+        <p>Votre modèle économique est intelligent : vous créez un parc installé, puis vous prenez une rente sur le renouvellement. Comme Otis avec les ascenseurs. C&apos;est ce qui génère de la récurrence et de la prévisibilité.</p>
+
+        <p>Cette position, vous l&apos;avez construite par l&apos;excellence technologique. Pas par les coûts.</p>
+
+        <h3>La menace</h3>
+
+        <p>Vos concurrents chinois n&apos;attaquent pas sur la qualité, ils attaquent sur les coûts. Et le gap qualité se réduit chaque année.</p>
+
+        <p>Chez un concurrent chinois, le patron cumule directeur commercial, chef comptable et responsable marketing. Quasiment pas de coûts fixes. Ratio variable/fixe de 70/30.</p>
+
+        <p>Chez Cronite Europe : <strong>50/50</strong>.</p>
+
+        <p>Votre usine chinoise, elle, est déjà à 70/30. La preuve que c&apos;est possible.</p>
+
+        <h3>L&apos;enjeu réel</h3>
+
+        <div className="highlight rouge">
+          <p>Vous ne cherchez pas une formation IA. Vous cherchez à <strong>transformer votre structure de coûts</strong> pour rester compétitifs. L&apos;IA n&apos;est qu&apos;un levier, peut-être le premier levier accessible pour attaquer vos coûts fixes sans restructuration sociale lourde.</p>
+        </div>
+
+        <p>L&apos;objectif que vous avez formulé : passer de 50/50 à 60/40, puis à 70/30.</p>
+
+        <div className="key-question">
+          Question qu&apos;on se pose : le 60/40, c&apos;est à quel horizon ? 2 ans ? 5 ans ? Et qu&apos;est-ce que ça représente en valeur absolue, combien d&apos;ETP équivalent, combien d&apos;euros ?
+        </div>
+      </section>
+
+      {/* Section 3 - Gisement */}
+      <section id="gisement">
+        <div className="section-num">Section 3</div>
+        <h2>Où est le gisement</h2>
+
+        <h3>Ce qu&apos;on sait du flux</h3>
+
+        <p>Sur un cycle de vente de 6 mois, vous passez 2 mois à faire &quot;du papier et des échanges d&apos;intelligence avec le client&quot;. Plus de temps en amont qu&apos;en production (3 semaines).</p>
+
+        <p>Le flux tel qu&apos;on l&apos;a compris :</p>
+
+        <div className="highlight">
+          <p>Consultation → Saisie AX → Offre → Commande (PDF) → Ressaisie AX → Revue contrat → Méthodes → Production → Expédition → Facturation</p>
+        </div>
+
+        <p><strong>C&apos;est là que se trouve le gisement. Pas dans l&apos;usine.</strong></p>
+
+        <h3>Un premier cas concret</h3>
+
+        <p>Denis a évoqué la saisie des commandes depuis les RFQ (Request For Quotation) : aujourd&apos;hui, quand un devis est validé par le client, la commande est ressaisie manuellement dans AX. C&apos;est exactement le type de tâche répétitive, à faible valeur ajoutée, qui peut être automatisée rapidement.</p>
+
+        <div className="insight">
+          <div className="insight-label">Quick win identifié</div>
+          <p>Ce quick win pourrait servir de première démonstration concrète pour le CODIR.</p>
+        </div>
+
+        <h3>Ce qu&apos;on ne sait pas (et qui change tout)</h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Pourquoi c&apos;est clé</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Décomposition du lead time par étape ?</strong></td>
+                <td>On sait que le cycle fait 6 mois, dont 2 mois de &quot;papier&quot;. Mais où exactement ? Sans cette décomposition, on ne sait pas où taper.</td>
+              </tr>
+              <tr>
+                <td><strong>Lead time vs cycle time ?</strong></td>
+                <td>Sur les 6 semaines d&apos;amont, combien de temps réel de travail vs temps où le dossier dort dans une boîte mail ? C&apos;est souvent là que se cachent les vrais gains.</td>
+              </tr>
+              <tr>
+                <td><strong>Où sont les goulots ?</strong></td>
+                <td>Bureau d&apos;études ? Méthodes ? Validation client ? Le goulot dicte le débit. Optimiser ailleurs, c&apos;est du gaspillage.</td>
+              </tr>
+              <tr>
+                <td><strong>Volume de consultations / mois ?</strong></td>
+                <td>Pour dimensionner l&apos;impact. 10 consultations/mois ≠ 200.</td>
+              </tr>
+              <tr>
+                <td><strong>Taux de transformation consultation → commande ?</strong></td>
+                <td>Si c&apos;est 80%, on optimise le flux. Si c&apos;est 20%, on se demande d&apos;abord pourquoi on perd 80% des affaires.</td>
+              </tr>
+              <tr>
+                <td><strong>Mix nouveaux produits vs renouvellement ?</strong></td>
+                <td>Le renouvellement va plus vite. Quel est le ratio ? Ça change la priorité.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Estimation grossière</h3>
+
+        <p>Si on prend les données disponibles :</p>
+
+        <ul>
+          <li>2 mois sur 6 = 33% du cycle en administratif</li>
+          <li>Sur 500 personnes, hypothèse 20% sur des fonctions admin/support = 100 personnes</li>
+          <li>Si on gagne 20% de leur temps = 20 ETP équivalent</li>
+          <li><strong>À 50K€ chargé/an = ~1M€/an de gisement potentiel</strong></li>
+        </ul>
+
+        <div className="insight">
+          <div className="insight-label">À affiner</div>
+          <p>C&apos;est une estimation très grossière. On a besoin de vos vrais chiffres pour affiner.</p>
+        </div>
+      </section>
+
+      {/* Section 4 - AX */}
+      <section id="ax">
+        <div className="section-num">Section 4</div>
+        <h2>La contrainte AX</h2>
+
+        <h3>Pourquoi c&apos;est structurant</h3>
+
+        <p>Tout ce qu&apos;on veut automatiser passe par Dynamics AX 2012. C&apos;est votre colonne vertébrale.</p>
+
+        <p>AX est en fin de vie, plus de support Microsoft, plus de développement. Denis Viard l&apos;a dit clairement : &quot;Il n&apos;est pas question d&apos;aller développer dans AX des modules nouveaux. C&apos;est du travail perdu à moyen terme.&quot;</p>
+
+        <div className="highlight">
+          <p>Décision sage. Mais ça crée une contrainte forte : <strong>on doit travailler AVEC AX, pas DANS AX.</strong></p>
+        </div>
+
+        <h3>Ce que ça implique</h3>
+
+        <p>Toute automatisation qu&apos;on construira devra :</p>
+
+        <ul>
+          <li>Lire les données dans AX (sans le modifier)</li>
+          <li>Traiter à l&apos;extérieur (Directus, n8n, outils IA)</li>
+          <li>Éventuellement réécrire dans AX via les interfaces existantes</li>
+        </ul>
+
+        <p>C&apos;est faisable. C&apos;est d&apos;ailleurs exactement ce que fait le projet Directus/n8n en cours. Mais ça conditionne l&apos;architecture de tout ce qu&apos;on fera ensemble.</p>
+
+        <div className="key-question">
+          Question qu&apos;on se pose : quelles sont les interfaces disponibles sur AX aujourd&apos;hui ? API ? Exports automatisés ? Ou on est sur du fichier Excel manuel ?
+        </div>
+
+        <h3>Le remplacement d&apos;AX</h3>
+
+        <p>Vous avez dit : remplacement prévu dans les 5 ans, pas de décision prise.</p>
+
+        <p>Ce n&apos;est pas le sujet de cette mission. Mais ce qu&apos;on construira ensemble devra être pensé pour survivre à la migration, ou au moins pour ne pas la compliquer.</p>
+      </section>
+
+      {/* Section 5 - Directus */}
+      <section id="directus">
+        <div className="section-num">Section 5</div>
+        <h2>Le projet Directus : votre preuve de concept</h2>
+
+        <p>Denis Viard a lancé un projet de workflow digital pour la revue de contrats clients. Directus + n8n, interfacé avec AX. Livraison prévue fin 2025 / début janvier 2026.</p>
+
+        <h3>Pourquoi ce projet est stratégique</h3>
+
+        <p>Ce n&apos;est pas juste un projet IT. C&apos;est votre <strong>test grandeur nature</strong>.</p>
+
+        <div className="two-cols">
+          <div className="col-card dark">
+            <h4>Si ça marche</h4>
+            <ul>
+              <li>Preuve que la transformation digitale est possible chez Cronite</li>
+              <li>Modèle réplicable pour les autres process</li>
+              <li>Argument concret pour le CODIR : &quot;Regardez, ça fonctionne&quot;</li>
+            </ul>
+          </div>
+          <div className="col-card">
+            <h4>Si ça échoue ou traîne</h4>
+            <ul>
+              <li>Le CODIR dira &quot;vous voyez, ça ne marche pas chez nous&quot;</li>
+              <li>Crédibilité de la transformation entamée avant même de commencer</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>État réel du projet</h3>
+
+        <p>Denis Viard nous a confirmé que le projet sera livré en janvier. Le blocage identifié n&apos;est pas technique mais organisationnel : le responsable méthodes peine à formaliser ses process de manière stable, ce qui génère des allers-retours sur le cahier des charges.</p>
+
+        <div className="insight">
+          <div className="insight-label">Pattern classique</div>
+          <p>50% des projets livrés en retard le sont par manque de disponibilité ou de clarté côté métier, pas par défaillance technique.</p>
+        </div>
+
+        <p><strong>Ce que ça confirme :</strong> la transformation chez Cronite se jouera autant sur l&apos;accompagnement humain que sur les outils.</p>
+
+        <h3>Notre proposition</h3>
+
+        <p>Si ce projet a besoin d&apos;un coup de pouce pour atterrir avant la formation du CODIR, on peut aider. Pas pour le refaire, pour le faire aboutir.</p>
+
+        <div className="highlight rouge">
+          <p><strong>Un quick win visible avant la formation changerait la donne.</strong></p>
+        </div>
+      </section>
+
+      {/* Section 6 - CODIR */}
+      <section id="codir">
+        <div className="section-num">Section 6</div>
+        <h2>L&apos;enjeu CODIR</h2>
+
+        <h3>Ce qu&apos;on a entendu</h3>
+
+        <p>Pierre Munch veut &quot;péter les coûts fixes&quot; via l&apos;IA. L&apos;initiative vient de la direction générale, &quot;il n&apos;y a que ça qui peut fonctionner dans une entreprise&quot;.</p>
+
+        <p>Pierre Munch décrit le CODIR comme &quot;en boule de défense&quot;. Denis Viard nuance : selon lui, les membres du CODIR ne sont pas dans le rejet. Ils sont à l&apos;écoute, mais ont besoin d&apos;être convaincus, ce qui est légitime.</p>
+
+        <p>Édouard Lotthé, le CFO, s&apos;est invité de lui-même au dernier call. Il veut comprendre le sujet.</p>
+
+        <h3>Notre lecture</h3>
+
+        <div className="highlight">
+          <p><strong>Ce ne sont pas des résistants. Ce sont des pragmatiques en attente de preuves.</strong></p>
+        </div>
+
+        <p>Moyenne d&apos;âge ~50+ ans. Des experts métier qui ont construit leur carrière sur le savoir-faire industriel. L&apos;IT a souvent été &quot;un outil qui ne marche jamais bien&quot;. L&apos;IA, c&apos;est encore abstrait.</p>
+
+        <p>Leur demander de s&apos;engager sur quelque chose qu&apos;ils n&apos;ont jamais vu fonctionner dans leur contexte, c&apos;est leur demander un acte de foi. C&apos;est beaucoup.</p>
+
+        <p>Ce qu&apos;il leur faut, ce n&apos;est pas des discours, c&apos;est une démonstration.</p>
+
+        <h3>La vraie question</h3>
+
+        <p>Pas &quot;comment convaincre le CODIR&quot;. Mais :</p>
+
+        <div className="key-question">
+          &quot;Qu&apos;est-ce qui leur fera dire : je veux ça pour mon périmètre ?&quot;
+        </div>
+
+        <p>Hypothèse : des résultats visibles sur leurs vrais irritants. Pas des cas d&apos;usage génériques. Leurs cas à eux.</p>
+
+        <h3>Questions qu&apos;on se pose</h3>
+
+        <ul>
+          <li>Quels sont les irritants quotidiens de chaque membre du CODIR ? Ce qui leur fait perdre du temps, ce qui les frustre ?</li>
+          <li>Y a-t-il des &quot;alliés naturels&quot; dans le CODIR, des gens déjà curieux de ces sujets ?</li>
+          <li>Pierre Munch a mentionné un &quot;passionné IA&quot; au bureau design, exclu de la première formation. Qui d&apos;autre pourrait être un relais ?</li>
+        </ul>
+      </section>
+
+      {/* Section 7 - Inconnus */}
+      <section id="inconnus">
+        <div className="section-num">Section 7</div>
+        <h2>Ce qu&apos;on ne sait pas encore</h2>
+
+        <h3>Sur le business</h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Pourquoi on la pose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>CA groupe et tendance 3 ans ?</strong></td>
+                <td>Pour dimensionner l&apos;enjeu. Et savoir si la pression coûts est urgente ou anticipatoire.</td>
+              </tr>
+              <tr>
+                <td><strong>Marge actuelle et évolution ?</strong></td>
+                <td>Même logique. Si les marges s&apos;érodent, l&apos;urgence n&apos;est pas la même.</td>
+              </tr>
+              <tr>
+                <td><strong>Qui détient Cronite ? Quelle gouvernance ?</strong></td>
+                <td>Pour comprendre les contraintes de décision.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Sur les opérations</h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Pourquoi on la pose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Répartition ETP par fonction ?</strong></td>
+                <td>Combien en bureau d&apos;études ? Méthodes ? ADV ? Compta ? C&apos;est là qu&apos;on voit où sont vraiment les coûts fixes.</td>
+              </tr>
+              <tr>
+                <td><strong>Coût des 2 mois de &quot;papier&quot; en €/an ?</strong></td>
+                <td>Pour quantifier le gisement et calculer un ROI.</td>
+              </tr>
+              <tr>
+                <td><strong>Quels quick wins déjà identifiés ?</strong></td>
+                <td>Pour ne pas réinventer ce qui existe.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Sur l&apos;historique</h3>
+
+        <p><strong>Y a-t-il eu d&apos;autres tentatives de transformation avant ?</strong></p>
+
+        <p>Pour comprendre le track record. Et les cicatrices éventuelles.</p>
+
+        <h3>Ce qui a échoué avec Allegria</h3>
+
+        <p>Allegria proposait une offre packagée à 50K€, sans capacité à personnaliser. Malgré plusieurs tentatives, ils revenaient systématiquement à leur offre standard. Les bons interlocuteurs n&apos;étaient jamais en face.</p>
+
+        <div className="insight">
+          <div className="insight-label">Ce qu&apos;on en retient</div>
+          <p>Cronite a besoin d&apos;un partenaire capable de s&apos;adapter à sa réalité, pas d&apos;un prestataire qui déroule un catalogue.</p>
+        </div>
+      </section>
+
+      {/* Section 8 - Question */}
+      <section id="question">
+        <div className="section-num">Section 8</div>
+        <h2>La question qu&apos;on devra adresser</h2>
+
+        <p>L&apos;IA permet d&apos;avoir un premier jet de tout un tas de choses, ce qui fait gagner du temps. C&apos;est vrai. Mais ça pose une question que personne n&apos;a encore adressée :</p>
+
+        <div className="key-question">
+          Que fait-on du temps gagné ?
+        </div>
+
+        <p>Si l&apos;IA fait gagner 2h par jour à quelqu&apos;un, trois scénarios possibles :</p>
+
+        <ol>
+          <li>La personne fait 2h de plus de travail à valeur ajoutée</li>
+          <li>La personne absorbe 2h de nouvelles tâches (effet rebond)</li>
+          <li>La personne part 2h plus tôt</li>
+        </ol>
+
+        <div className="highlight">
+          <p><strong>Le scénario 1 ne se produit pas naturellement.</strong> Il nécessite une intention managériale.</p>
+        </div>
+
+        <p>Cette question n&apos;est pas technique. Elle est organisationnelle. Si la réponse n&apos;est pas claire avant de lancer les projets d&apos;automatisation, les gains risquent d&apos;être absorbés par l&apos;inertie naturelle des organisations.</p>
+
+        <p>C&apos;est un sujet que la journée CODIR devra traiter frontalement.</p>
+
+        <h3>Une question connexe</h3>
+
+        <p><strong>Qui porte les automatisations après la formation ?</strong></p>
+
+        <p>La DSI ne peut pas construire seule des workflows métier qu&apos;elle ne maîtrise pas. Les métiers ne peuvent pas tout faire seuls sans appui technique. Il faudra définir une organisation hybride : des &quot;champions&quot; métier appuyés par la DSI, ou un binôme structuré.</p>
+
+        <p>C&apos;est un sujet que la journée CODIR devra également adresser.</p>
+      </section>
+
+      {/* Section 9 - Hypothèses */}
+      <section id="hypotheses">
+        <div className="section-num">Section 9</div>
+        <h2>Nos hypothèses (à valider)</h2>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Hypothèse</th>
+                <th>Ce qui nous la confirmerait</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>La pression coûts est urgente, pas juste anticipatoire</strong></td>
+                <td>Tendance marge 3 ans en baisse</td>
+              </tr>
+              <tr>
+                <td><strong>Le CODIR basculera s&apos;il voit des résultats concrets</strong></td>
+                <td>Réactions pendant la formation, on observe</td>
+              </tr>
+              <tr>
+                <td><strong>Le gisement principal est dans les 2 mois de &quot;papier&quot; amont</strong></td>
+                <td>Immersion terrain, chronométrer les tâches</td>
+              </tr>
+              <tr>
+                <td><strong>Le projet Directus est sur les rails</strong></td>
+                <td>État réel du projet, blocages identifiés</td>
+              </tr>
+              <tr>
+                <td><strong>AX est une contrainte mais pas un blocage</strong></td>
+                <td>Interfaces disponibles pour automatiser autour</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Section 10 - Invariants */}
+      <section id="invariants">
+        <div className="section-num">Section 10</div>
+        <h2>Ce qui ne doit pas changer</h2>
+
+        <p>Toute intervention qui ignorerait vos fondamentaux serait vouée à l&apos;échec.</p>
+
+        <div className="two-cols">
+          <div className="col-card dark">
+            <h4>Ce qui fait votre force (on n&apos;y touche pas)</h4>
+            <ul>
+              <li>Excellence technologique (R&amp;D, innovation)</li>
+              <li>Positionnement premium</li>
+              <li>Culture industrielle, expertise métier</li>
+              <li>Modèle de rente (parc + renouvellement)</li>
+            </ul>
+          </div>
+          <div className="col-card">
+            <h4>Ce qu&apos;on peut transformer</h4>
+            <ul>
+              <li>Productivité des process amont</li>
+              <li>Capacité à gagner les nouvelles affaires sur le prix</li>
+              <li>Perception de l&apos;IA (abstrait → outil concret)</li>
+              <li>Efficience du cycle commercial</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 11 - Proposition */}
+      <section id="proposition">
+        <div className="section-num">Section 11</div>
+        <h2>Ce que vous achetez vraiment</h2>
+
+        <p>Pas une formation.</p>
+
+        <p>Un <strong>premier pas concret</strong> dans une transformation décidée au plus haut niveau.</p>
+
+        <p>Denis Viard l&apos;a formulé clairement : &quot;Ce qu&apos;on veut obtenir à la fin de cette formation, c&apos;est qu&apos;on voie des paillettes dans leurs yeux.&quot;</p>
+
+        <div className="highlight rouge">
+          <p>Traduction : il faut que le CODIR reparte en se disant &quot;je veux ça pour mon périmètre&quot;, pas &quot;c&apos;était intéressant&quot;.</p>
+        </div>
+
+        <p>Notre mission n&apos;est pas de transmettre des connaissances. C&apos;est de <strong>créer une expérience qui donne envie d&apos;aller plus loin.</strong></p>
+      </section>
+
+      {/* Section 12 - Approche */}
+      <section id="approche">
+        <div className="section-num">Section 12</div>
+        <h2>L&apos;approche proposée</h2>
+
+        <h3>Principe</h3>
+
+        <p>Une formation &quot;froide&quot;, où on débarque sans connaître les gens ni leur réalité, a peu de chances de fonctionner. Pour que le CODIR accroche, il faut que les cas d&apos;usage soient les leurs, pas des exemples génériques.</p>
+
+        <p>Ça demande du travail en amont.</p>
+
+        <h3>Phase 1 : Immersion (avant la formation)</h3>
+
+        <p><strong>Entretiens individuels</strong>, 45 min par membre du CODIR</p>
+        <ul>
+          <li>Objectif : comprendre leur quotidien, leurs irritants, leur perception de l&apos;IA</li>
+          <li>Ce qu&apos;ils passent du temps à faire, ce qui les frustre</li>
+          <li>Identifier un cas d&apos;usage concret pour chacun</li>
+        </ul>
+
+        <p><strong>Cartographie SI</strong>, 1h visio avec Denis Viard</p>
+        <ul>
+          <li>État des outils, interconnexions, projets en cours</li>
+          <li>Interfaces AX disponibles</li>
+          <li>Projet Directus : où en est-on vraiment ?</li>
+        </ul>
+
+        <p><strong>Immersion terrain</strong>, ½ journée sur site</p>
+        <ul>
+          <li>Observer les process réels, pas les process théoriques</li>
+          <li>Chronométrer : où passe vraiment le temps ?</li>
+          <li>Identifier les quick wins</li>
+        </ul>
+
+        <h3>Phase 2 : Formation CODIR (1 jour)</h3>
+
+        <p><strong>Dates pressenties :</strong> 18-19 ou 19-20 février (à confirmer). Le CODIR a déjà bloqué ces créneaux.</p>
+
+        <p><strong>Pourquoi 1 jour et pas 2 :</strong></p>
+        <ul>
+          <li>On teste la dynamique avant d&apos;aller plus loin</li>
+          <li>Si ça prend, on programme un J2 avec les cas d&apos;usage identifiés</li>
+          <li>Si ça ne prend pas, on n&apos;a pas tout cramé</li>
+        </ul>
+
+        <h3>Le programme</h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Bloc</th>
+                <th>Contenu</th>
+                <th>Objectif</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Matin</strong></td>
+                <td>L&apos;IA dans l&apos;industrie : ce qui marche, ce qui ne marche pas</td>
+                <td>Sortir des fantasmes et des peurs</td>
+              </tr>
+              <tr>
+                <td><strong>Matin</strong></td>
+                <td>Vos cas d&apos;usage : sur données réelles Cronite</td>
+                <td>Prouver que c&apos;est applicable ici</td>
+              </tr>
+              <tr>
+                <td><strong>Après-midi</strong></td>
+                <td>Prise en main des outils (chacun sur son laptop)</td>
+                <td>Démystifier par la pratique</td>
+              </tr>
+              <tr>
+                <td><strong>Après-midi</strong></td>
+                <td>Construction d&apos;une première automatisation simple</td>
+                <td>Créer le &quot;je peux le faire&quot;</td>
+              </tr>
+              <tr>
+                <td><strong>Fin de journée</strong></td>
+                <td>Quick wins identifiés + décision Go/No-Go pour J2</td>
+                <td>Transformer l&apos;intention en action</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Ce que vous aurez à l&apos;issue</h3>
+
+        <ul>
+          <li>Un CODIR qui a touché, testé, compris</li>
+          <li>Une première liste de cas d&apos;usage priorisés</li>
+          <li>Une décision claire : on continue ou pas</li>
+        </ul>
+
+        <h3>Phase 3 : Ancrage (après la formation)</h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Délai</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>J+7</strong></td>
+                <td>Synthèse écrite, ce qui a émergé, priorisation</td>
+              </tr>
+              <tr>
+                <td><strong>J+30</strong></td>
+                <td>Call de suivi, où en sont les initiatives lancées ? qu&apos;est-ce qui bloque ?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Section 13 - Et après */}
+      <section id="apres">
+        <div className="section-num">Section 13</div>
+        <h2>Et après ?</h2>
+
+        <p>Pierre Munch l&apos;a dit clairement : &quot;L&apos;objectif après, c&apos;est de faire une deuxième formation et de prendre l&apos;élément élargi en dessous du comité de direction. Ça sera au comité de direction de dire qui doit être formé.&quot;</p>
+
+        <h3>Le scénario si ça prend</h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Horizon</th>
+                <th>Ce qui se passe</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Après J1</strong></td>
+                <td>Le CODIR identifie qui doit être formé dans leurs équipes</td>
+              </tr>
+              <tr>
+                <td><strong>1-3 mois</strong></td>
+                <td>Formation J2 : équipes élargies (managers terrain, DSI)</td>
+              </tr>
+              <tr>
+                <td><strong>3-6 mois</strong></td>
+                <td>Premiers projets d&apos;automatisation lancés (les quick wins identifiés)</td>
+              </tr>
+              <tr>
+                <td><strong>6-12 mois</strong></td>
+                <td>Projet Directus déployé, premiers gains mesurables</td>
+              </tr>
+              <tr>
+                <td><strong>12-24 mois</strong></td>
+                <td>Ratio 60/40 en vue</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Le scénario si ça ne prend pas</h3>
+
+        <p>Si après la formation, le CODIR reste en attente, si on ne voit pas les paillettes, on fait le point honnêtement :</p>
+
+        <ul>
+          <li>Qu&apos;est-ce qui n&apos;a pas fonctionné ?</li>
+          <li>Est-ce le format ? Le contenu ? Le timing ?</li>
+          <li>Faut-il une autre approche ou faut-il attendre ?</li>
+        </ul>
+
+        <p>On ne vous poussera pas à continuer si les conditions ne sont pas réunies.</p>
+
+        <h3>Ce qu&apos;on ne fera pas</h3>
+
+        <ul>
+          <li>Vous vendre des jours de consulting sans fin</li>
+          <li>Créer de la dépendance</li>
+          <li>Faire à votre place ce que vos équipes peuvent apprendre à faire</li>
+        </ul>
+
+        <p><strong>L&apos;objectif, c&apos;est l&apos;autonomie.</strong> Qu&apos;à terme, Denis Viard et son équipe puissent piloter la transformation sans nous.</p>
+      </section>
+
+      {/* Section 14 - Drakkar */}
+      <section id="drakkar">
+        <div className="section-num">Section 14</div>
+        <h2>Pourquoi Drakkar</h2>
+
+        <h3>Notre positionnement</h3>
+
+        <p>Drakkar est un collectif de 23 personnes, autofinancé depuis 2020. On fait de la transformation digitale pour des PME et ETI, principalement industrielles.</p>
+
+        <p>Notre particularité : on ne sépare pas le conseil de l&apos;exécution. On pense et on fait. Ça évite les slides qui finissent dans un tiroir.</p>
+
+        <h3>Trois pôles d&apos;intervention</h3>
+
+        <ul>
+          <li><strong>Drakkar Studio :</strong> Développement sur-mesure. Web, mobile, API. Quand il faut construire quelque chose qui n&apos;existe pas sur étagère.</li>
+          <li><strong>Drakkar Accélérateur :</strong> Déploiement et optimisation ERP (Odoo). Process, flux, automatisation.</li>
+          <li><strong>Drakkar IA :</strong> Déploiement stratégique d&apos;IA en entreprise. Pas des POC qui restent dans un coin. Des usages qui tiennent, adoptés par les équipes.</li>
+        </ul>
+
+        <h3>Deux expertises transverses</h3>
+
+        <p><strong>Conseil &amp; Stratégie</strong> : Diagnostic, feuille de route, arbitrages technologiques.</p>
+
+        <p><strong>Conduite du changement</strong> : Former, embarquer, ancrer. La meilleure solution technique ne sert à rien si personne ne l&apos;utilise.</p>
+
+        <h3>Ce qu&apos;on n&apos;est pas</h3>
+
+        <p>On n&apos;est pas un cabinet de conseil qui déroule des frameworks sans mettre les mains dedans. On n&apos;est pas une ESN qui vend des jours-homme. On n&apos;est pas un organisme de formation qui récite des slides.</p>
+
+        <div className="insight">
+          <div className="insight-label">Pourquoi c&apos;est pertinent</div>
+          <p>Un de nos associés est encore en poste chez Airbus. Ce n&apos;est pas un hasard : on croit qu&apos;on ne peut pas transformer ce qu&apos;on ne comprend pas de l&apos;intérieur.</p>
+        </div>
+      </section>
+
+      {/* Section 15 - Équipe */}
+      <section id="equipe">
+        <div className="section-num">Section 15</div>
+        <h2>L&apos;équipe sur cette mission</h2>
+
+        <h3>Qui</h3>
+
+        <p><strong>Nathan Ménard, CEO, 26 ans</strong> — Double champion d&apos;Europe et n°1 mondial en roller slalom. A fondé Drakkar à 20 ans. Triple casquette tech / stratégie / sales &amp; marketing. Six ans à confronter les promesses IA au réel.</p>
+
+        <p><strong>Thierry Ménard, Associé, 53 ans</strong> — 27 ans chez Airbus, toujours en poste. De technicien à Senior Industrial Architect, en charge du développement du futur A320. Expert en efficience industrielle, ayant augmenté la cadence de production de +25% sur un an grâce au déploiement LEAN.</p>
+
+        <p><strong>Teddy Thierry, Directeur de projet, 30 ans</strong> — Ancien équipe de France de roller slalom. Autodidacte, expertise en conduite du changement construite sur le terrain.</p>
+
+        <p><strong>Jean Le Tulzo, Co-fondateur &amp; associé, 38 ans</strong> — Ancien analyste financier. A piloté la transformation complète d&apos;une entreprise de 30 ans. Sait parler aux CFO.</p>
+
+        <p><strong>Matthis Ruel, Product Manager, 25 ans</strong> — Le lien entre tech et métier. Lead sur un projet Drakkar passé de 0 à 5M€ de valorisation.</p>
+
+        <h3>Qui fait quoi</h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Phase</th>
+                <th>Qui</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cadrage initial</strong></td>
+                <td>Nathan</td>
+              </tr>
+              <tr>
+                <td><strong>Entretiens CODIR</strong></td>
+                <td>Nathan + Thierry</td>
+              </tr>
+              <tr>
+                <td><strong>Entretien Direction Financière</strong></td>
+                <td>Thierry + Jean</td>
+              </tr>
+              <tr>
+                <td><strong>Immersion terrain</strong></td>
+                <td>Thierry + Teddy</td>
+              </tr>
+              <tr>
+                <td><strong>Cartographie SI</strong></td>
+                <td>Nathan + Matthis</td>
+              </tr>
+              <tr>
+                <td><strong>Journée CODIR</strong></td>
+                <td>Nathan + Thierry + Teddy</td>
+              </tr>
+              <tr>
+                <td><strong>Suivi</strong></td>
+                <td>Thierry + Teddy</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Pourquoi cette composition pour Cronite</h3>
+
+        <p>Votre CODIR est composé d&apos;industriels expérimentés. Ils ont vu passer des consultants. Ils savent reconnaître ceux qui n&apos;ont jamais mis les pieds dans une usine.</p>
+
+        <p><strong>Thierry</strong> a passé 27 ans chez Airbus. Il ne parlera pas de &quot;transformation digitale&quot;, il parlera process, temps cycle, goulots, gaspillages. C&apos;est votre langue.</p>
+
+        <p><strong>Jean</strong> interviendra spécifiquement sur l&apos;entretien Direction Financière. Un ancien analyste face à un CFO : même langage.</p>
+      </section>
+
+      {/* Section 16 - Attentes */}
+      <section id="attentes">
+        <div className="section-num">Section 16</div>
+        <h2>Ce qu&apos;on attend de vous</h2>
+
+        <p>La transformation, c&apos;est 50% nous, 50% vous.</p>
+
+        <div className="commitments">
+          <ul>
+            <li><strong>Disponibilité des membres du CODIR</strong> : 45 min par personne pour les entretiens, pas entre deux réunions</li>
+            <li><strong>Accès terrain</strong> : pouvoir observer les vrais process, pas une version aseptisée</li>
+            <li><strong>Accès aux données</strong> : volumétrie, temps cycle, ce qu&apos;on peut partager</li>
+            <li><strong>Sponsor visible</strong> : Pierre Munch présent aux moments clés</li>
+            <li><strong>Décisions tranchées</strong> : quand on pose une question, une réponse</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Section 17 - Investissement */}
+      <section id="investissement">
+        <div className="section-num">Section 17</div>
+        <h2>Investissement</h2>
+
+        <p>Vous nous avez dit que vous négocieriez. On a anticipé.</p>
+
+        <h3>Ce qu&apos;on investit</h3>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Personne</th>
+                <th>Activité</th>
+                <th>Temps estimé</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Nathan Ménard</strong></td>
+                <td>Pilotage, entretiens, SI, formation J1</td>
+                <td>~15h</td>
+              </tr>
+              <tr>
+                <td><strong>Thierry Ménard</strong></td>
+                <td>Entretiens, immersion terrain, formation J1</td>
+                <td>~14h</td>
+              </tr>
+              <tr>
+                <td><strong>Jean Le Tulzo</strong></td>
+                <td>Entretien Direction Financière</td>
+                <td>1h</td>
+              </tr>
+              <tr>
+                <td><strong>Teddy Thierry</strong></td>
+                <td>Coordination, retraitement entretiens</td>
+                <td>~12h</td>
+              </tr>
+              <tr>
+                <td><strong>Matthis Ruel</strong></td>
+                <td>Cartographie SI</td>
+                <td>2h</td>
+              </tr>
+              <tr>
+                <td colSpan={2}><strong>Total</strong></td>
+                <td><strong>~44h</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Ce qu&apos;on vous facture</h3>
+
+        <p><strong>Phase 1 (Immersion + Formation J1)</strong></p>
+
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Poste</th>
+                <th>Montant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Préparation (entretiens, immersion, cartographie)</td>
+                <td>Inclus</td>
+              </tr>
+              <tr>
+                <td>Formation 1 jour CODIR</td>
+                <td>Inclus</td>
+              </tr>
+              <tr>
+                <td>Suivi (restitution + call J+30)</td>
+                <td>Inclus</td>
+              </tr>
+              <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>9 000€ HT</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><em>Option Qualiopi (Drakkar Académie) : 10 000€ HT</em></p>
+        <p><em>Frais de déplacement facturés au réel.</em></p>
+
+        <h3>Phase 2 (optionnel, après validation J1)</h3>
+
+        <p>À définir ensemble après le J1.</p>
+
+        <h3>Pourquoi ce prix</h3>
+
+        <p>Nathan facture ses conférences IA 10 000€ l&apos;intervention. Thierry est Senior Industrial Architect chez Airbus. Ce ne sont pas des consultants juniors.</p>
+
+        <div className="insight">
+          <div className="insight-label">Notre logique</div>
+          <p>C&apos;est un investissement dans une relation, pas une prestation isolée. On sait que si ça se passe bien, on travaillera ensemble sur la durée.</p>
+        </div>
+      </section>
+
+      {/* Section 18 - Prochaine étape */}
+      <section id="next">
+        <div className="section-num">Section 18</div>
+        <h2>Prochaine étape</h2>
+
+        <p>Si cette lecture vous parle, passons à l&apos;étape suivante.</p>
+
+        <div className="highlight">
+          <p><strong>Réunion de cadrage</strong>, 1h</p>
+          <ul style={{ marginBottom: 0 }}>
+            <li>Valider le diagnostic (ce qu&apos;on a vu juste, ce qu&apos;on a raté)</li>
+            <li>Répondre aux questions ouvertes</li>
+            <li>Caler le planning des entretiens</li>
+            <li>Go / No-Go</li>
+          </ul>
+        </div>
+
+        <p><strong>On attend votre retour.</strong></p>
+
+        <div className="signature">
+          <div className="signature-header">
+            <div className="signature-meta">
+              <div className="signature-company">Drakkar Group</div>
+              <div className="signature-date">08 décembre 2025</div>
+            </div>
+            <div className="signature-logo">
+              <img src="/logos/logo_drakkar_noir.png" alt="Drakkar" />
+            </div>
+          </div>
+
+          <div className="authors">
+            <div className="author">
+              <img src="/photos/nathan.jpg" alt="Nathan Menard" className="author-photo" />
+              <div className="author-info">
+                <div className="author-name">Nathan Menard</div>
+                <div className="author-role">CEO &amp; co-fondateur</div>
+                <div className="author-contact">
+                  <a href="mailto:nathan.menard@drakkar.io">nathan.menard@drakkar.io</a>
+                  <a href="tel:+33651201858">+33 6 51 20 18 58</a>
+                </div>
+              </div>
+            </div>
+            <div className="author">
+              <img src="/photos/teddy.jpg" alt="Teddy Thierry" className="author-photo" />
+              <div className="author-info">
+                <div className="author-name">Teddy Thierry</div>
+                <div className="author-role">Responsable commercial</div>
+                <div className="author-contact">
+                  <a href="mailto:teddy.thierry@drakkar.io">teddy.thierry@drakkar.io</a>
+                  <a href="tel:+33756288261">+33 7 56 28 82 61</a>
+                </div>
+              </div>
+            </div>
+            <div className="author">
+              <img src="/photos/thierry.jpg" alt="Thierry Menard" className="author-photo" />
+              <div className="author-info">
+                <div className="author-name">Thierry Menard</div>
+                <div className="author-role">Associé, Expert industriel</div>
+                <div className="author-contact">
+                  <a href="mailto:thierry.menard@drakkar.io">thierry.menard@drakkar.io</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }
