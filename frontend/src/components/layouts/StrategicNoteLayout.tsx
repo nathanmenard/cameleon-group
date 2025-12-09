@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { Navbar } from "@/components/strategic-note";
-import { CommentsSidebar, SelectionPopup } from "@/components/comments";
+import { CommentsSidebar, CommentLayer, SelectionHandles } from "@/components/comments";
 import type { ClientConfig } from "@/types";
 
 interface StrategicNoteLayoutProps {
@@ -19,7 +19,8 @@ export function StrategicNoteLayout({
       <Navbar client={client} />
       <main className="pt-16">{children}</main>
       <CommentsSidebar documentId={client.documentId} />
-      <SelectionPopup />
+      <CommentLayer />
+      <SelectionHandles />
     </div>
   );
 }

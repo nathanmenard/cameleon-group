@@ -6,7 +6,33 @@ import type {
   CommentsListResponse,
 } from "@/types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002";
+
+// Auth types
+export interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  is_admin: boolean;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  message: string;
+  user: User;
+}
+
+export interface TrackVisitData {
+  screen_resolution?: string;
+  device_memory?: number;
+  cpu_cores?: number;
+  is_touch?: boolean;
+}
 
 class ApiClient {
   private baseUrl: string;
@@ -22,6 +48,7 @@ class ApiClient {
     const url = `${this.baseUrl}${endpoint}`;
     const response = await fetch(url, {
       ...options,
+      credentials: "include", // Important for cookies
       headers: {
         "Content-Type": "application/json",
         ...options.headers,
@@ -34,6 +61,52 @@ class ApiClient {
     }
 
     return response.json();
+  }
+
+  // Auth API - use Next.js proxy to avoid CORS issues
+  async login(data: LoginRequest): Promise<LoginResponse> {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.detail || `Login failed: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async logout(): Promise<{ message: string }> {
+    return this.request("/auth/logout", {
+      method: "POST",
+    });
+  }
+
+  async me(): Promise<User> {
+    const response = await fetch("/api/auth/me", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Not authenticated");
+    }
+
+    return response.json();
+  }
+
+  // Analytics API
+  async trackVisit(slug: string, data?: TrackVisitData): Promise<void> {
+    await fetch(`${this.baseUrl}/analytics/track/${slug}`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: data ? JSON.stringify(data) : undefined,
+    });
   }
 
   // Comments API

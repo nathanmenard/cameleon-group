@@ -2,7 +2,6 @@
 
 from typing import Annotated
 
-from litestar import Request
 from litestar.exceptions import HTTPException, NotFoundException
 from litestar.params import Parameter
 
@@ -16,17 +15,33 @@ from schemas.comment import (
 )
 
 
+def build_comment_response(row: dict, author_token: str | None, replies: list = None) -> CommentResponse:
+    """Build a CommentResponse from a database row."""
+    return CommentResponse(
+        id=row["id"],
+        document_id=row["document_id"],
+        section_id=row["section_id"],
+        author_name=row["author_name"],
+        selected_text=row["selected_text"],
+        text_offset=row["text_offset"],
+        content=row["content"],
+        parent_id=row["parent_id"],
+        is_resolved=row["is_resolved"],
+        is_internal=row["is_internal"],
+        is_owner=author_token is not None and row["author_token"] == author_token,
+        replies=replies or [],
+        created_at=row["created_at"],
+        updated_at=row["updated_at"],
+    )
+
+
 async def list_comments(
     document_id: Annotated[str, Parameter(query="document_id")],
-    section_id: Annotated[str | None, Parameter(query="section_id")] = None,
     author_token: Annotated[str | None, Parameter(query="token")] = None,
     include_internal: Annotated[bool, Parameter(query="include_internal")] = False,
 ) -> CommentsListResponse:
-    """Get all comments for a document, optionally filtered by section."""
+    """Get all comments for a document, organized by threads."""
     query = Comment.select().where(Comment.document_id == document_id)
-
-    if section_id:
-        query = query.where(Comment.section_id == section_id)
 
     # Only include internal comments if explicitly requested
     if not include_internal:
@@ -35,41 +50,40 @@ async def list_comments(
     query = query.order_by(Comment.created_at, ascending=True)
     rows = await query.run()
 
-    comments = [
-        CommentResponse(
-            id=row["id"],
-            document_id=row["document_id"],
-            section_id=row["section_id"],
-            author_name=row["author_name"],
-            content=row["content"],
-            emoji=row["emoji"],
-            is_internal=row["is_internal"],
-            is_owner=author_token is not None and row["author_token"] == author_token,
-            created_at=row["created_at"],
-            updated_at=row["updated_at"],
-        )
-        for row in rows
-    ]
+    # Organize into threads (parent comments with their replies)
+    comments_by_id = {}
+    root_comments = []
 
-    return CommentsListResponse(comments=comments, count=len(comments))
+    for row in rows:
+        comment = build_comment_response(row, author_token, replies=[])
+        comments_by_id[row["id"]] = comment
+
+        if row["parent_id"] is None:
+            root_comments.append(comment)
+
+    # Attach replies to parents
+    for row in rows:
+        if row["parent_id"] is not None and row["parent_id"] in comments_by_id:
+            parent = comments_by_id[row["parent_id"]]
+            parent.replies.append(comments_by_id[row["id"]])
+
+    # Sort root comments by text_offset (position in document)
+    root_comments.sort(key=lambda c: (c.section_id, c.text_offset or 0, c.created_at))
+
+    return CommentsListResponse(comments=root_comments, count=len(root_comments))
 
 
 async def create_comment(data: CommentCreate) -> CommentResponse:
-    """Create a new comment or reaction."""
-    # Validate: must have either content or emoji
-    if not data.content and not data.emoji:
-        raise HTTPException(
-            status_code=400,
-            detail="Un commentaire doit contenir du texte ou un emoji",
-        )
-
+    """Create a new comment."""
     comment = Comment(
         document_id=data.document_id,
         section_id=data.section_id,
         author_name=data.author_name,
         author_token=data.author_token,
+        selected_text=data.selected_text,
+        text_offset=data.text_offset,
         content=data.content,
-        emoji=data.emoji,
+        parent_id=data.parent_id,
         is_internal=data.is_internal,
     )
     await comment.save().run()
@@ -79,10 +93,14 @@ async def create_comment(data: CommentCreate) -> CommentResponse:
         document_id=comment.document_id,
         section_id=comment.section_id,
         author_name=comment.author_name,
+        selected_text=comment.selected_text,
+        text_offset=comment.text_offset,
         content=comment.content,
-        emoji=comment.emoji,
+        parent_id=comment.parent_id,
+        is_resolved=comment.is_resolved,
         is_internal=comment.is_internal,
         is_owner=True,
+        replies=[],
         created_at=comment.created_at,
         updated_at=comment.updated_at,
     )
@@ -107,10 +125,10 @@ async def update_comment(
     # Update fields if provided
     if data.content is not None:
         comment.content = data.content
-    if data.emoji is not None:
-        comment.emoji = data.emoji
-    if data.is_internal is not None:
-        comment.is_internal = data.is_internal
+    if data.selected_text is not None:
+        comment.selected_text = data.selected_text
+    if data.is_resolved is not None:
+        comment.is_resolved = data.is_resolved
 
     await comment.save().run()
 
@@ -119,10 +137,14 @@ async def update_comment(
         document_id=comment.document_id,
         section_id=comment.section_id,
         author_name=comment.author_name,
+        selected_text=comment.selected_text,
+        text_offset=comment.text_offset,
         content=comment.content,
-        emoji=comment.emoji,
+        parent_id=comment.parent_id,
+        is_resolved=comment.is_resolved,
         is_internal=comment.is_internal,
         is_owner=True,
+        replies=[],
         created_at=comment.created_at,
         updated_at=comment.updated_at,
     )

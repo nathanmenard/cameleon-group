@@ -18,8 +18,8 @@ export function Signature({ meta }: SignatureProps) {
       </div>
 
       <div className="authors">
-        {meta.authors.map((author, index) => (
-          <AuthorCard key={index} author={author} />
+        {meta.authors.map((author) => (
+          <AuthorCard key={author.email} author={author} />
         ))}
       </div>
     </div>

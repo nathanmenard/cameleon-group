@@ -1,0 +1,11 @@
+# Bloquer tous les robots sur les pages clients et admin
+User-agent: *
+Disallow: /clients/
+Disallow: /admin/
+Disallow: /api/
+
+# Bloquer les pages de login
+Disallow: /login
+
+# Autoriser uniquement la page d'accueil
+Allow: /$

@@ -5,28 +5,40 @@ import type { ReactNode } from "react";
 
 interface SectionProps {
   id: string;
-  title: string;
-  icon?: string;
+  num?: string;
+  title?: string;
   children: ReactNode;
   className?: string;
 }
 
-export function Section({ id, title, icon, children, className }: SectionProps) {
+/**
+ * Section - Wrapper de section avec numéro et titre optionnels
+ */
+export function Section({ id, num, title, children, className }: SectionProps) {
   return (
     <section
       id={id}
       className={cn(
-        "scroll-mt-20 py-12 border-b border-gris-100 last:border-b-0",
+        "mb-16 scroll-mt-[140px]",
         className
       )}
     >
-      <div className="flex items-center gap-3 mb-6">
-        {icon && <span className="text-2xl">{icon}</span>}
-        <h2 className="font-serif text-2xl md:text-3xl font-semibold text-noir">
+      {/* Section number */}
+      {num && (
+        <div className="font-sans text-xs font-bold uppercase tracking-[0.1em] text-gris-500 mb-2">
+          {num}
+        </div>
+      )}
+
+      {/* Section title */}
+      {title && (
+        <h2 className="text-[1.85rem] md:text-2xl font-medium leading-[1.25] tracking-[-0.01em] mb-6 text-noir">
           {title}
         </h2>
-      </div>
-      <div className="prose prose-lg max-w-none text-gris-700">{children}</div>
+      )}
+
+      {/* Section content */}
+      {children}
     </section>
   );
 }

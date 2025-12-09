@@ -138,11 +138,11 @@ export function PasswordProtection({ slug, title, children }: PasswordProtection
         border: "1px solid #E4E4E7",
       }}>
         {/* Logo Drakkar Noir */}
-        <div style={{ marginBottom: "1.5rem" }}>
+        <div style={{ marginBottom: "1.5rem", display: "flex", justifyContent: "center" }}>
           <img
             src="/logos/logo_drakkar_noir.svg"
             alt="Drakkar"
-            style={{ height: 32, width: "auto" }}
+            style={{ height: 24, width: "auto" }}
           />
         </div>
 

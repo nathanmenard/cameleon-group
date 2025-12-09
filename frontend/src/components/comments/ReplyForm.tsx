@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/Ui";
+import { useState, useRef, useEffect } from "react";
 
 interface ReplyFormProps {
   onSubmit: (content: string) => Promise<void>;
@@ -12,45 +10,99 @@ interface ReplyFormProps {
 export function ReplyForm({ onSubmit, onCancel }: ReplyFormProps) {
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    textareaRef.current?.focus();
+  }, []);
 
-    if (!content.trim()) {
-      alert("Veuillez écrire une réponse");
-      return;
-    }
+  const handleSubmit = async () => {
+    if (!content.trim()) return;
 
     setIsSubmitting(true);
     try {
       await onSubmit(content.trim());
-      setContent("");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      handleSubmit();
+    }
+    if (e.key === "Escape") {
+      onCancel();
+    }
+  };
+
+  const canSubmit = content.trim().length > 0;
+
   return (
-    <form onSubmit={handleSubmit} className="p-3 bg-gris-50 border-t border-gris-200">
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "8px",
+    }}>
       <textarea
+        ref={textareaRef}
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="Votre réponse..."
+        onKeyDown={handleKeyDown}
+        placeholder="Répondre..."
         rows={2}
-        className={cn(
-          "w-full px-3 py-2 text-sm rounded-lg border border-gris-200 resize-none mb-2",
-          "focus:outline-none focus:ring-2 focus:ring-rouge/20 focus:border-rouge"
-        )}
+        style={{
+          width: "100%",
+          padding: "8px 10px",
+          fontSize: "12px",
+          borderRadius: "6px",
+          border: "1px solid #e0e0e0",
+          outline: "none",
+          resize: "none",
+          fontFamily: "inherit",
+          lineHeight: 1.5,
+          boxSizing: "border-box",
+        }}
       />
-      <div className="flex gap-2 justify-end">
-        <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
+      <div style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        gap: "6px",
+      }}>
+        <button
+          type="button"
+          onClick={onCancel}
+          style={{
+            fontSize: "11px",
+            color: "#888",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: "4px 8px",
+          }}
+        >
           Annuler
-        </Button>
-        <Button type="submit" variant="primary" size="sm" disabled={isSubmitting}>
-          {isSubmitting ? "..." : "Envoyer"}
-        </Button>
+        </button>
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={!canSubmit || isSubmitting}
+          style={{
+            fontSize: "11px",
+            fontWeight: 500,
+            color: canSubmit ? "#fff" : "#999",
+            backgroundColor: canSubmit ? "#111" : "#f0f0f0",
+            padding: "4px 10px",
+            borderRadius: "4px",
+            border: "none",
+            cursor: canSubmit ? "pointer" : "default",
+          }}
+        >
+          {isSubmitting ? "..." : "Répondre"}
+        </button>
       </div>
-    </form>
+    </div>
   );
 }
 

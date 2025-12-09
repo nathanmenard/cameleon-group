@@ -9,30 +9,25 @@ export async function GET(
   const { slug } = await params;
 
   try {
-    // Get all pages and find the one with matching slug
-    const response = await fetch(`${API_URL}/pages/`, {
+    // Forward the access_token cookie to the backend
+    const accessToken = request.cookies.get("access_token")?.value;
+
+    // Get detailed page info with analytics
+    const response = await fetch(`${API_URL}/pages/${slug}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        ...(accessToken && { Cookie: `access_token=${accessToken}` }),
       },
     });
 
-    const pages = await response.json();
+    const data = await response.json();
 
     if (!response.ok) {
-      return NextResponse.json(pages, { status: response.status });
+      return NextResponse.json(data, { status: response.status });
     }
 
-    const page = pages.find((p: { slug: string }) => p.slug === slug);
-
-    if (!page) {
-      return NextResponse.json(
-        { detail: "Page not found" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(page);
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
       { detail: "Failed to fetch page" },

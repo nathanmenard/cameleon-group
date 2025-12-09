@@ -1,0 +1,26 @@
+node_modules
+.next
+*.log
+.env*
+.git
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Storybook
+.storybook/
+src/stories/
+storybook-static/
+
+# Additional caches and artifacts
+.pnpm-store
+coverage/
+dist/
+build/
+.cache/
+.vscode/
+.DS_Store
+*.tgz

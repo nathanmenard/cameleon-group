@@ -37,14 +37,14 @@ export function ContentRenderer({ block }: ContentRendererProps) {
     case "list":
       return block.ordered ? (
         <ol>
-          {block.items.map((item, index) => (
-            <li key={index}>{item}</li>
+          {block.items.map((item) => (
+            <li key={item}>{item}</li>
           ))}
         </ol>
       ) : (
         <ul>
-          {block.items.map((item, index) => (
-            <li key={index}>{item}</li>
+          {block.items.map((item) => (
+            <li key={item}>{item}</li>
           ))}
         </ul>
       );

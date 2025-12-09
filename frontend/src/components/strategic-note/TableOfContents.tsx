@@ -23,7 +23,7 @@ export function TableOfContents({ items, className }: TableOfContentsProps) {
       </h3>
       <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
         {items.map((item) => (
-          <button
+          <button type="button"
             key={item.id}
             onClick={() => scrollToSection(item.id)}
             className={cn(

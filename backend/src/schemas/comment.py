@@ -48,22 +48,29 @@ SectionId = Annotated[
 
 
 class CommentCreate(BaseModel):
-    """Create a new comment or reaction"""
+    """Create a new comment"""
 
     document_id: DocumentId
     section_id: SectionId
     author_name: AuthorName
     author_token: AuthorToken
-    content: str | None = Field(
+    selected_text: str | None = Field(
         default=None,
+        max_length=500,
+        description="Texte sélectionné",
+    )
+    text_offset: int | None = Field(
+        default=None,
+        description="Position du texte dans la section",
+    )
+    content: str = Field(
+        min_length=1,
         max_length=2000,
         description="Texte du commentaire",
     )
-    emoji: str | None = Field(
+    parent_id: int | None = Field(
         default=None,
-        max_length=10,
-        description="Emoji de réaction",
-        examples=["👍", "👎", "❓", "💡"],
+        description="ID du commentaire parent (pour les réponses)",
     )
     is_internal: bool = Field(
         default=False,
@@ -80,14 +87,14 @@ class CommentUpdate(BaseModel):
         max_length=2000,
         description="Texte du commentaire",
     )
-    emoji: str | None = Field(
+    selected_text: str | None = Field(
         default=None,
-        max_length=10,
-        description="Emoji de réaction",
+        max_length=500,
+        description="Texte sélectionné (mise à jour)",
     )
-    is_internal: bool | None = Field(
+    is_resolved: bool | None = Field(
         default=None,
-        description="Commentaire confidentiel",
+        description="Marquer comme résolu",
     )
 
 
@@ -104,10 +111,14 @@ class CommentResponse(BaseModel):
     document_id: str
     section_id: str
     author_name: str
-    content: str | None
-    emoji: str | None
+    selected_text: str | None
+    text_offset: int | None
+    content: str
+    parent_id: int | None
+    is_resolved: bool
     is_internal: bool
-    is_owner: bool = False  # Set based on request token
+    is_owner: bool = False
+    replies: list["CommentResponse"] = []
     created_at: datetime
     updated_at: datetime
 

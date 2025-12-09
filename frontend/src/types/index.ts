@@ -70,6 +70,7 @@ export interface CommentCreate {
 export interface CommentUpdate {
   author_token: string;
   content?: string;
+  selected_text?: string;
   is_resolved?: boolean;
 }
 
@@ -79,8 +80,25 @@ export interface CommentDelete {
 
 // User (stored in localStorage)
 export interface User {
-  name: string;
+  firstName: string;
+  lastName: string;
+  company: string;
   token: string;
+}
+
+// Helper to get display name and initials
+export function getUserDisplayName(user: User): string {
+  if (user.firstName && user.lastName) {
+    return `${user.firstName} ${user.lastName}`;
+  }
+  // Fallback for old format
+  return (user as unknown as { name?: string }).name || "Anonyme";
+}
+
+export function getUserInitials(user: User): string {
+  const first = user.firstName?.charAt(0) || "";
+  const last = user.lastName?.charAt(0) || "";
+  return `${first}${last}`.toUpperCase() || "?";
 }
 
 // Selection state for commenting
@@ -88,4 +106,11 @@ export interface TextSelection {
   text: string;
   sectionId: string;
   range: Range;
+}
+
+// Block selection for Notion-style commenting
+export interface BlockSelection {
+  blockId: string;      // Unique ID for the block (e.g., "ambition:p-0")
+  sectionId: string;    // Section containing the block
+  blockText: string;    // Text content of the block (for display in sidebar)
 }

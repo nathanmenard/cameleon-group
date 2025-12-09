@@ -1,13 +1,17 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8002";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    // Forward the access_token cookie to the backend
+    const accessToken = request.cookies.get("access_token")?.value;
+
     const response = await fetch(`${API_URL}/pages/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        ...(accessToken && { Cookie: `access_token=${accessToken}` }),
       },
     });
 

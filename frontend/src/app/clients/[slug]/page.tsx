@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import { notFound, useParams } from "next/navigation";
+import { api } from "@/lib/api";
 // Comments disabled for now
 // import { SelectionPopup } from "@/components/comments/SelectionPopup";
 // import { CommentsSidebar } from "@/components/comments/CommentsSidebar";
@@ -116,6 +117,23 @@ export default function ClientNotePage() {
 
   const { tocItems, tocGridItems } = clientData;
 
+  // Track page visit on mount
+  useEffect(() => {
+    const trackVisit = async () => {
+      try {
+        await api.trackVisit(slug, {
+          screen_resolution: `${window.screen.width}x${window.screen.height}`,
+          device_memory: (navigator as { deviceMemory?: number }).deviceMemory,
+          cpu_cores: navigator.hardwareConcurrency,
+          is_touch: "ontouchstart" in window,
+        });
+      } catch {
+        // Silently fail - analytics shouldn't break the page
+      }
+    };
+    trackVisit();
+  }, [slug]);
+
   const updateArrows = useCallback(() => {
     const inner = tocNavInnerRef.current;
     if (!inner) return;
@@ -158,6 +176,11 @@ export default function ClientNotePage() {
       }
 
       setActiveSection(current);
+
+      // Update URL hash when scrolling through sections
+      if (current && window.location.hash !== `#${current}`) {
+        window.history.replaceState(null, "", `#${current}`);
+      }
 
       // Auto-scroll nav to active item
       if (isVisible && current && tocNavInnerRef.current) {

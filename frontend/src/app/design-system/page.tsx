@@ -1,10 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { BLOCK_REGISTRY, COLORS, TYPOGRAPHY, type BlockDefinition } from "@/lib/design-system";
 import { ContentRenderer } from "@/components/sections/ContentRenderer";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function DesignSystemPage() {
+  const router = useRouter();
+  const { user, loading: authLoading, isAdmin, logout } = useAuth();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [scrollProgress, setScrollProgress] = useState(0);
   const [tocNavVisible, setTocNavVisible] = useState(false);
@@ -14,6 +18,35 @@ export default function DesignSystemPage() {
   const [activeBlock, setActiveBlock] = useState<string>("");
   const prevInBlocksRef = useRef(false);
   const blockLinksRef = useRef<HTMLDivElement>(null);
+
+  // Auth check
+  useEffect(() => {
+    if (!authLoading && !isAdmin) {
+      router.push("/login");
+    }
+  }, [authLoading, isAdmin, router]);
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "var(--noir)",
+        color: "var(--gris-400)",
+        fontFamily: "'Inter', sans-serif",
+      }}>
+        Chargement...
+      </div>
+    );
+  }
+
+  // Don't render if not admin (will redirect)
+  if (!isAdmin) {
+    return null;
+  }
 
   const filteredBlocks = activeCategory === "all"
     ? BLOCK_REGISTRY
@@ -94,12 +127,12 @@ export default function DesignSystemPage() {
       // Detect active block (always, not just when inBlocksSection changes)
       const blockElements = document.querySelectorAll("[id^='block-']");
       let foundBlock = "";
-      blockElements.forEach((el) => {
+      for (const el of blockElements) {
         const rect = el.getBoundingClientRect();
         if (rect.top < 200 && rect.bottom > 0) {
           foundBlock = el.id.replace("block-", "");
         }
-      });
+      }
       if (foundBlock) {
         setActiveBlock(foundBlock);
       }
@@ -172,6 +205,7 @@ export default function DesignSystemPage() {
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
               {/* Back to sections */}
               <button
+                type="button"
                 onClick={() => setForceShowSections(true)}
                 style={{
                   fontSize: 11,
@@ -200,6 +234,7 @@ export default function DesignSystemPage() {
               }}>
                 {categories.map((cat) => (
                   <button
+                    type="button"
                     key={cat.id}
                     onClick={() => {
                       setActiveCategory(cat.id);
@@ -917,11 +952,11 @@ function UIComponentPreview({ type, catColor }: { type: string; catColor: string
     return (
       <div style={{ background: "var(--gris-800)", borderRadius: 8, padding: 12 }}>
         <div style={{ display: "flex", gap: 4 }}>
-          {["1. Intro", "2. Analyse", "3. Solution", "4. Roadmap", "5. Annexes"].map((item, i) => (
-            <span key={i} style={{
+          {["1. Intro", "2. Analyse", "3. Solution", "4. Roadmap", "5. Annexes"].map((item) => (
+            <span key={item} style={{
               padding: "6px 12px",
-              background: i === 1 ? "linear-gradient(90deg, var(--rouge), var(--rouge-vif))" : "transparent",
-              color: i === 1 ? "#fff" : "var(--gris-300)",
+              background: item === "2. Analyse" ? "linear-gradient(90deg, var(--rouge), var(--rouge-vif))" : "transparent",
+              color: item === "2. Analyse" ? "#fff" : "var(--gris-300)",
               borderRadius: 4,
               fontSize: 12,
               fontFamily: "'Inter', sans-serif",
@@ -944,11 +979,11 @@ function UIComponentPreview({ type, catColor }: { type: string; catColor: string
         <div style={{ marginBottom: 16, position: "relative" }}>
           <div style={{ fontSize: 10, color: catColor, marginBottom: 6, fontFamily: "'Inter', sans-serif" }}>État 1 : Navigation sections</div>
           <div style={{ display: "flex", gap: 4, opacity: 1 }}>
-            {["1. Couleurs", "2. Typo", "3. Composants", "4. Usage"].map((item, i) => (
-              <span key={i} style={{
+            {["1. Couleurs", "2. Typo", "3. Composants", "4. Usage"].map((item) => (
+              <span key={item} style={{
                 padding: "6px 10px",
-                background: i === 2 ? "var(--rouge)" : "transparent",
-                color: i === 2 ? "#fff" : "var(--gris-300)",
+                background: item === "3. Composants" ? "var(--rouge)" : "transparent",
+                color: item === "3. Composants" ? "#fff" : "var(--gris-300)",
                 borderRadius: 4,
                 fontSize: 11,
                 fontFamily: "'Inter', sans-serif",

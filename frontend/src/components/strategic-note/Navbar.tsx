@@ -24,6 +24,7 @@ export function Navbar({ client, className }: NavbarProps) {
       )}
     >
       <button
+        type="button"
         onClick={scrollToTop}
         className="flex items-center gap-3 hover:opacity-80 transition-opacity"
       >

@@ -41,20 +41,20 @@ export function Navigation({ meta, tocItems }: NavigationProps) {
       const targetPos = window.innerHeight * 0.3;
       let current = "";
 
-      sections.forEach((section) => {
+      for (const section of sections) {
         const rect = section.getBoundingClientRect();
         if (rect.top <= targetPos && rect.bottom > targetPos) {
           current = section.getAttribute("id") || "";
         }
-      });
+      }
 
       if (!current) {
-        sections.forEach((section) => {
+        for (const section of sections) {
           const sectionTop = section.getBoundingClientRect().top;
           if (sectionTop < 200) {
             current = section.getAttribute("id") || "";
           }
-        });
+        }
       }
 
       setActiveSection(current);
@@ -120,7 +120,7 @@ export function Navigation({ meta, tocItems }: NavigationProps) {
       <div className="progress-bar" id="progress" style={{ width: `${scrollProgress}%` }} />
 
       <div className={`toc-nav ${tocNavVisible ? "visible" : ""}`}>
-        <button
+        <button type="button"
           className="nav-arrow nav-arrow-left"
           aria-label="Scroll left"
           onClick={scrollNavLeft}
@@ -139,7 +139,7 @@ export function Navigation({ meta, tocItems }: NavigationProps) {
             </a>
           ))}
         </div>
-        <button
+        <button type="button"
           className="nav-arrow nav-arrow-right"
           aria-label="Scroll right"
           onClick={scrollNavRight}

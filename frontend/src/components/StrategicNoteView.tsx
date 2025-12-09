@@ -3,8 +3,7 @@
 import { useEffect } from "react";
 import type { StrategicNote, TocItem } from "@/types/document";
 import { Navigation, DocumentHeader, TableOfContents, Section, Signature } from "./sections";
-import { CommentsSidebar } from "./comments";
-import { SelectionPopup } from "./comments/SelectionPopup";
+import { CommentsSidebar, CommentLayer } from "./comments";
 
 interface StrategicNoteViewProps {
   note: StrategicNote;
@@ -26,7 +25,7 @@ export function StrategicNoteView({ note, documentId }: StrategicNoteViewProps) 
     const hints: HTMLDivElement[] = [];
     const resizeHandlers: (() => void)[] = [];
 
-    scrollableElements.forEach((el) => {
+    for (const el of scrollableElements) {
       const hint = window.document.createElement("div");
       hint.className = "scroll-hint-text";
       hint.textContent = "← Glissez pour voir plus →";
@@ -41,11 +40,15 @@ export function StrategicNoteView({ note, documentId }: StrategicNoteViewProps) 
       checkOverflow();
       resizeHandlers.push(checkOverflow);
       window.addEventListener("resize", checkOverflow);
-    });
+    }
 
     return () => {
-      hints.forEach((hint) => hint.remove());
-      resizeHandlers.forEach((handler) => window.removeEventListener("resize", handler));
+      for (const hint of hints) {
+        hint.remove();
+      }
+      for (const handler of resizeHandlers) {
+        window.removeEventListener("resize", handler);
+      }
     };
   }, []);
 
@@ -67,7 +70,7 @@ export function StrategicNoteView({ note, documentId }: StrategicNoteViewProps) 
         </section>
       </main>
 
-      <SelectionPopup />
+      <CommentLayer />
       <CommentsSidebar documentId={documentId} />
     </>
   );

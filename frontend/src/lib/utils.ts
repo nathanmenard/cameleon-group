@@ -35,13 +35,13 @@ export function scrollToText(
   if (!section) return;
 
   // Remove any existing highlights
-  document.querySelectorAll(".temp-highlight").forEach((el) => {
+  for (const el of document.querySelectorAll(".temp-highlight")) {
     const parent = el.parentNode;
     if (parent) {
       parent.replaceChild(document.createTextNode(el.textContent || ""), el);
       parent.normalize();
     }
-  });
+  }
 
   if (!selectedText) {
     section.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -50,10 +50,10 @@ export function scrollToText(
 
   // Find and highlight the text
   const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
-  let node: Node | null;
+  let node: Node | null = walker.nextNode();
   let found = false;
 
-  while ((node = walker.nextNode()) && !found) {
+  while (node && !found) {
     const textContent = node.textContent || "";
     const searchText = selectedText.substring(0, 50);
     const index = textContent.indexOf(searchText);
@@ -86,6 +86,7 @@ export function scrollToText(
 
       found = true;
     }
+    node = walker.nextNode();
   }
 
   if (!found) {

@@ -10,8 +10,8 @@ export function Section({ section }: SectionProps) {
     <section id={section.id}>
       <div className="section-num">Section {section.num}</div>
       <h2>{section.title}</h2>
-      {section.content.map((block, index) => (
-        <ContentRenderer key={index} block={block} />
+      {section.content.map((block) => (
+        <ContentRenderer key={`${section.id}_${block.type}`} block={block} />
       ))}
     </section>
   );

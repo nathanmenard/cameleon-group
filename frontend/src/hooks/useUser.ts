@@ -11,6 +11,12 @@ function generateToken(): string {
   return Array.from(array, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+export interface LoginData {
+  firstName: string;
+  lastName: string;
+  company: string;
+}
+
 export function useUser() {
   const [user, setUser] = useState<User | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -20,7 +26,14 @@ export function useUser() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        setUser(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        // Validate new format (must have firstName and lastName)
+        if (parsed.firstName && parsed.lastName && parsed.company && parsed.token) {
+          setUser(parsed);
+        } else {
+          // Old format, clear it
+          localStorage.removeItem(STORAGE_KEY);
+        }
       } catch {
         localStorage.removeItem(STORAGE_KEY);
       }
@@ -28,9 +41,11 @@ export function useUser() {
     setIsLoaded(true);
   }, []);
 
-  const login = useCallback((name: string): User => {
+  const login = useCallback((data: LoginData): User => {
     const newUser: User = {
-      name,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      company: data.company,
       token: generateToken(),
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
@@ -43,24 +58,12 @@ export function useUser() {
     setUser(null);
   }, []);
 
-  const updateName = useCallback(
-    (name: string) => {
-      if (user) {
-        const updatedUser = { ...user, name };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
-        setUser(updatedUser);
-      }
-    },
-    [user]
-  );
-
   return {
     user,
     isLoaded,
     isLoggedIn: !!user,
     login,
     logout,
-    updateName,
     token: user?.token,
   };
 }
