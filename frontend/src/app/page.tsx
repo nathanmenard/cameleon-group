@@ -326,7 +326,7 @@ export default function Dashboard() {
             {pages.map((page) => (
               <Link
                 key={page.id}
-                href={`/clients/${page.slug}`}
+                href={`/admin/${page.slug}`}
                 style={styles.card}
               >
                 {/* Card Header */}
