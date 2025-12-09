@@ -2396,6 +2396,17 @@ function CroniteContent() {
 
           <div className="authors">
             <div className="author">
+              <img src="/photos/teddy.jpg" alt="Teddy Music" className="author-photo" />
+              <div className="author-info">
+                <div className="author-name">Teddy Music</div>
+                <div className="author-role">Responsable commercial</div>
+                <div className="author-contact">
+                  <a href="mailto:teddy.music@drakkar.io">teddy.music@drakkar.io</a>
+                  <a href="tel:+33756288261">+33 7 56 28 82 61</a>
+                </div>
+              </div>
+            </div>
+            <div className="author">
               <img src="/photos/nathan.jpg" alt="Nathan Menard" className="author-photo" />
               <div className="author-info">
                 <div className="author-name">Nathan Menard</div>
@@ -2403,27 +2414,6 @@ function CroniteContent() {
                 <div className="author-contact">
                   <a href="mailto:nathan.menard@drakkar.io">nathan.menard@drakkar.io</a>
                   <a href="tel:+33651201858">+33 6 51 20 18 58</a>
-                </div>
-              </div>
-            </div>
-            <div className="author">
-              <img src="/photos/teddy.jpg" alt="Teddy Thierry" className="author-photo" />
-              <div className="author-info">
-                <div className="author-name">Teddy Thierry</div>
-                <div className="author-role">Responsable commercial</div>
-                <div className="author-contact">
-                  <a href="mailto:teddy.thierry@drakkar.io">teddy.thierry@drakkar.io</a>
-                  <a href="tel:+33756288261">+33 7 56 28 82 61</a>
-                </div>
-              </div>
-            </div>
-            <div className="author">
-              <img src="/photos/thierry.jpg" alt="Thierry Menard" className="author-photo" />
-              <div className="author-info">
-                <div className="author-name">Thierry Menard</div>
-                <div className="author-role">Associé, Expert industriel</div>
-                <div className="author-contact">
-                  <a href="mailto:thierry.menard@drakkar.io">thierry.menard@drakkar.io</a>
                 </div>
               </div>
             </div>
