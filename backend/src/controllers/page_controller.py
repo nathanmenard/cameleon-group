@@ -249,14 +249,15 @@ class PageController(Controller):
         if not page:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Page not found")
 
-        # Get aggregated stats
+        # Get aggregated stats (page is FK to pages.id)
         stats_query = """
             SELECT
                 COUNT(*) as total_visits,
-                COUNT(DISTINCT visitor_ip) as unique_visitors,
-                MAX(visited_at) as last_visit
-            FROM page_visits
-            WHERE page_slug = {}
+                COUNT(DISTINCT pv.ip_address) as unique_visitors,
+                MAX(pv.visited_at) as last_visit
+            FROM page_visits pv
+            JOIN pages p ON pv.page = p.id
+            WHERE p.slug = {}
         """
         stats_result = await Page.raw(stats_query, slug)
         stats = stats_result[0] if stats_result else {"total_visits": 0, "unique_visitors": 0, "last_visit": None}
@@ -274,12 +275,13 @@ class PageController(Controller):
         # Get top visitors (top 5 IPs by visit count) with country
         top_visitors_query = """
             SELECT
-                visitor_ip as ip,
-                country,
+                pv.ip_address as ip,
+                pv.country,
                 COUNT(*) as count
-            FROM page_visits
-            WHERE page_slug = {}
-            GROUP BY visitor_ip, country
+            FROM page_visits pv
+            JOIN pages p ON pv.page = p.id
+            WHERE p.slug = {}
+            GROUP BY pv.ip_address, pv.country
             ORDER BY count DESC
             LIMIT 5
         """
@@ -292,18 +294,19 @@ class PageController(Controller):
         # Get recent visits (last 10)
         recent_visits_query = """
             SELECT
-                visitor_ip as ip,
-                user_agent,
-                screen_resolution,
-                country,
-                city,
-                device_type,
-                os,
-                browser,
-                visited_at
-            FROM page_visits
-            WHERE page_slug = {}
-            ORDER BY visited_at DESC
+                pv.ip_address as ip,
+                pv.user_agent,
+                pv.screen_resolution,
+                pv.country,
+                pv.city,
+                pv.device_type,
+                pv.os,
+                pv.browser,
+                pv.visited_at
+            FROM page_visits pv
+            JOIN pages p ON pv.page = p.id
+            WHERE p.slug = {}
+            ORDER BY pv.visited_at DESC
             LIMIT 10
         """
         recent_visits_result = await Page.raw(recent_visits_query, slug)
@@ -511,8 +514,8 @@ class PageController(Controller):
         if not page:
             raise HTTPException(status_code=HTTP_404_NOT_FOUND, detail="Page not found")
 
-        # Delete related analytics using raw SQL for page visits (joined by page_slug in database)
-        await Page.raw("DELETE FROM page_visits WHERE page_slug = {}", slug)
+        # Delete related analytics using raw SQL for page visits (FK to pages.id)
+        await Page.raw("DELETE FROM page_visits WHERE page = {}", page["id"])
         await PasswordAttempt.delete().where(PasswordAttempt.page == page["id"])
 
         # Delete page
