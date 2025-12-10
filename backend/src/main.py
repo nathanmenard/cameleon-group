@@ -12,6 +12,22 @@ from db import close_database_connection_pool, open_database_connection_pool
 from routes import ALL_ROUTES
 
 
+async def create_tables() -> None:
+    """Create database tables if they don't exist."""
+    from models.user import User
+    from models.page import Page
+    from models.analytics import PageVisit, PasswordAttempt
+    from models.comment import Comment
+
+    # Create tables in order (respecting foreign key dependencies)
+    await User.create_table(if_not_exists=True)
+    await Page.create_table(if_not_exists=True)
+    await PageVisit.create_table(if_not_exists=True)
+    await PasswordAttempt.create_table(if_not_exists=True)
+    await Comment.create_table(if_not_exists=True)
+    print("Database tables created/verified")
+
+
 async def init_admin_user() -> None:
     """Create default admin user if not exists."""
     from auth import get_password_hash
@@ -34,6 +50,7 @@ async def init_admin_user() -> None:
 async def startup() -> None:
     """Startup tasks."""
     await open_database_connection_pool()
+    await create_tables()
     await init_admin_user()
 
 
