@@ -10,7 +10,8 @@ load_dotenv()
 
 @dataclass
 class Settings:
-    database_url: str = os.getenv("DATABASE_URL", "postgresql://localhost/cameleon")
+    # Support Clever Cloud POSTGRESQL_ADDON_URI or standard DATABASE_URL
+    database_url: str = os.getenv("POSTGRESQL_ADDON_URI") or os.getenv("DATABASE_URL", "postgresql://localhost/cameleon")
     debug: bool = os.getenv("DEBUG", "false").lower() == "true"
     cors_allowed_origins: list[str] = None
     host: str = os.getenv("HOST", "0.0.0.0")
