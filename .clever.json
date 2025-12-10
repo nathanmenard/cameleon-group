@@ -1,0 +1,20 @@
+{
+  "apps": [
+    {
+      "app_id": "app_96ab0960-6536-4d3e-8f6b-e9da913636dc",
+      "org_id": "orga_afa64bb9-99f7-4190-8fb4-d918d325dc88",
+      "deploy_url": "https://push-n3-par-clevercloud-customers.services.clever-cloud.com/app_96ab0960-6536-4d3e-8f6b-e9da913636dc.git",
+      "git_ssh_url": "git+ssh://git@push-n3-par-clevercloud-customers.services.clever-cloud.com/app_96ab0960-6536-4d3e-8f6b-e9da913636dc.git",
+      "name": "Drakkar Slides Backend",
+      "alias": "drakkar-slides-backend"
+    },
+    {
+      "app_id": "app_b7457c5d-8066-437a-b1fc-1e58ca23447f",
+      "org_id": "orga_afa64bb9-99f7-4190-8fb4-d918d325dc88",
+      "deploy_url": "https://push-n3-par-clevercloud-customers.services.clever-cloud.com/app_b7457c5d-8066-437a-b1fc-1e58ca23447f.git",
+      "git_ssh_url": "git+ssh://git@push-n3-par-clevercloud-customers.services.clever-cloud.com/app_b7457c5d-8066-437a-b1fc-1e58ca23447f.git",
+      "name": "Drakkar Slides Frontend",
+      "alias": "drakkar-slides-frontend"
+    }
+  ]
+}
