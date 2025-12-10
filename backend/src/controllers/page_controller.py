@@ -198,16 +198,17 @@ class PageController(Controller):
         # Get all slugs
         slugs = [p["slug"] for p in pages]
 
-        # Single aggregated query for all analytics using page_slug
+        # Single aggregated query for all analytics with JOIN on pages table
         analytics_query = """
             SELECT
-                page_slug,
-                COUNT(*) as total_visits,
-                COUNT(DISTINCT visitor_ip) as unique_visitors,
-                MAX(visited_at) as last_visit
-            FROM page_visits
-            WHERE page_slug = ANY({})
-            GROUP BY page_slug
+                p.slug as page_slug,
+                COUNT(pv.*) as total_visits,
+                COUNT(DISTINCT pv.ip_address) as unique_visitors,
+                MAX(pv.visited_at) as last_visit
+            FROM pages p
+            LEFT JOIN page_visits pv ON pv.page = p.id
+            WHERE p.slug = ANY({})
+            GROUP BY p.slug
         """
         analytics_result = await Page.raw(analytics_query, slugs)
 

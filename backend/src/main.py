@@ -1,4 +1,4 @@
-"""Cameleon API - Litestar application"""
+"""Spider Slides API - Litestar application"""
 
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
@@ -91,7 +91,7 @@ app = Litestar(
     ),
     debug=settings.debug,
     openapi_config=OpenAPIConfig(
-        title="Cameleon Group API",
+        title="Spider Slides API",
         version="2.0.0",
         description="API for strategic notes - auth, analytics, comments",
         path="/docs",

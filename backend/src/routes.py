@@ -1,4 +1,4 @@
-"""Centralized route configuration for Cameleon API"""
+"""Centralized route configuration for Spider Slides API"""
 
 from litestar import route
 
@@ -10,7 +10,7 @@ from controllers.page_controller import PageController
 
 async def health_check() -> dict:
     """Health check endpoint"""
-    return {"status": "ok", "service": "cameleon-api"}
+    return {"status": "ok", "service": "spider-slides-api"}
 
 
 ALL_ROUTES = [
